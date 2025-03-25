@@ -6,6 +6,8 @@ public interface Solid {
 
     void onCollision();
 
+    GRectangle getHitbox();
+
     Boolean checkCollision();
 
 }

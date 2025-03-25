@@ -3,6 +3,7 @@ package Enemy;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
+import Utils.Action;
 import acm.graphics.*;
 
 public class Enemy extends GCompound implements TickListener {
@@ -99,8 +100,8 @@ public class Enemy extends GCompound implements TickListener {
     public void onTick(GameTick tick) {
         move();
         if (!alive) {
-            tick.addAction(1, () -> {
-                tick.unregisterTickerListener(this);;
+            Action.addAction(1, () -> {
+                TickListener.unregisterTickListener(this);;
             });
         }
     }

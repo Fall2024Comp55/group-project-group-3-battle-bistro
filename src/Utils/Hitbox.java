@@ -26,6 +26,11 @@ public class Hitbox extends GCompound implements Solid {
 
     }
 
+    @Override
+    public GRectangle getHitbox() {
+        return null;
+    }
+
     // TODO Needs work might need to remove hitbox class and make tower implement solid and then when overlap happens get the do a GetHitbox() and check if it is overlapping the hutbix.
 
     @Override

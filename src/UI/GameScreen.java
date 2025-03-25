@@ -6,8 +6,10 @@ import Enemy.EnemyType;
 import Enemy.Path;
 import Tower.TestTower;
 import Tower.Tower;
+import Utils.Action;
 import Utils.MouseInteract;
 import Utils.GameTick;
+import Utils.TickListener;
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
@@ -67,7 +69,7 @@ public class GameScreen extends GraphicsProgram {
     public void run() {
         add(garden);
         add(character);
-        tick.registerTickListener(character);
+        TickListener.registerTickListener(character);
         
         
 //        URL resource = getClass().getResource("/resources/enemy/dough.png");
@@ -98,12 +100,12 @@ public class GameScreen extends GraphicsProgram {
         for (int i = 0; i < 3; i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
             add(enemy);
-            tick.registerTickListener(enemy);
+            TickListener.registerTickListener(enemy);
             System.out.println("Enemy added");
             enemies.add(enemy);
         }
 
-        tick.addAction(1, () -> {;
+        Action.addAction(1, () -> {;
             addEnemy();
         });
 
@@ -135,9 +137,9 @@ public class GameScreen extends GraphicsProgram {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
             enemy.sendToBack();
             add(enemy);
-            tick.registerTickListener(enemy);
+            TickListener.registerTickListener(enemy);
         }
-        tick.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
+        Action.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
             addEnemy();
         });
     }

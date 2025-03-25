@@ -4,6 +4,7 @@ import Utils.Solid;
 import acm.graphics.GCompound;
 import acm.graphics.GLine;
 import acm.graphics.GPoint;
+import acm.graphics.GRectangle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -64,6 +65,11 @@ public class Path extends GCompound implements Solid {
     @Override
     public void onCollision() {
 
+    }
+
+    @Override
+    public GRectangle getHitbox() {
+        return null;
     }
 
     @Override

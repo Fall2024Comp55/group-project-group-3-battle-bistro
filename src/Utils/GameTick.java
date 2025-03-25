@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class GameTick implements ActionListener {
@@ -21,16 +22,15 @@ public class GameTick implements ActionListener {
 
     private final Timer timer;
     private final GraphicsProgram screen;
-    private final Set<TickListener> registeredTickListeners;
-    private final Multimap<Long, Action> actions;
     private long lastTickTime;
-    private long currentTick;
+    private static AtomicLong currentTick;
     private long ticksPerSecond;
 
     public GameTick(GraphicsProgram screen) {
         timer = new Timer(timerDelay, this);
-        registeredTickListeners = new LinkedHashSet<TickListener>();
-        actions = ArrayListMultimap.create();
+        if (currentTick == null) {
+            currentTick = new AtomicLong(0);
+        }
         this.screen = screen;
     }
 
@@ -43,31 +43,12 @@ public class GameTick implements ActionListener {
         timer.stop();
     }
 
-    public void registerTickListener(TickListener tickListener) {
-        registeredTickListeners.add(tickListener);
-    }
-
-    public void unregisterTickerListener(TickListener tickListener) {
-        registeredTickListeners.remove(tickListener);
-    }
-
-    public void addAction(long tickDelay, Action action) {
-        if (tickDelay < 0) {
-            throw new IllegalArgumentException("Tick delay must be greater than or equal to 0");
-        }
-        actions.put(tickDelay + currentTick, action);
-    }
-
-    public void removeAction(Action action) {
-        actions.values().remove(action);
-    }
-
     // !!! FIXME
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getWhen() - lastTickTime >= tickDelay) {
             ticksPerSecond = Math.ceilDiv(1000, (e.getWhen() - lastTickTime));
-            if ((currentTick + 1) % 20 == 0) {
+            if ((currentTick.get() + 1) % 20 == 0) {
                 // xxx sout ticks per second
                 System.out.println("Ticks per second: " + ticksPerSecond);
             }
@@ -77,18 +58,18 @@ public class GameTick implements ActionListener {
     }
 
     private void tick(long missingTicks) {
-        currentTick++;
+        currentTick.incrementAndGet();
         // xxx sout tick and registered tick listeners
-        if (currentTick % 100 == 0) {
+        if (currentTick.get() % 100 == 0) {
             System.out.println("Tick: " + currentTick);
-            System.out.println("Registered tick listeners: " + registeredTickListeners.size());
+            System.out.println("Registered tick listeners: " + TickListener.getRegisteredTickListeners().size());
         }
 
 //        for (TickListener listener : registeredTickListeners) {
 //            listener.onTick(this);
 //        }
 
-        registeredTickListeners.parallelStream().spliterator().forEachRemaining(listener -> {
+        TickListener.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
             listener.onTick(this);
         });
 
@@ -107,8 +88,8 @@ public class GameTick implements ActionListener {
 //            }
 //        });
 
-        if (!actions.isEmpty() && actions.containsKey(currentTick)) {
-            actions.get(currentTick).parallelStream().spliterator().forEachRemaining(action -> {
+        if (!Action.getActions().isEmpty() && Action.getActions().containsKey(currentTick.get())) {
+            Action.getActions().get(currentTick.get()).parallelStream().spliterator().forEachRemaining(action -> {
                 if (action instanceof Action act) {
                     act.performAction();
                 }
@@ -138,8 +119,8 @@ public class GameTick implements ActionListener {
         return ticksPerSecond;
     }
 
-    public long getCurrentTick() {
-        return currentTick;
+    public static long getCurrentTick() {
+        return currentTick.get();
     }
 
     public long getLastTickTime() {
