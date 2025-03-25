@@ -6,10 +6,7 @@ import Enemy.EnemyType;
 import Enemy.Path;
 import Tower.TestTower;
 import Tower.Tower;
-import Utils.Action;
-import Utils.MouseInteract;
-import Utils.GameTick;
-import Utils.TickListener;
+import Utils.*;
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
@@ -30,8 +27,6 @@ public class GameScreen extends GraphicsProgram {
     GImage background;
     public GCompound garden;
     public GameTick tick;
-    public Point lastClickPoint;
-    public Point lastMousePoint;
     public Path path;
     private Character character;
     private static GameScreen instance;
@@ -69,7 +64,7 @@ public class GameScreen extends GraphicsProgram {
     public void run() {
         add(garden);
         add(character);
-        TickListener.registerTickListener(character);
+        GameTick.TickManager.registerTickListener(character);
         
         
 //        URL resource = getClass().getResource("/resources/enemy/dough.png");
@@ -100,12 +95,12 @@ public class GameScreen extends GraphicsProgram {
         for (int i = 0; i < 3; i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
             add(enemy);
-            TickListener.registerTickListener(enemy);
+            GameTick.TickManager.registerTickListener(enemy);
             System.out.println("Enemy added");
             enemies.add(enemy);
         }
 
-        Action.addAction(1, () -> {;
+        GameTick.ActionManager.addAction(1, () -> {;
             addEnemy();
         });
 
@@ -137,49 +132,55 @@ public class GameScreen extends GraphicsProgram {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
             enemy.sendToBack();
             add(enemy);
-            TickListener.registerTickListener(enemy);
+            GameTick.TickManager.registerTickListener(enemy);
         }
-        Action.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
+        GameTick.ActionManager.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
             addEnemy();
         });
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO possible code for mouse press need to work on dragging
         GObject object = getElementAt(e.getX(), e.getY());
-        lastClickPoint = e.getPoint();
+
+        // set last click point in MouseManager
+        MouseManager.setLastClickPoint(e.getPoint());
+
         if (object != null) {
             if (object instanceof MouseInteract o) {
-                o.onPress(e, lastClickPoint);
+                MouseManager.setSelectedObject(object);
+                o.onPress(e);
             }
-
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        // TODO possible code for mouse drag need to work on dragging
-        GObject object = getElementAt(e.getX(), e.getY());
-        lastMousePoint = e.getPoint();
+        // get selected object
+        GObject object = MouseManager.getSelectedObject();
+
+        // set last mouse point in MouseManager
+        MouseManager.setLastClickPoint(e.getPoint());
+
         if (object != null) {
             if (object instanceof MouseInteract o) {
-                o.onDrag(e, lastClickPoint, lastMousePoint);
+                o.onDrag(e);
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO possible code for mouse release need to work on dragging
-        GObject object = getElementAt(e.getX(), e.getY());
+        // get selected object
+        GObject object = MouseManager.getSelectedObject();
+
         if (object != null) {
             if (object instanceof MouseInteract o) {
-                o.onRelease(e, lastClickPoint, lastMousePoint);
+                o.onRelease(e);
             }
         }
-        lastMousePoint = e.getPoint();
-        lastClickPoint = null;
+        MouseManager.setLastClickPoint(e.getPoint());
+        MouseManager.setSelectedObject(null);
     }
 
 }

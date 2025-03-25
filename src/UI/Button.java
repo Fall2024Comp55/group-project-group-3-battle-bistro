@@ -13,17 +13,17 @@ public class Button extends GCompound implements MouseInteract {
     private GLabel label;
 
     @Override
-    public void onPress(MouseEvent e, Point lastClickPoint) {
+    public void onPress(MouseEvent e) {
 
     }
 
     @Override
-    public void onDrag(MouseEvent e, Point lastClickPoint, Point lastMousePoint) {
+    public void onDrag(MouseEvent e) {
 
     }
 
     @Override
-    public void onRelease(MouseEvent e, Point lastClickPoint, Point lastMousePoint) {
+    public void onRelease(MouseEvent e) {
 
     }
 }

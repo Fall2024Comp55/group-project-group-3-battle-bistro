@@ -2,6 +2,7 @@ package Tower;
 
 import Utils.GameTick;
 import Utils.Utils;
+import Utils.MouseManager;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
 
@@ -48,30 +49,22 @@ public class TestTower extends Tower {
     private Tower selectedTower;
 
     @Override
-    public void onPress(MouseEvent e, Point lastClickPoint) {
-        selectedTower = this;
+    public void onPress(MouseEvent e) {
         this.sendToFront();
-        if (getElementAt(e.getX(), e.getY()) instanceof Tower) {
-            System.out.println("Tower clicked");
+    }
+
+    @Override
+    public void onDrag(MouseEvent e) {
+        MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
+        repaint();
+        if (hitbox.checkCollision()) {
+            System.out.println("collison");
         }
     }
 
     @Override
-    public void onDrag(MouseEvent e, Point lastClickPoint, Point lastMousePoint) {
-        if (selectedTower != null) {
-            selectedTower.setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
-            repaint();
-            if (hitbox.checkCollision()) {
-                System.out.println("collison");
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onRelease(MouseEvent e, Point lastClickPoint, Point lastMousePoint) {
-        selectedTower = null;
+    public void onRelease(MouseEvent e) {
 
     }
 }
+

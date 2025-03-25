@@ -62,14 +62,14 @@ public class GameTick implements ActionListener {
         // xxx sout tick and registered tick listeners
         if (currentTick.get() % 100 == 0) {
             System.out.println("Tick: " + currentTick);
-            System.out.println("Registered tick listeners: " + TickListener.getRegisteredTickListeners().size());
+            System.out.println("Registered tick listeners: " + TickManager.getRegisteredTickListeners().size());
         }
 
 //        for (TickListener listener : registeredTickListeners) {
 //            listener.onTick(this);
 //        }
 
-        TickListener.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
+        TickManager.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
             listener.onTick(this);
         });
 
@@ -88,8 +88,8 @@ public class GameTick implements ActionListener {
 //            }
 //        });
 
-        if (!Action.getActions().isEmpty() && Action.getActions().containsKey(currentTick.get())) {
-            Action.getActions().get(currentTick.get()).parallelStream().spliterator().forEachRemaining(action -> {
+        if (!ActionManager.getActions().isEmpty() && ActionManager.getActions().containsKey(currentTick.get())) {
+            ActionManager.getActions().get(currentTick.get()).parallelStream().spliterator().forEachRemaining(action -> {
                 if (action instanceof Action act) {
                     act.performAction();
                 }
@@ -126,4 +126,50 @@ public class GameTick implements ActionListener {
     public long getLastTickTime() {
         return lastTickTime;
     }
+
+
+    public static class TickManager {
+        private static final Set<TickListener> registeredTickListeners = new LinkedHashSet<TickListener>();
+        private static AtomicLong currentTick;
+
+        public static void registerTickListener(TickListener tickListener) {
+            registeredTickListeners.add(tickListener);
+        }
+
+        public static void unregisterTickListener(TickListener tickListener) {
+            registeredTickListeners.remove(tickListener);
+        }
+
+        public static Set<TickListener> getRegisteredTickListeners() {
+            return registeredTickListeners;
+        }
+
+        public static AtomicLong getCurrentTick() {
+            return currentTick;
+        }
+
+        public static long getCurrentTickValue() {
+            return currentTick.get();
+        }
+    }
+
+    public static class ActionManager {
+        private static final Multimap<Long, Action> actions = ArrayListMultimap.create();
+
+        public static void addAction(long tickDelay, Action action) {
+            if (tickDelay < 0) {
+                throw new IllegalArgumentException("Tick delay must be greater than or equal to 0");
+            }
+            actions.put(tickDelay + GameTick.getCurrentTick(), action);
+        }
+
+        public static void removeAction(Action action) {
+            actions.values().remove(action);
+        }
+
+        public static Multimap<Long, Action> getActions() {
+            return actions;
+        }
+    }
+
 }
