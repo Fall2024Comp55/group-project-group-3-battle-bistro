@@ -1,13 +1,15 @@
 package Utils;
 
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public interface MouseInteract {
 
-    void onClick(MouseEvent e);
+    void onPress(MouseEvent e, Point lastClickPoint);
 
-    void onDrag(MouseEvent e);
+    void onDrag(MouseEvent e, Point lastClickPoint, Point lastMousePoint);
 
-    void onRelease(MouseEvent e);
+    void onRelease(MouseEvent e, Point lastClickPoint, Point lastMousePoint);
 
 }

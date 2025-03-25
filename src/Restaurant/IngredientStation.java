@@ -6,7 +6,7 @@ import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
 
-public class IngredientStation extends GCompound implements Interact, Solid {
+public class IngredientStation extends GCompound implements Interact {
     // TODO find needed variables and methods
     private GImage gImage;
 
@@ -15,11 +15,6 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     @Override
     public void interact() {
-
-    }
-
-    @Override
-    public void onCollision() {
 
     }
 }

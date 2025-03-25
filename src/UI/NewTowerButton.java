@@ -16,18 +16,4 @@ public class NewTowerButton extends Button {
 
     }
 
-    @Override
-    public void onClick(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onDrag(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onRelease(MouseEvent e) {
-
-    }
 }

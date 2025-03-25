@@ -41,6 +41,7 @@ public class Character extends GCompound implements KeyListener, TickListener {
     public void down() {
         System.out.println("down");
         this.move(0, 1);
+
         repaint();
 
     }

@@ -6,4 +6,6 @@ public interface Solid {
 
     void onCollision();
 
+    Boolean checkCollision();
+
 }

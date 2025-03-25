@@ -9,26 +9,12 @@ import acm.graphics.GPoint;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
-public class SummaryMenu extends GCompound implements MouseInteract {
+public class SummaryMenu extends GCompound {
     private Set<GObject> elements;
 
     SummaryMenu() {
     }
 
-    @Override
-    public void onClick(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onDrag(MouseEvent e) {
-
-    }
-
-    @Override
-    public void onRelease(MouseEvent e) {
-
-    }
 
     // TODO find needed variables and methods
 

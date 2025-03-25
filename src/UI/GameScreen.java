@@ -4,6 +4,8 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
+import Tower.TestTower;
+import Tower.Tower;
 import Utils.MouseInteract;
 import Utils.GameTick;
 import acm.graphics.*;
@@ -30,6 +32,8 @@ public class GameScreen extends GraphicsProgram {
     public Point lastMousePoint;
     public Path path;
     private Character character;
+    private static GameScreen instance;
+
 
     public void init() {
         setSize(WIDTH, HEIGHT);
@@ -41,6 +45,17 @@ public class GameScreen extends GraphicsProgram {
         tick = new GameTick(this);
         this.setAutoRepaintFlag(false);
         this.character = new Character();
+    }
+
+    public void setInstance(GameScreen gameScreen) {
+        instance = gameScreen;
+    }
+
+    public static GameScreen getInstance() {
+        if (instance == null) {
+            instance = new GameScreen();
+        }
+        return instance;
     }
 
 
@@ -92,6 +107,20 @@ public class GameScreen extends GraphicsProgram {
             addEnemy();
         });
 
+        Tower testTower;
+        testTower = new TestTower();
+
+        add(testTower);
+
+        Tower testTower2;
+        testTower2 = new TestTower();
+
+        add(testTower2, 100, 100);
+
+        testTower2.sendToFront();
+
+
+
 
 
         addKeyListeners(character);
@@ -104,6 +133,7 @@ public class GameScreen extends GraphicsProgram {
     public void addEnemy() {
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(20, 50); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
+            enemy.sendToBack();
             add(enemy);
             tick.registerTickListener(enemy);
         }
@@ -116,22 +146,25 @@ public class GameScreen extends GraphicsProgram {
     public void mousePressed(MouseEvent e) {
         // TODO possible code for mouse press need to work on dragging
         GObject object = getElementAt(e.getX(), e.getY());
+        lastClickPoint = e.getPoint();
         if (object != null) {
+            if (object instanceof MouseInteract o) {
+                o.onPress(e, lastClickPoint);
+            }
 
         }
-        lastClickPoint = e.getPoint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         // TODO possible code for mouse drag need to work on dragging
         GObject object = getElementAt(e.getX(), e.getY());
+        lastMousePoint = e.getPoint();
         if (object != null) {
             if (object instanceof MouseInteract o) {
-                o.onDrag(e);
+                o.onDrag(e, lastClickPoint, lastMousePoint);
             }
         }
-        lastMousePoint = e.getPoint();
     }
 
     @Override
@@ -140,9 +173,11 @@ public class GameScreen extends GraphicsProgram {
         GObject object = getElementAt(e.getX(), e.getY());
         if (object != null) {
             if (object instanceof MouseInteract o) {
-                o.onRelease(e);
+                o.onRelease(e, lastClickPoint, lastMousePoint);
             }
         }
+        lastMousePoint = e.getPoint();
+        lastClickPoint = null;
     }
 
 }

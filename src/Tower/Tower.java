@@ -1,6 +1,7 @@
 package Tower;
 
 import Enemy.Enemy;
+import Utils.Hitbox;
 import Utils.MouseInteract;
 import Utils.Solid;
 import Utils.TickListener;
@@ -14,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public abstract class Tower extends GCompound implements TickListener, Solid, MouseInteract {
+public abstract class Tower extends GCompound implements TickListener, MouseInteract {
     private static final String basePath = "resources/tower/";
     private static final String extension = ".png";
     private static final double sellModifier = 0.8;
@@ -26,7 +27,7 @@ public abstract class Tower extends GCompound implements TickListener, Solid, Mo
     protected Enemy target;
     protected Tree upgradeTree;
     protected GOval range;
-    protected GOval collision;
+    protected Hitbox hitbox;
     protected boolean placed;
 
     // TODO figure out what is needed
@@ -37,11 +38,17 @@ public abstract class Tower extends GCompound implements TickListener, Solid, Mo
         this.level = level;
         this.damage = damage;
         this.placed = true;
-        gImage = new GImage(getImage());
-        add(gImage);
+//        gImage = new GImage(getImage());
+//        add(gImage);
+        hitbox = new Hitbox(20, this);
+        add(hitbox);
     }
 
     public void getNextUpgrade() {
+    }
+
+    public Hitbox getHitbox() {
+        return hitbox;
     }
 
     public int getLevel() {
@@ -87,6 +94,8 @@ public abstract class Tower extends GCompound implements TickListener, Solid, Mo
         }
         throw new RuntimeException("Could not find image for path " + toPath());
     }
+
+
 
     // Possible methods to implement
     /*

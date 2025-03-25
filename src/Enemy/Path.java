@@ -65,4 +65,9 @@ public class Path extends GCompound implements Solid {
     public void onCollision() {
 
     }
+
+    @Override
+    public Boolean checkCollision() {
+        return null;
+    }
 }

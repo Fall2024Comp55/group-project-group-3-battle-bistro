@@ -3,10 +3,9 @@ import UI.GameScreen;
 public class BattleBistro {
 
     public static void main(String[] args) {
-        new GameScreen().start();
-
-
-
+        GameScreen gameScreen = new GameScreen();
+        gameScreen.setInstance(gameScreen);
+        gameScreen.start();
     }
    
 }

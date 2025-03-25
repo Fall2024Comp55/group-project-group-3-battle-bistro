@@ -4,7 +4,7 @@ import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
 
-public class PrepTable extends GCompound implements Solid, Interact {
+public class PrepTable extends GCompound implements Interact {
     // TODO find needed variables and methods
 
     @Override
@@ -12,8 +12,4 @@ public class PrepTable extends GCompound implements Solid, Interact {
 
     }
 
-    @Override
-    public void onCollision() {
-
-    }
 }
