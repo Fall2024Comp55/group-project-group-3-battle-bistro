@@ -1,21 +1,19 @@
 package Tower;
 
 import Enemy.Enemy;
-import Utils.Hitbox;
 import Utils.MouseInteract;
+import Utils.MouseManager;
 import Utils.Solid;
 import Utils.TickListener;
-import acm.graphics.GCompound;
-import acm.graphics.GImage;
-import acm.graphics.GObject;
-import acm.graphics.GOval;
+import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 
-public abstract class Tower extends GCompound implements TickListener, MouseInteract {
+public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
     private static final String basePath = "resources/tower/";
     private static final String extension = ".png";
     private static final double sellModifier = 0.8;
@@ -27,7 +25,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected Enemy target;
     protected Tree upgradeTree;
     protected GOval range;
-    protected Hitbox hitbox;
+    protected GOval hitbox;
     protected boolean placed;
 
     // TODO figure out what is needed
@@ -40,15 +38,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.placed = true;
 //        gImage = new GImage(getImage());
 //        add(gImage);
-        hitbox = new Hitbox(20, this);
+        hitbox = new GOval(20, 20);
         add(hitbox);
     }
 
     public void getNextUpgrade() {
-    }
-
-    public Hitbox getHitbox() {
-        return hitbox;
     }
 
     public int getLevel() {
@@ -93,6 +87,32 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
             return new ImageIcon(resource).getImage();
         }
         throw new RuntimeException("Could not find image for path " + toPath());
+    }
+
+    @Override
+    public GRectangle getHitbox() {
+        return new GRectangle(getX(), getY(), hitbox.getWidth(), hitbox.getHeight());
+    }
+
+    @Override
+    public void onPress(MouseEvent e) {
+        this.sendToFront();
+    }
+
+    @Override
+    public void onDrag(MouseEvent e) {
+        MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
+        repaint();
+        if (checkCollision()) {
+            hitbox.setFilled(true);
+        } else {
+            hitbox.setFilled(false);
+        }
+    }
+
+    @Override
+    public void onRelease(MouseEvent e) {
+
     }
 
 

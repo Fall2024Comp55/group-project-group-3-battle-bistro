@@ -87,10 +87,6 @@ public class GameScreen extends GraphicsProgram {
 
         tick.start();
 
-        GCompound test;
-        test = new GCompound();
-        garden.add(test);
-
 
         for (int i = 0; i < 3; i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH, path);
@@ -112,7 +108,7 @@ public class GameScreen extends GraphicsProgram {
         Tower testTower2;
         testTower2 = new TestTower();
 
-        add(testTower2, 100, 100);
+        add(testTower2);
 
         testTower2.sendToFront();
 
@@ -147,6 +143,7 @@ public class GameScreen extends GraphicsProgram {
         MouseManager.setLastClickPoint(e.getPoint());
 
         if (object != null) {
+            System.out.println(object);
             if (object instanceof MouseInteract o) {
                 MouseManager.setSelectedObject(object);
                 o.onPress(e);

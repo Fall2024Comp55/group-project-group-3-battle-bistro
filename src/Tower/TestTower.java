@@ -1,13 +1,16 @@
 package Tower;
 
+import UI.GameScreen;
 import Utils.GameTick;
-import Utils.Utils;
+import Utils.Solid;
 import Utils.MouseManager;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
+import acm.graphics.GRectangle;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestTower extends Tower {
 
@@ -49,22 +52,25 @@ public class TestTower extends Tower {
     private Tower selectedTower;
 
     @Override
-    public void onPress(MouseEvent e) {
-        this.sendToFront();
+    public void onCollision() {
+
     }
 
     @Override
-    public void onDrag(MouseEvent e) {
-        MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
-        repaint();
-        if (hitbox.checkCollision()) {
-            System.out.println("collison");
-        }
-    }
+    public Boolean checkCollision() {
+        AtomicBoolean hit = new AtomicBoolean(false);
 
-    @Override
-    public void onRelease(MouseEvent e) {
+        GameScreen.getInstance().forEach(object -> {
+            System.out.println("Checking collision");
+            if (object instanceof Solid s && object != (GObject) this) {
+                if (this.getHitbox().intersects(s.getHitbox())) {
+                    hit.set(true);
+                }
+            }
+        });
 
+
+        return hit.get();
     }
 }
 

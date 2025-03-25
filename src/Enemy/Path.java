@@ -1,5 +1,6 @@
 package Enemy;
 
+import UI.GameScreen;
 import Utils.Solid;
 import acm.graphics.GCompound;
 import acm.graphics.GLine;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Path extends GCompound implements Solid {
-    List<GLine> path;
+public class Path extends GCompound {
+    List<PathLine> path;
     LinkedList<GPoint> points;
 
     public Path(int... points) {
@@ -27,13 +28,13 @@ public class Path extends GCompound implements Solid {
         for (int i = 1; i <= points.size() - 1; i++) {
             GPoint p1 = points.get(i - 1);
             GPoint p2 = points.get(i);
-            GLine segment = new GLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+            PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+            GameScreen.getInstance().add(segment);
             path.add(segment);
-            add(segment);
         }
     }
 
-    public List<GLine> getPath() {
+    public List<PathLine> getPath() {
         return path;
     }
 
@@ -62,18 +63,27 @@ public class Path extends GCompound implements Solid {
     }
 
 
-    @Override
-    public void onCollision() {
+    public class PathLine extends GLine implements Solid {
 
+        public PathLine(double x0, double y0, double x1, double y1) {
+            super(x0, y0, x1, y1);
+        }
+
+        @Override
+        public void onCollision() {
+
+        }
+
+        @Override
+        public GRectangle getHitbox() {
+            System.out.println("PathLine hitbox");
+            return getBounds();
+        }
+
+        @Override
+        public Boolean checkCollision() {
+            return null;
+        }
     }
 
-    @Override
-    public GRectangle getHitbox() {
-        return null;
-    }
-
-    @Override
-    public Boolean checkCollision() {
-        return null;
-    }
 }
