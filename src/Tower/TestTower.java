@@ -56,20 +56,6 @@ public class TestTower extends Tower {
 
     }
 
-    @Override
-    public Boolean checkCollision() {
-        AtomicBoolean hit = new AtomicBoolean(false);
 
-        GameScreen.getInstance().forEach(object -> {
-            if (object instanceof Solid s && object != (GObject) this) {
-                if (this.getHitbox().intersects(s.getHitbox())) {
-                    hit.set(true);
-                }
-            }
-        });
-
-
-        return hit.get();
-    }
 }
 
