@@ -104,9 +104,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
         repaint();
         if (checkCollision()) {
-            hitbox.setFilled(true);
+            if(!hitbox.isFilled()) {
+                hitbox.setFilled(true);
+            }
         } else {
-            hitbox.setFilled(false);
+            if (hitbox.isFilled()) {
+                hitbox.setFilled(false);
+            }
         }
     }
 

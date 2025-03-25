@@ -24,11 +24,10 @@ public class GameScreen extends GraphicsProgram {
     public static final int HEIGHT = 450;
 
     // TODO FIX EVERYTHING ALL TEST STUFF
-    GImage background;
-    public GCompound garden;
-    public GameTick tick;
-    public Path path;
-    private Character character;
+    private GImage background;
+    private GameTick tick;
+    private static Path path;
+    private static Character character;
     private static GameScreen instance;
 
 
@@ -38,10 +37,9 @@ public class GameScreen extends GraphicsProgram {
         this.gw.setResizable(false);
         this.gw.setLocationRelativeTo(null);
         this.requestFocus();
-        garden = new GCompound();
-        tick = new GameTick(this);
+        this.tick = new GameTick(this);
         this.setAutoRepaintFlag(false);
-        this.character = new Character();
+        character = new Character();
     }
 
     public void setInstance(GameScreen gameScreen) {
@@ -55,14 +53,16 @@ public class GameScreen extends GraphicsProgram {
         return instance;
     }
 
+    public static Character getCharacter() {
+        return character;
+    }
 
-    public GCompound getGarden() {
-        return garden;
+    public static Path getPath() {
+        return path;
     }
 
     @Override
     public void run() {
-        add(garden);
         add(character);
         GameTick.TickManager.registerTickListener(character);
         
@@ -82,14 +82,12 @@ public class GameScreen extends GraphicsProgram {
 
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
 
-        add(path);
-
 
         tick.start();
 
 
         for (int i = 0; i < 3; i++) {
-            Enemy enemy = new Enemy(EnemyType.DOUGH, path);
+            Enemy enemy = new Enemy(EnemyType.DOUGH);
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
             System.out.println("Enemy added");
@@ -116,22 +114,25 @@ public class GameScreen extends GraphicsProgram {
 
 
 
+
         addKeyListeners(character);
         addMouseListeners();
 
     }
 
 
+
+
     // !!! Testing for GameTick actions
     public void addEnemy() {
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(20, 50); i++) {
-            Enemy enemy = new Enemy(EnemyType.DOUGH, path);
+            Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
         }
         GameTick.ActionManager.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
-            addEnemy();
+//            addEnemy();
         });
     }
 
@@ -143,7 +144,6 @@ public class GameScreen extends GraphicsProgram {
         MouseManager.setLastClickPoint(e.getPoint());
 
         if (object != null) {
-            System.out.println(object);
             if (object instanceof MouseInteract o) {
                 MouseManager.setSelectedObject(object);
                 o.onPress(e);

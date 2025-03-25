@@ -1,5 +1,6 @@
 package Enemy;
 
+import UI.GameScreen;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.*;
@@ -10,19 +11,21 @@ public class Enemy extends GCompound implements TickListener {
     public static final double moveRate = .1;
 
     private int health;
-    private final Path path;
     private GPoint targetPoint;
     private boolean alive;
     private final GImage gImage;
     private final EnemyType type;
+    private static Path path;
     private GRectangle bounds;
 
 
-    public Enemy(EnemyType type, Path path) {
+    public Enemy(EnemyType type) {
         this.type = type;
         this.health = type.getHealth();
         this.alive = true;
-        this.path = path;
+        if (path == null) {
+            path = GameScreen.getPath();
+        }
         this.targetPoint = path.getPoint(1);
         gImage = new GImage(type.getImage());
         gImage.setSize(size, size);
@@ -93,6 +96,10 @@ public class Enemy extends GCompound implements TickListener {
 
     public int getDamage() {
         return type.getDamage();
+    }
+
+    public static void removePath() {
+        path = null;
     }
 
     @Override

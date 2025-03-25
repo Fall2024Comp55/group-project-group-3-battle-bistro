@@ -61,7 +61,6 @@ public class TestTower extends Tower {
         AtomicBoolean hit = new AtomicBoolean(false);
 
         GameScreen.getInstance().forEach(object -> {
-            System.out.println("Checking collision");
             if (object instanceof Solid s && object != (GObject) this) {
                 if (this.getHitbox().intersects(s.getHitbox())) {
                     hit.set(true);

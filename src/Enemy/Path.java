@@ -1,19 +1,19 @@
 package Enemy;
 
 import UI.GameScreen;
+import Utils.MouseInteract;
 import Utils.Solid;
-import acm.graphics.GCompound;
-import acm.graphics.GLine;
-import acm.graphics.GPoint;
-import acm.graphics.GRectangle;
+import acm.graphics.*;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Path extends GCompound {
-    List<PathLine> path;
-    LinkedList<GPoint> points;
+public class Path {
+    private static final int segmentWidth = 20;
+    private final List<PathLine> path;
+    private final LinkedList<GPoint> points;
 
     public Path(int... points) {
         path = new ArrayList<>();
@@ -63,7 +63,7 @@ public class Path extends GCompound {
     }
 
 
-    public class PathLine extends GLine implements Solid {
+    public class PathLine extends GLine implements Solid, MouseInteract {
 
         public PathLine(double x0, double y0, double x1, double y1) {
             super(x0, y0, x1, y1);
@@ -76,13 +76,36 @@ public class Path extends GCompound {
 
         @Override
         public GRectangle getHitbox() {
-            System.out.println("PathLine hitbox");
-            return getBounds();
+            GRectangle hitbox = getBounds();
+
+            if (hitbox.getWidth() == 0) {
+                hitbox.setBounds(hitbox.getX() - segmentWidth/2, hitbox.getY() + segmentWidth / 2, segmentWidth, hitbox.getHeight());
+            } else {
+                hitbox.setBounds(hitbox.getX() + segmentWidth / 2, hitbox.getY() - segmentWidth/2, hitbox.getWidth(), segmentWidth);
+            }
+
+            return hitbox;
         }
 
         @Override
         public Boolean checkCollision() {
             return null;
+        }
+
+        @Override
+        public void onPress(MouseEvent e) {
+            System.out.println(this);
+            System.out.println(this.getBounds());
+        }
+
+        @Override
+        public void onDrag(MouseEvent e) {
+
+        }
+
+        @Override
+        public void onRelease(MouseEvent e) {
+
         }
     }
 
