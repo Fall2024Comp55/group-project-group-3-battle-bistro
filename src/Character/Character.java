@@ -86,7 +86,7 @@ public class Character extends GCompound implements KeyListener, TickListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        GameScreen.getInstance().setAutoRepaintFlag(true);
+//        GameScreen.getInstance().setAutoRepaintFlag(true);
         action = e;
         moving = true;
     }

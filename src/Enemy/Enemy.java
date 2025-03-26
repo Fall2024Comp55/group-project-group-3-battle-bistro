@@ -20,7 +20,6 @@ public class Enemy extends GCompound implements TickListener {
     private boolean alive;
     private GRectangle bounds;
 
-
     public Enemy(EnemyType type) {
         this.type = type;
         this.health = type.getHealth();

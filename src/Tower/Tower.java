@@ -28,6 +28,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected GOval range;
     protected GOval hitbox;
     protected boolean placed;
+    protected GPoint placedLocation;
 
     // TODO figure out what is needed
 
@@ -37,6 +38,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.level = level;
         this.damage = damage;
         this.placed = true;
+        this.placedLocation = this.getLocation();
 //        gImage = new GImage(getImage());
 //        add(gImage);
         hitbox = new GOval(20, 20);
@@ -103,13 +105,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onPress(MouseEvent e) {
-        GameScreen.getInstance().setAutoRepaintFlag(true);
         this.sendToFront();
     }
 
     @Override
     public void onDrag(MouseEvent e) {
-        MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
+        placed = false;
+        this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
         if (checkCollision()) {
             if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
@@ -123,7 +125,15 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onRelease(MouseEvent e) {
-        GameScreen.getInstance().setAutoRepaintFlag(false);
+        if (!checkCollision()) {
+            placed = true;
+            placedLocation = this.getLocation();
+        } else {
+            this.setLocation(placedLocation);
+        }
+        if (hitbox.isFilled()) {
+            hitbox.setFilled(false);
+        }
 
     }
 

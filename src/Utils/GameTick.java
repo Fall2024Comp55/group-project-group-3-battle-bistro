@@ -92,7 +92,6 @@ public class GameTick implements ActionListener, Runnable{
 //                listener.onTick(this);
 //            }
 //        });
-        GameScreen.getInstance().repaint();
     }
 
     public void performActions() {
@@ -127,11 +126,12 @@ public class GameTick implements ActionListener, Runnable{
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTickTime >= tickDelay) {
             long timeBetweenTicks = currentTime - lastTickTime;
-            System.out.println("Time between ticks: " + timeBetweenTicks + " ms");
+//            System.out.println("Time between ticks: " + timeBetweenTicks + " ms");
             tick();
             lastTickTime = currentTime;
         }
-//        tickReclaimer();
+        GameScreen.getInstance().repaint();
+        tickReclaimer();
     }
 
 

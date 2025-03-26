@@ -9,10 +9,12 @@ import Tower.Tower;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
+import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.random.RandomGenerator;
@@ -46,6 +48,8 @@ public class GameScreen extends GraphicsProgram {
     public static Path getPath() {
         return path;
     }
+
+
 
     public void init() {
         setSize(WIDTH, HEIGHT);
@@ -88,7 +92,7 @@ public class GameScreen extends GraphicsProgram {
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
             System.out.println("Enemy added");
-            enemies.add(enemy);
+//            enemies.add(enemy);
         }
 
         GameTick.ActionManager.addAction(1, () -> {
@@ -116,7 +120,7 @@ public class GameScreen extends GraphicsProgram {
 
     // !!! Testing for GameTick actions
     public void addEnemy() {
-        for (int i = 0; i < RandomGenerator.getDefault().nextInt(2000, 5000); i++) {
+        for (int i = 0; i < RandomGenerator.getDefault().nextInt(20, 50); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             add(enemy);
@@ -130,9 +134,11 @@ public class GameScreen extends GraphicsProgram {
     @Override
     public void mousePressed(MouseEvent e) {
         GObject object = getElementAt(e.getX(), e.getY());
+        System.out.println(getElementCount());
 
         // set last click point in MouseManager
         MouseManager.setLastClickPoint(e.getPoint());
+        MouseManager.setLastMousePoint(e.getPoint());
 
         if (object != null) {
             if (object instanceof MouseInteract o) {
@@ -148,13 +154,13 @@ public class GameScreen extends GraphicsProgram {
         GObject object = MouseManager.getSelectedObject();
 
         // set last mouse point in MouseManager
-        MouseManager.setLastClickPoint(e.getPoint());
 
         if (object != null) {
             if (object instanceof MouseInteract o) {
                 o.onDrag(e);
             }
         }
+        MouseManager.setLastMousePoint(e.getPoint());
     }
 
     @Override
