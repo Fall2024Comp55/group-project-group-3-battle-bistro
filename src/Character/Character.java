@@ -21,6 +21,7 @@ public class Character extends GCompound implements KeyListener, TickListener {
     GRect collision;
     boolean moving;
     KeyEvent action;
+    int health;
     // health here or in other class?
 
 
@@ -90,6 +91,21 @@ public class Character extends GCompound implements KeyListener, TickListener {
                 break;
         }
     }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            // Game Over screen
+            GameScreen.getInstance().removeAll();
+            GameScreen.getInstance().remove(this);
+        }
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+
 
 
     @Override
