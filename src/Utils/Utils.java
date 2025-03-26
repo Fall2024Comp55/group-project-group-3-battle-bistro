@@ -1,12 +1,6 @@
 package Utils;
 
-import java.awt.Image;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-
 import acm.graphics.GPoint;
-import acm.graphics.GRect;
 import acm.graphics.GRectangle;
 
 public class Utils {

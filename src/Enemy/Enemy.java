@@ -3,19 +3,21 @@ package Enemy;
 import UI.GameScreen;
 import Utils.GameTick;
 import Utils.TickListener;
-import Utils.*;
-import acm.graphics.*;
+import Utils.Utils;
+import acm.graphics.GCompound;
+import acm.graphics.GImage;
+import acm.graphics.GPoint;
+import acm.graphics.GRectangle;
 
 public class Enemy extends GCompound implements TickListener {
     public static final int size = 20;
     public static final double moveRate = .1;
-
+    private static Path path;
+    private final GImage gImage;
+    private final EnemyType type;
     private int health;
     private GPoint targetPoint;
     private boolean alive;
-    private final GImage gImage;
-    private final EnemyType type;
-    private static Path path;
     private GRectangle bounds;
 
 
@@ -33,6 +35,10 @@ public class Enemy extends GCompound implements TickListener {
         add();
     }
 
+    public static void removePath() {
+        path = null;
+    }
+
     public void add() {
         this.add(gImage);
         this.setLocation(Utils.getCenterOffset(path.getStart(), this.getBounds()));
@@ -42,8 +48,7 @@ public class Enemy extends GCompound implements TickListener {
     public void reachedEnd() {
         // TODO Deal damage to player
         removeAll();
-        // this is better than removeused references
-        this.getParent().remove(this);
+        GameScreen.getInstance().remove(this);
         alive = false;
     }
 
@@ -98,16 +103,12 @@ public class Enemy extends GCompound implements TickListener {
         return type.getDamage();
     }
 
-    public static void removePath() {
-        path = null;
-    }
-
     @Override
     public void onTick(GameTick tick) {
         move();
         if (!alive) {
             GameTick.ActionManager.addAction(1, () -> {
-                GameTick.TickManager.unregisterTickListener(this);;
+                GameTick.TickManager.unregisterTickListener(this);
             });
         }
     }

@@ -1,67 +1,70 @@
 package Utils;
 
-import Food.Food;
-import acm.program.GraphicsProgram;
+import UI.GameScreen;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class GameTick implements ActionListener {
+public class GameTick implements ActionListener, Runnable{
     public static final int tickRate = 20;
     public static final int tickDelay = 50;
-    public static final int timerDelay = 1;
-
-
-    private final Timer timer;
-    private final GraphicsProgram screen;
+    public static final int timerDelay = 5;
+//    private final Timer timer;
+    private final ScheduledExecutorService scheduler;
     private long lastTickTime;
-    private static AtomicLong currentTick;
     private long ticksPerSecond;
 
-    public GameTick(GraphicsProgram screen) {
-        timer = new Timer(timerDelay, this);
-        if (currentTick == null) {
-            currentTick = new AtomicLong(0);
-        }
-        this.screen = screen;
+    public GameTick() {
+//        timer = new Timer(timerDelay, this);
+        scheduler = Executors.newScheduledThreadPool(2);
     }
 
     public void start() {
-        timer.start();
+//        timer.start();
+        scheduler.scheduleAtFixedRate(this, 0, timerDelay, TimeUnit.MILLISECONDS);
         lastTickTime = System.currentTimeMillis();
     }
 
     public void stop() {
-        timer.stop();
+//        timer.stop();
+        scheduler.shutdown();
     }
+
+    // !!! need to work on this and figure out what is best
+
 
     // !!! FIXME
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getWhen() - lastTickTime >= tickDelay) {
-            ticksPerSecond = Math.ceilDiv(1000, (e.getWhen() - lastTickTime));
-            if ((currentTick.get() + 1) % 20 == 0) {
-                // xxx sout ticks per second
-                System.out.println("Ticks per second: " + ticksPerSecond);
-            }
-            tick(Math.round((float) ((e.getWhen() - lastTickTime) / tickDelay) - 1));
-            lastTickTime = e.getWhen();
+        System.out.println("Action performed");
+        long currentTime = System.currentTimeMillis();
+        ticksPerSecond = Math.ceilDiv(1000, currentTime - lastTickTime);
+        if (ticksPerSecond < tickRate) {
+            System.out.println("Warning: Ticks per second is less than the tick rate" + ticksPerSecond + " " + (currentTime - lastTickTime));
         }
+        if (currentTime - lastTickTime >= tickDelay) {
+            tick();
+            lastTickTime = currentTime;
+        }
+        tickReclaimer();
     }
 
-    private void tick(long missingTicks) {
-        currentTick.incrementAndGet();
+    private void tick() {
+        TickManager.incrementCurrentTick();
         // xxx sout tick and registered tick listeners
-        if (currentTick.get() % 100 == 0) {
-            System.out.println("Tick: " + currentTick);
+        if (TickManager.getCurrentTickValue() % 100 == 0) {
+            System.out.println("Tick: " + TickManager.getCurrentTickValue());
             System.out.println("Registered tick listeners: " + TickManager.getRegisteredTickListeners().size());
         }
 
@@ -72,6 +75,8 @@ public class GameTick implements ActionListener {
         TickManager.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
             listener.onTick(this);
         });
+
+        performActions();
 
 //        !!! This is the original code
 //        registeredTickListeners.spliterator().forEachRemaining(object -> {;
@@ -87,50 +92,52 @@ public class GameTick implements ActionListener {
 //                listener.onTick(this);
 //            }
 //        });
+        GameScreen.getInstance().repaint();
+    }
 
-        if (!ActionManager.getActions().isEmpty() && ActionManager.getActions().containsKey(currentTick.get())) {
-            ActionManager.getActions().get(currentTick.get()).parallelStream().spliterator().forEachRemaining(action -> {
+    public void performActions() {
+        if (!ActionManager.getActions().isEmpty() && ActionManager.getActions().containsKey(TickManager.getCurrentTickValue())) {
+            ActionManager.getActions().get(TickManager.getCurrentTickValue()).parallelStream().spliterator().forEachRemaining(action -> {
                 if (action instanceof Action act) {
                     act.performAction();
                 }
             });
-
         }
-
-        // TODO redo missing tick. Maybe make a timer in actionPerformed that tries to reclaim missing ticks every 20 ticks since this is not reclaiming all ticks probably becuase of rounding
-//        if (missingTicks > 0) {
-//            System.out.println("Missing ticks: " + missingTicks);
-//            Timer tickReclaimer;
-//            tickReclaimer = new Timer(1, new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    for (int i = 0; i < missingTicks; i++) {
-//                        tick(0);
-//                    }
-//                    ((Timer) e.getSource()).stop();
-//                }
-//            });
-//            tickReclaimer.start();
-//        }
-        screen.repaint();
     }
+
+    public void tickReclaimer() {
+        if (System.currentTimeMillis() - lastTickTime >= tickDelay) {
+            System.out.println("Tick reclaimer");
+            tick();
+            lastTickTime += tickDelay;
+        }
+    }
+
 
     public long getTicksPerSecond() {
         return ticksPerSecond;
-    }
-
-    public static long getCurrentTick() {
-        return currentTick.get();
     }
 
     public long getLastTickTime() {
         return lastTickTime;
     }
 
+    @Override
+    public void run() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTickTime >= tickDelay) {
+            long timeBetweenTicks = currentTime - lastTickTime;
+            System.out.println("Time between ticks: " + timeBetweenTicks + " ms");
+            tick();
+            lastTickTime = currentTime;
+        }
+//        tickReclaimer();
+    }
+
 
     public static class TickManager {
         private static final Set<TickListener> registeredTickListeners = new LinkedHashSet<TickListener>();
-        private static AtomicLong currentTick;
+        private static final AtomicLong currentTick = new AtomicLong(0);
 
         public static void registerTickListener(TickListener tickListener) {
             registeredTickListeners.add(tickListener);
@@ -148,9 +155,19 @@ public class GameTick implements ActionListener {
             return currentTick;
         }
 
+        public static void setCurrentTick(long tick) {
+            currentTick.set(tick);
+        }
+
         public static long getCurrentTickValue() {
             return currentTick.get();
         }
+
+        public static void incrementCurrentTick() {
+            currentTick.incrementAndGet();
+        }
+
+
     }
 
     public static class ActionManager {
@@ -160,7 +177,7 @@ public class GameTick implements ActionListener {
             if (tickDelay < 0) {
                 throw new IllegalArgumentException("Tick delay must be greater than or equal to 0");
             }
-            actions.put(tickDelay + GameTick.getCurrentTick(), action);
+            actions.put(tickDelay + TickManager.getCurrentTickValue(), action);
         }
 
         public static void removeAction(Action action) {

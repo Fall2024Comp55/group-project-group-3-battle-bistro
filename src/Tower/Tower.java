@@ -1,6 +1,7 @@
 package Tower;
 
 import Enemy.Enemy;
+import UI.GameScreen;
 import Utils.MouseInteract;
 import Utils.MouseManager;
 import Utils.Solid;
@@ -50,25 +51,31 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public GOval getRange() {
-        return getRange();
+        return range;
     }
 
     public double getDamage() {
         return damage;
     }
+
     public int getSellCost() {
         return Math.round((float) (cost * sellModifier));
     }
+
     public int getUpgradeCost() {
         return 0;
     }
+
     public int getCost() {
         return cost;
     }
 
     public abstract void attack();
+
     public abstract void upgrade();
+
     public abstract void sell();
+
     public abstract void move();
 
     public abstract void setTarget(GObject target);
@@ -96,15 +103,15 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onPress(MouseEvent e) {
+        GameScreen.getInstance().setAutoRepaintFlag(true);
         this.sendToFront();
     }
 
     @Override
     public void onDrag(MouseEvent e) {
         MouseManager.getSelectedObject().setLocation(e.getX() - this.getWidth() / 2, e.getY() - this.getHeight() / 2);
-        repaint();
         if (checkCollision()) {
-            if(!hitbox.isFilled()) {
+            if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
             }
         } else {
@@ -116,9 +123,9 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onRelease(MouseEvent e) {
+        GameScreen.getInstance().setAutoRepaintFlag(false);
 
     }
-
 
 
     // Possible methods to implement

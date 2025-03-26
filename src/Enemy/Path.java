@@ -3,7 +3,10 @@ package Enemy;
 import UI.GameScreen;
 import Utils.MouseInteract;
 import Utils.Solid;
-import acm.graphics.*;
+import acm.graphics.GLine;
+import acm.graphics.GPoint;
+import acm.graphics.GRect;
+import acm.graphics.GRectangle;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,14 +27,16 @@ public class Path {
         setupPath();
     }
 
-    public void setupPath () {
+    public void setupPath() {
         for (int i = 1; i <= points.size() - 1; i++) {
             GPoint p1 = points.get(i - 1);
             GPoint p2 = points.get(i);
             PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
             GameScreen.getInstance().add(segment);
             path.add(segment);
+            GameScreen.getInstance().add(new GRect(segment.getHitbox().getX(), segment.getHitbox().getY(), segment.getHitbox().getWidth(), segment.getHitbox().getHeight()));
         }
+        hidePath();
     }
 
     public List<PathLine> getPath() {
@@ -62,8 +67,20 @@ public class Path {
         return points.getLast();
     }
 
+    public void showPath() {
+        for (PathLine line : path) {
+            line.setVisible(true);
+        }
+    }
 
-    public class PathLine extends GLine implements Solid, MouseInteract {
+    public void hidePath() {
+        for (PathLine line : path) {
+            line.setVisible(false);
+        }
+    }
+
+
+     public static class PathLine extends GLine implements Solid, MouseInteract {
 
         public PathLine(double x0, double y0, double x1, double y1) {
             super(x0, y0, x1, y1);
@@ -79,9 +96,9 @@ public class Path {
             GRectangle hitbox = getBounds();
 
             if (hitbox.getWidth() == 0) {
-                hitbox.setBounds(hitbox.getX() - segmentWidth/2, hitbox.getY() + segmentWidth / 2, segmentWidth, hitbox.getHeight());
+                hitbox.setBounds(hitbox.getX() - segmentWidth / 2, hitbox.getY() - segmentWidth / 2, segmentWidth, hitbox.getHeight() + segmentWidth);
             } else {
-                hitbox.setBounds(hitbox.getX() + segmentWidth / 2, hitbox.getY() - segmentWidth/2, hitbox.getWidth(), segmentWidth);
+                hitbox.setBounds(hitbox.getX() - segmentWidth / 2, hitbox.getY() - segmentWidth / 2, hitbox.getWidth() + segmentWidth, segmentWidth);
             }
 
             return hitbox;

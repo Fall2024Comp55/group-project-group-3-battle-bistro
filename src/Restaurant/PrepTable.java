@@ -1,7 +1,6 @@
 package Restaurant;
 
 import Utils.Interact;
-import Utils.Solid;
 import acm.graphics.GCompound;
 
 public class PrepTable extends GCompound implements Interact {

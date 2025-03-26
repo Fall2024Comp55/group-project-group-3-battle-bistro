@@ -6,51 +6,37 @@ import Enemy.EnemyType;
 import Enemy.Path;
 import Tower.TestTower;
 import Tower.Tower;
-import Utils.*;
-import acm.graphics.*;
+import Utils.GameTick;
+import Utils.MouseInteract;
+import Utils.MouseManager;
+import acm.graphics.GImage;
+import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 
 
 public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
-
-    // TODO FIX EVERYTHING ALL TEST STUFF
-    private GImage background;
-    private GameTick tick;
     private static Path path;
     private static Character character;
     private static GameScreen instance;
-
-
-    public void init() {
-        setSize(WIDTH, HEIGHT);
-        this.gw.setTitle("Battle Bistro");
-        this.gw.setResizable(false);
-        this.gw.setLocationRelativeTo(null);
-        this.requestFocus();
-        this.tick = new GameTick(this);
-        this.setAutoRepaintFlag(false);
-        character = new Character();
-    }
-
-    public void setInstance(GameScreen gameScreen) {
-        instance = gameScreen;
-    }
+    // TODO FIX EVERYTHING ALL TEST STUFF
+    private GImage background;
+    private GameTick tick;
 
     public static GameScreen getInstance() {
         if (instance == null) {
             instance = new GameScreen();
         }
         return instance;
+    }
+
+    public void setInstance(GameScreen gameScreen) {
+        instance = gameScreen;
     }
 
     public static Character getCharacter() {
@@ -61,12 +47,23 @@ public class GameScreen extends GraphicsProgram {
         return path;
     }
 
+    public void init() {
+        setSize(WIDTH, HEIGHT);
+        this.gw.setTitle("Battle Bistro");
+        this.gw.setResizable(false);
+        this.gw.setLocationRelativeTo(null);
+        this.requestFocus();
+        this.tick = new GameTick();
+        this.setAutoRepaintFlag(false);
+        character = new Character();
+    }
+
     @Override
     public void run() {
         add(character);
         GameTick.TickManager.registerTickListener(character);
-        
-        
+
+
 //        URL resource = getClass().getResource("/resources/enemy/dough.png");
 //        if (resource != null) {
 //        	System.out.println("Resource found" + resource);
@@ -94,7 +91,7 @@ public class GameScreen extends GraphicsProgram {
             enemies.add(enemy);
         }
 
-        GameTick.ActionManager.addAction(1, () -> {;
+        GameTick.ActionManager.addAction(1, () -> {
             addEnemy();
         });
 
@@ -111,28 +108,22 @@ public class GameScreen extends GraphicsProgram {
         testTower2.sendToFront();
 
 
-
-
-
-
         addKeyListeners(character);
         addMouseListeners();
 
     }
 
 
-
-
     // !!! Testing for GameTick actions
     public void addEnemy() {
-        for (int i = 0; i < RandomGenerator.getDefault().nextInt(20, 50); i++) {
+        for (int i = 0; i < RandomGenerator.getDefault().nextInt(2000, 5000); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
         }
         GameTick.ActionManager.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
-//            addEnemy();
+            addEnemy();
         });
     }
 

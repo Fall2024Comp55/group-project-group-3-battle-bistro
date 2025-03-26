@@ -1,9 +1,7 @@
 package Tower;
 
-import Utils.Solid;
 import Utils.Utils;
 import acm.graphics.GCompound;
-import acm.graphics.GLine;
 import acm.graphics.GPoint;
 
 public abstract class Projectile extends GCompound {
@@ -38,7 +36,6 @@ public abstract class Projectile extends GCompound {
             this.move((dx / distance) * speed * moveRate, (dy / distance) * speed * moveRate);
         }
     }
-
 
 
 }
