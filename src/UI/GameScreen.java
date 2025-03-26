@@ -4,17 +4,15 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
-import Tower.TestTower;
+import Tower.MeleeTower;
 import Tower.Tower;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
-import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.random.RandomGenerator;
@@ -100,12 +98,14 @@ public class GameScreen extends GraphicsProgram {
         });
 
         Tower testTower;
-        testTower = new TestTower();
+        testTower = new MeleeTower();
+        GameTick.TickManager.registerTickListener(testTower);
 
         add(testTower);
 
         Tower testTower2;
-        testTower2 = new TestTower();
+        testTower2 = new MeleeTower();
+        GameTick.TickManager.registerTickListener(testTower2);
 
         add(testTower2);
 
