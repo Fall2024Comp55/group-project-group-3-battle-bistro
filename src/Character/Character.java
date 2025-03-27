@@ -22,6 +22,7 @@ public class Character extends GCompound implements KeyListener, TickListener {
     boolean moving;
     KeyEvent action;
     int health;
+    int balance;
     // health here or in other class?
 
 
@@ -35,6 +36,8 @@ public class Character extends GCompound implements KeyListener, TickListener {
         add(gImage);
         add(collision);
         moving = false;
+        health = 100;
+        balance = 100;
     }
 
     public static Character getInstance() {
@@ -42,6 +45,39 @@ public class Character extends GCompound implements KeyListener, TickListener {
             instance = new Character();
         }
         return instance;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void addBalance(int balance) {
+        this.balance += balance;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            // Game Over screen
+            GameScreen.getInstance().removeAll();
+            GameScreen.getInstance().remove(this);
+        }
+    }
+
+    public void addHealth(int health) {
+        this.health += health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public void up() {
@@ -91,22 +127,6 @@ public class Character extends GCompound implements KeyListener, TickListener {
                 break;
         }
     }
-
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            // Game Over screen
-            GameScreen.getInstance().removeAll();
-            GameScreen.getInstance().remove(this);
-        }
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-
-
 
     @Override
     public void keyTyped(KeyEvent e) {
