@@ -22,7 +22,6 @@ public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
     private static Path path;
-    private static Character character;
     private static GameScreen instance;
     // TODO FIX EVERYTHING ALL TEST STUFF
     private GImage background;
@@ -39,10 +38,6 @@ public class GameScreen extends GraphicsProgram {
         instance = gameScreen;
     }
 
-    public static Character getCharacter() {
-        return character;
-    }
-
     public static Path getPath() {
         return path;
     }
@@ -57,13 +52,12 @@ public class GameScreen extends GraphicsProgram {
         this.requestFocus();
         this.tick = new GameTick();
         this.setAutoRepaintFlag(false);
-        character = new Character();
     }
 
     @Override
     public void run() {
-        add(character);
-        GameTick.TickManager.registerTickListener(character);
+        add(Character.getInstance());
+        GameTick.TickManager.registerTickListener(Character.getInstance());
 
 
 //        URL resource = getClass().getResource("/resources/enemy/dough.png");
@@ -112,7 +106,7 @@ public class GameScreen extends GraphicsProgram {
         testTower2.sendToFront();
 
 
-        addKeyListeners(character);
+        addKeyListeners(Character.getInstance());
         addMouseListeners();
 
     }

@@ -4,22 +4,28 @@ import Food.Food;
 import UI.GameScreen;
 import Utils.GameTick;
 import Utils.TickListener;
-import acm.graphics.*;
+import acm.graphics.GCompound;
+import acm.graphics.GImage;
+import acm.graphics.GRect;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 
 public class Character extends GCompound implements KeyListener, TickListener {
+    private static Character instance;
+
     GImage gImage;
     Food holding;
     GRect collision;
     boolean moving;
     KeyEvent action;
+    int health;
     // health here or in other class?
 
 
-    public Character() {
+    private Character() {
         URL resource = getClass().getResource("/resources/placeholder.png");
         if (resource != null) {
             gImage = new GImage(new ImageIcon(resource).getImage());
@@ -29,6 +35,13 @@ public class Character extends GCompound implements KeyListener, TickListener {
         add(gImage);
         add(collision);
         moving = false;
+    }
+
+    public static Character getInstance() {
+        if (instance == null) {
+            instance = new Character();
+        }
+        return instance;
     }
 
     public void up() {
@@ -78,6 +91,21 @@ public class Character extends GCompound implements KeyListener, TickListener {
                 break;
         }
     }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            // Game Over screen
+            GameScreen.getInstance().removeAll();
+            GameScreen.getInstance().remove(this);
+        }
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+
 
 
     @Override
