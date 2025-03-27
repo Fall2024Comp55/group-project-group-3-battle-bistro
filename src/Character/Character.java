@@ -69,6 +69,9 @@ public class Character extends GCompound implements KeyListener, TickListener {
     }
 
     public void addHealth(int health) {
+        if (health < 0) {
+            throw new IllegalArgumentException("Health cannot be negative");
+        }
         this.health += health;
     }
 
