@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 
 public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
-    private static final String basePath = "resources/tower/";
+    private static final String basePath = "/resources/tower/";
     private static final String extension = ".png";
     private static final double sellModifier = 0.8;
     protected String name;
@@ -37,11 +37,15 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-//        gImage = new GImage(getImage());
-//        add(gImage);
+        gImage = new GImage(getImage());
+        gImage.setSize(20, 20);
+        gImage.setLocation(-gImage.getWidth() / 2, -gImage.getHeight() / 2);
+        add(gImage);
         hitbox = new GOval(20, 20);
+        hitbox.setLocation(-hitbox.getWidth() / 2, -hitbox.getHeight() / 2);
         add(hitbox);
         this.range = new GOval(range, range);
+        this.range.setLocation(-this.range.getWidth() / 2, -this.range.getHeight() / 2);
         add(this.range);
     }
 
@@ -52,12 +56,14 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-//        gImage = new GImage(getImage());
-//        add(gImage);
+        gImage = new GImage(getImage());
+        gImage.setSize(20, 20);
+        add(gImage);
         hitbox = new GOval(20, 20);
         add(hitbox);
         this.projectile = projectile;
         this.range = new GOval(range, range);
+        this.range.setLocation(Utils.getCenter(this.getLocation(), this.range.getBounds()));
         add(this.range);
     }
 
@@ -66,6 +72,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
             if (object instanceof Enemy e) {
                 if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
                     GameTick.ActionManager.addAction(1, () -> {
+                        //Remember to change to take damange
                         e.reachedEnd();
                     });
                 }
@@ -128,7 +135,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public GRectangle getHitbox() {
-        return new GRectangle(getX(), getY(), hitbox.getWidth(), hitbox.getHeight());
+        return new GRectangle(getX() + hitbox.getX(), getY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
     }
 
     @Override

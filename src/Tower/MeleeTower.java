@@ -7,7 +7,7 @@ import acm.graphics.GObject;
 public class MeleeTower extends Tower implements TickListener {
 
     public MeleeTower() {
-        super("Test", 1, 1, 1, 50);
+        super("chefkirby", 1, 1, 1, 50);
     }
 
     @Override
