@@ -1,17 +1,18 @@
 package Tower;
 
 import Utils.GameTick;
+import Utils.TickListener;
 import acm.graphics.GObject;
 
-public class TestTower extends Tower {
+public class MeleeTower extends Tower implements TickListener {
 
-    public TestTower() {
-        super("Test", 1, 1, 1);
+    public MeleeTower() {
+        super("Test", 1, 1, 1, 50);
     }
 
     @Override
     public void attack() {
-        System.out.println("Attacking");
+        //No
     }
 
     @Override
@@ -36,7 +37,7 @@ public class TestTower extends Tower {
 
     @Override
     public void onTick(GameTick tick) {
-
+        inRange();
     }
 
     @Override

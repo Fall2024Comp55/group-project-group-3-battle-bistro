@@ -2,10 +2,7 @@ package Tower;
 
 import Enemy.Enemy;
 import UI.GameScreen;
-import Utils.MouseInteract;
-import Utils.MouseManager;
-import Utils.Solid;
-import Utils.TickListener;
+import Utils.*;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
@@ -29,10 +26,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected GOval hitbox;
     protected boolean placed;
     protected GPoint placedLocation;
+    protected Projectile projectile;
 
     // TODO figure out what is needed
 
-    public Tower(String name, int cost, int level, int damage) {
+    public Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
         this.cost = cost;
         this.level = level;
@@ -43,6 +41,36 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 //        add(gImage);
         hitbox = new GOval(20, 20);
         add(hitbox);
+        this.range = new GOval(range, range);
+        add(this.range);
+    }
+
+    public Tower(String name, int cost, int level, int damage, Projectile projectile, int range) {
+        this.name = name;
+        this.cost = cost;
+        this.level = level;
+        this.damage = damage;
+        this.placed = true;
+        this.placedLocation = this.getLocation();
+//        gImage = new GImage(getImage());
+//        add(gImage);
+        hitbox = new GOval(20, 20);
+        add(hitbox);
+        this.projectile = projectile;
+        this.range = new GOval(range, range);
+        add(this.range);
+    }
+
+    public void inRange() {
+        GameScreen.getInstance().forEach(object -> {
+            if (object instanceof Enemy e) {
+                if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
+                    GameTick.ActionManager.addAction(1, () -> {
+                        e.reachedEnd();
+                    });
+                }
+            }
+        });
     }
 
     public void getNextUpgrade() {

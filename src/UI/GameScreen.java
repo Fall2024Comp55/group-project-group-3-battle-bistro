@@ -4,7 +4,7 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
-import Tower.TestTower;
+import Tower.MeleeTower;
 import Tower.Tower;
 import Utils.GameTick;
 import Utils.MouseInteract;
@@ -92,12 +92,14 @@ public class GameScreen extends GraphicsProgram {
         });
 
         Tower testTower;
-        testTower = new TestTower();
+        testTower = new MeleeTower();
+        GameTick.TickManager.registerTickListener(testTower);
 
         add(testTower);
 
         Tower testTower2;
-        testTower2 = new TestTower();
+        testTower2 = new MeleeTower();
+        GameTick.TickManager.registerTickListener(testTower2);
 
         add(testTower2);
 
