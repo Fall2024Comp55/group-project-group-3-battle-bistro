@@ -171,4 +171,8 @@ public class GameScreen extends GraphicsProgram {
         MouseManager.setSelectedObject(null);
     }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
+
 }

@@ -33,4 +33,11 @@ public class MouseManager {
         lastMousePoint = point;
     }
 
+    public static Point getCurrentMousePoint() {
+        return currentMousePoint;
+    }
+
+    public static void setCurrentMousePoint(Point point) {
+        currentMousePoint = point;
+    }
 }
