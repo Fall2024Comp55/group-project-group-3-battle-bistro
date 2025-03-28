@@ -178,7 +178,7 @@ public class GameScreen extends GraphicsProgram {
 
         GObject object = getElementAt(e.getX(), e.getY());
         if (object != null) {
-            if (object instanceof MouseInteract o) {
+            if (object instanceof MouseInteract o && object != MouseManager.getHoverObject()) {
                 o.onHover(e);
             }
         }
