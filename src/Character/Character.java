@@ -65,8 +65,9 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         health -= damage;
         if (health <= 0) {
             // Game Over screen
-            GameScreen.getInstance().removeAll();
-            GameScreen.getInstance().remove(this);
+//            GameScreen.getInstance().removeAll();
+//            GameScreen.getInstance().remove(this);
+            System.out.println("Game Over");
         }
     }
 
