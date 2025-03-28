@@ -173,6 +173,15 @@ public class GameScreen extends GraphicsProgram {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        // set current mouse point in MouseManager
+        MouseManager.setHoverPoint(e.getPoint());
+
+        GObject object = getElementAt(e.getX(), e.getY());
+        if (object != null) {
+            if (object instanceof MouseInteract o) {
+                o.onHover(e);
+            }
+        }
     }
 
 }

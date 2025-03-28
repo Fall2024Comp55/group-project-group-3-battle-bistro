@@ -15,4 +15,8 @@ public interface MouseInteract {
 
     }
 
+    default void stopHover(MouseEvent e) {
+
+    }
+
 }
