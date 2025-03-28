@@ -46,8 +46,8 @@ public class Enemy extends GCompound implements TickListener {
 
     public void reachedEnd() {
         // TODO Deal damage to player
-        removeAll();
-        GameScreen.getInstance().remove(this);
+        Character.getInstance().takeDamage(type.getDamage());
+        remove();
         alive = false;
     }
 
