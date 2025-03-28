@@ -41,4 +41,15 @@ public class MouseManager {
     public static void setHoverPoint(Point point) {
         hoverPoint = point;
     }
+
+    public static GObject getHoverObject() {
+        return hoverObject;
+    }
+
+    public static void setHoverObject(GObject object) {
+        if (hoverObject instanceof MouseInteract o && hoverObject != object) {
+            o.stopHover();
+        }
+        hoverObject = object;
+    }
 }
