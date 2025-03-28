@@ -5,8 +5,6 @@ public class NewTowerButton extends Button {
         super(text);
     }
     // TODO find needed variables and methods
-    private GImage gImage;
-
 
 
 }
