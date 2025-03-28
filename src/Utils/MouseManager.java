@@ -9,6 +9,7 @@ public class MouseManager {
     private static Point lastClickPoint;
     private static Point lastMousePoint;
     private static Point hoverPoint;
+    private static GObject hoverObject;
 
     public static GObject getSelectedObject() {
         return selectedObject;
