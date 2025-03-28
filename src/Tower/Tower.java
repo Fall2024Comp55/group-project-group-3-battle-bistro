@@ -15,6 +15,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     private static final String basePath = "/resources/tower/";
     private static final String extension = ".png";
     private static final double sellModifier = 0.8;
+    protected Enemy attackTarget;
     protected String name;
     protected GImage gImage;
     protected int cost;
@@ -27,6 +28,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected boolean placed;
     protected GPoint placedLocation;
     protected Projectile projectile;
+    protected boolean enemyFound;
 
     // TODO figure out what is needed
 
@@ -67,17 +69,25 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         add(this.range);
     }
 
-    public void inRange() {
+    public boolean inRange() {
+        enemyFound = false;
         GameScreen.getInstance().forEach(object -> {
             if (object instanceof Enemy e) {
                 if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
-                    GameTick.ActionManager.addAction(1, () -> {
-                        //Remember to change to take damange
-                        e.reachedEnd();
-                    });
+                    if (attackTarget == null) {
+                        enemyFound = true;
+                        attackTarget = e;
+                    }
+                    if (e.getPathTraversed() > attackTarget.getPathTraversed()) {
+                        attackTarget = e;
+                    }
                 }
             }
         });
+        if (!enemyFound) {
+            attackTarget = null;
+        }
+        return enemyFound;
     }
 
     public void getNextUpgrade() {

@@ -1,5 +1,6 @@
 package Tower;
 
+import Enemy.Enemy;
 import Utils.Action;
 import Utils.GameTick;
 import Utils.TickListener;
@@ -9,15 +10,17 @@ public class MeleeTower extends Tower implements TickListener {
     // Might also be able to use enum for updgrade code
     // private Action variable that can store code
     private Action attack1;
+    private Upgrade_Tree state;
 
     public MeleeTower() {
         super("chefkirby", 1, 1, 1, 50);
+        state = Upgrade_Tree.BASE;
     }
 
     @Override
     public void attack() {
         // preform attack code
-        attack1.performAction();
+        state.attack(attackTarget);
     }
 
     @Override
@@ -25,13 +28,9 @@ public class MeleeTower extends Tower implements TickListener {
         // setting attack1 to new attack code
         if (level == 1) {
             level = 2;
-            attack1 = () -> {
-                System.out.println("Attack 2");
-            };
+            state = Upgrade_Tree.UPGRADE1;
         } else if (level == 2) {
-            attack1 = () -> {
-                System.out.println("Attack 3");
-            };
+            state = Upgrade_Tree.UPGRADE2;
         }
         System.out.println("Upgrading");
     }
@@ -53,7 +52,7 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void onTick(GameTick tick) {
-        inRange();
+        if (inRange()) { state.attack(attackTarget); }
     }
 
     @Override
@@ -62,33 +61,33 @@ public class MeleeTower extends Tower implements TickListener {
     }
 
     // I am interested in using enums for this. If you want to try it out we can work on it together
-    private enum TowerVersions {
+    private enum Upgrade_Tree {
         BASE {
             @Override
-            void attack() {
-
+            void attack(Enemy target) {
+                target.takeDamage(20);
             }
         },
         UPGRADE1 {
             @Override
-            void attack() {
+            void attack(Enemy target) {
 
             }
         },
         UPGRADE2 {
             @Override
-            void attack() {
+            void attack(Enemy target) {
 
             }
         },
         UPGRADE3 {
             @Override
-            void attack() {
+            void attack(Enemy target) {
 
             }
         };
 
-        abstract void attack();
+        abstract void attack(Enemy target);
 
         // other version specific code
 

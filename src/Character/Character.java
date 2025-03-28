@@ -3,17 +3,19 @@ package Character;
 import Food.Food;
 import UI.GameScreen;
 import Utils.GameTick;
+import Utils.Solid;
 import Utils.TickListener;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRect;
+import acm.graphics.GRectangle;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
 
-public class Character extends GCompound implements KeyListener, TickListener {
+public class Character extends GCompound implements Solid, KeyListener, TickListener {
     private static Character instance;
 
     GImage gImage;
@@ -154,5 +156,15 @@ public class Character extends GCompound implements KeyListener, TickListener {
         if (moving) {
             move();
         }
+    }
+
+    @Override
+    public void onCollision() {
+
+    }
+
+    @Override
+    public GRectangle getHitbox() {
+        return null;
     }
 }
