@@ -17,7 +17,7 @@ public interface Solid {
 
         GameScreen.getInstance().forEach(object -> {
             if (object instanceof Solid s && object != (GObject) this) {
-                if (this.getHitbox().intersects(s.getHitbox())) {
+                if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
                     hit.set(true);
                 }
             }
