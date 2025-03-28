@@ -20,7 +20,7 @@ public class Enemy extends GCompound implements TickListener {
     private GPoint targetPoint;
     private boolean alive;
     private GRectangle bounds;
-    private int pathTraversed;
+    private double pathTraversed;
 
     public Enemy(EnemyType type) {
         this.type = type;
@@ -70,11 +70,13 @@ public class Enemy extends GCompound implements TickListener {
             if (distance < type.getSpeed() * moveRate) {
                 this.setLocation(Utils.getCenterOffset(targetPoint, bounds));
                 if (targetPoint.equals(path.getEnd())) {
+                    pathTraversed += distance;
                     reachedEnd();
                 } else {
                     targetPoint = path.getNext(targetPoint);
                 }
             } else {
+                pathTraversed += type.getSpeed() * moveRate;
 
                 this.move((dx / distance) * type.getSpeed() * moveRate, (dy / distance) * type.getSpeed() * moveRate);
             }
@@ -113,7 +115,7 @@ public class Enemy extends GCompound implements TickListener {
         return type.getDamage();
     }
 
-    public int getPathTraversed() {
+    public double getPathTraversed() {
         return pathTraversed;
     }
 
