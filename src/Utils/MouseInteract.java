@@ -11,7 +11,7 @@ public interface MouseInteract {
 
     void onRelease(MouseEvent e);
 
-    default void onMove(MouseEvent e) {
+    default void onHover(MouseEvent e) {
 
     }
 
