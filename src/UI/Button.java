@@ -26,4 +26,21 @@ public class Button extends GCompound implements MouseInteract {
     public void onRelease(MouseEvent e) {
 
     }
+
+    @Override
+    public void onHover(MouseEvent e) {
+        if(!hovering) {
+            hovering = true;
+            scale(1.2, 1.2);
+        }
+    }
+
+    @Override
+    public void stopHover() {
+        if(hovering) {
+            hovering = false;
+            scale(1/1.2, 1/1.2);
+        }
+
+    }
 }
