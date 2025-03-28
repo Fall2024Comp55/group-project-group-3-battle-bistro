@@ -8,8 +8,5 @@ public class NewTowerButton extends Button {
     private GImage gImage;
 
 
-    public NewTowerButton(Tower tower) {
-
-    }
 
 }
