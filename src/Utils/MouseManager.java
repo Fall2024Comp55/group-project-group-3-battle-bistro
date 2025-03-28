@@ -8,6 +8,7 @@ public class MouseManager {
     private static GObject selectedObject;
     private static Point lastClickPoint;
     private static Point lastMousePoint;
+    private static Point hoverPoint;
 
     public static GObject getSelectedObject() {
         return selectedObject;
@@ -33,11 +34,11 @@ public class MouseManager {
         lastMousePoint = point;
     }
 
-    public static Point getCurrentMousePoint() {
-        return currentMousePoint;
+    public static Point getHoverPoint() {
+        return hoverPoint;
     }
 
-    public static void setCurrentMousePoint(Point point) {
-        currentMousePoint = point;
+    public static void setHoverPoint(Point point) {
+        hoverPoint = point;
     }
 }
