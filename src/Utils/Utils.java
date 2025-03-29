@@ -28,4 +28,8 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
+    public static double lerp(double start, double end, double t) {
+        return start + (end - start) * t;
+    }
+
 }
