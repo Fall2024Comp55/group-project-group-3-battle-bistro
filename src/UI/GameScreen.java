@@ -5,12 +5,14 @@ import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
 import Tower.MeleeTower;
+import Tower.SpatulaProjectile;
 import Tower.Tower;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
+import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 
 import java.awt.event.MouseEvent;
