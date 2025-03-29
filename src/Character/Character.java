@@ -14,6 +14,10 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
+import static Utils.Utils.lerp;
 
 public class Character extends GCompound implements Solid, KeyListener, TickListener {
     private static Character instance;
@@ -33,6 +37,7 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         if (resource != null) {
             gImage = new GImage(new ImageIcon(resource).getImage());
         }
+        actions = new HashSet<>();
         gImage.setSize(20, 20);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
         add(gImage);
@@ -88,14 +93,14 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void up() {
         System.out.println("up");
-        this.move(0, -1);
+        this.move(0, lerp(0, -10, .5));
         repaint();
 
     }
 
     public void down() {
         System.out.println("down");
-        this.move(0, 1);
+        this.move(0, lerp(0, 10, .5));
 
         repaint();
 
@@ -103,34 +108,30 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void left() {
         System.out.println("left");
-        this.move(-1, 0);
+        this.move(lerp(0, -10, .5), 0);
         repaint();
 
     }
 
     public void right() {
         System.out.println("right");
-        this.move(1, 0);
+        this.move(lerp(0, 10, 0.5), 0);
         repaint();
 
     }
 
     public void move() {
-        switch (action.getKeyChar()) {
-            case 'w':
-                System.out.println("w");
-                up();
-                break;
-            case 's':
-                System.out.println("s");
-                down();
-                break;
-            case 'a':
-                left();
-                break;
-            case 'd':
-                right();
-                break;
+        if (actions.contains(KeyEvent.VK_W)) {
+            up();
+        }
+        if (actions.contains(KeyEvent.VK_S)) {
+            down();
+        }
+        if (actions.contains(KeyEvent.VK_A)) {
+            left();
+        }
+        if (actions.contains(KeyEvent.VK_D)) {
+            right();
         }
     }
 
@@ -141,20 +142,21 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
     @Override
     public void keyPressed(KeyEvent e) {
 //        GameScreen.getInstance().setAutoRepaintFlag(true);
-        action = e;
+        actions.add(e.getKeyCode());
         moving = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        System.out.println("key released");
         GameScreen.getInstance().setAutoRepaintFlag(false);
-        action = null;
+        actions.remove(e.getKeyCode());
         moving = false;
     }
 
     @Override
     public void onTick(GameTick tick) {
-        if (moving) {
+        if (!actions.isEmpty()) {
             move();
         }
     }
