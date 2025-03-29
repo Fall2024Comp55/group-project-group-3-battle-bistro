@@ -18,13 +18,13 @@ import java.net.URL;
 public class Character extends GCompound implements Solid, KeyListener, TickListener {
     private static Character instance;
 
-    GImage gImage;
-    Food holding;
-    GRect collision;
-    boolean moving;
-    KeyEvent action;
-    int health;
-    int balance;
+    private GImage gImage;
+    private Food holding;
+    private GRect collision;
+    private boolean moving;
+    private Set<Integer> actions;
+    private int health;
+    private int balance;
     // health here or in other class?
 
 
