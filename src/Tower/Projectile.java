@@ -3,12 +3,11 @@ package Tower;
 import Enemy.Enemy;
 import UI.GameScreen;
 import Utils.GameTick;
-import Utils.Solid;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GCompound;
+import acm.graphics.GImage;
 import acm.graphics.GPoint;
-import acm.graphics.GRectangle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,13 +20,14 @@ public abstract class Projectile extends GCompound implements TickListener {
     protected GImage gImage;
     protected GPoint targetPoint; // The target position
     private String name;
-    protected Enemy targetEnemy;  // The target enemy 
-    protected double speed;       // Speed of the projectile 
+    protected Enemy targetEnemy;  // The target enemy
+    protected double speed;       // Speed of the projectile
     protected double moveRate;    // Movement rate
     protected int damage;         // Damage dealt to the enemy on hit
     protected boolean active;     // Whether the projectile is still active
 
-    public Projectile(GPoint targetPoint, Enemy targetEnemy, double speed, double moveRate, int damage) {
+    public Projectile(String name, GPoint targetPoint, Enemy targetEnemy, double speed, double moveRate, int damage) {
+        this.name = name;
         this.targetPoint = targetPoint;
         this.targetEnemy = targetEnemy;
         this.speed = speed;
@@ -35,27 +35,7 @@ public abstract class Projectile extends GCompound implements TickListener {
         this.damage = damage;
         this.active = true;
 
-    
         GameTick.TickManager.registerTickListener(this);
-    }
-
-    @Override
-    public void onTick(GameTick tick) {
-        if (!active) {
-            removeSelf();
-            return;
-        }
-
-      
-        if (targetEnemy == null || !targetEnemy.isAlive()) {
-            active = false;
-            removeSelf();
-            return;
-        }
-
-      
-        targetPoint = Utils.getCenter(targetEnemy.getLocation(), targetEnemy.getBounds());
-        move();
     }
 
     public void move() {
@@ -76,11 +56,11 @@ public abstract class Projectile extends GCompound implements TickListener {
             this.setLocation(Utils.getCenterOffset(targetPoint, this.getBounds()));
             hitTarget();
         } else {
-       
+
             this.move((dx / distance) * speed * moveRate, (dy / distance) * speed * moveRate);
 
-           
-            if (checkCollision()) {
+
+            if (checkHit()) {
                 hitTarget();
             }
         }
@@ -111,7 +91,6 @@ public abstract class Projectile extends GCompound implements TickListener {
     }
 
     protected void removeSelf() {
-        GameTick.TickManager.unregisterTickListener(this);
         GameScreen.getInstance().remove(this);
         removeAll();
     }
@@ -136,15 +115,24 @@ public abstract class Projectile extends GCompound implements TickListener {
     }
 
     @Override
-    public void onCollision() {
-     
-    }
+    public void onTick(GameTick tick) {
+        if (!active) {
+            GameTick.ActionManager.addAction(1, () -> {
+                GameTick.TickManager.unregisterTickListener(this);
+            });
+            removeSelf();
+            return;
+        }
 
-    @Override
-    public GRectangle getHitbox() {
-        return getBounds();
-    }
 
-  
-    protected abstract void setupVisuals();
+        if (targetEnemy == null || !targetEnemy.isAlive()) {
+            active = false;
+            removeSelf();
+            return;
+        }
+
+
+        targetPoint = Utils.getCenter(targetEnemy.getLocation(), targetEnemy.getBounds());
+        move();
+    }
 }
