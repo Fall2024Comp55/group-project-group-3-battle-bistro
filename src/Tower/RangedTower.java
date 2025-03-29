@@ -5,11 +5,8 @@ import UI.GameScreen;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
-import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
-
-import javax.swing.*;
 
 public class RangedTower extends Tower implements TickListener {
     private static final int ATTACK_COOLDOWN = 20; 
@@ -20,15 +17,7 @@ public class RangedTower extends Tower implements TickListener {
         super("rangedkirby", 2, 1, 1, 150); 
         state = UpgradeTree.BASE;
         cooldownTimer = 0;
-        setupVisuals();
         GameTick.TickManager.registerTickListener(this);
-    }
-
-    private void setupVisuals() {
-        
-        GImage towerImage = new GImage("resources/chefkirby.png");
-        towerImage.setSize(40, 40);
-        add(towerImage);
     }
 
     @Override
