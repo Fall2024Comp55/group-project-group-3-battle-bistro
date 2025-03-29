@@ -13,7 +13,7 @@ public class MeleeTower extends Tower implements TickListener {
     private Upgrade_Tree state;
 
     public MeleeTower() {
-        super("chefkirby", 1, 1, 1, 50);
+        super("chefkirby", 1, 1, 1, 120);
         state = Upgrade_Tree.BASE;
     }
 
@@ -21,6 +21,10 @@ public class MeleeTower extends Tower implements TickListener {
     public void attack() {
         // preform attack code
         state.attack(attackTarget);
+        if (!attackTarget.isAlive()) {
+            System.out.println("Target is dead");
+            attackTarget = null;
+        }
     }
 
     @Override
@@ -52,7 +56,7 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void onTick(GameTick tick) {
-        if (inRange()) { state.attack(attackTarget); }
+        if (inRange()) { attack(); }
     }
 
     @Override
@@ -65,7 +69,7 @@ public class MeleeTower extends Tower implements TickListener {
         BASE {
             @Override
             void attack(Enemy target) {
-                target.takeDamage(20);
+                target.takeDamage(50);
             }
         },
         UPGRADE1 {

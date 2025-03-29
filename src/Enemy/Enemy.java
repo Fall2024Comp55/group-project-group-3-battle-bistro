@@ -93,6 +93,7 @@ public class Enemy extends GCompound implements TickListener {
 
     public void takeDamage(int damage) {
         health -= damage;
+        scale(1.05);
         if (health <= 0) {
             remove();
             alive = false;

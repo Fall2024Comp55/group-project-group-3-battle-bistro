@@ -114,7 +114,7 @@ public class GameScreen extends GraphicsProgram {
 
     // !!! Testing for GameTick actions
     public void addEnemy() {
-        for (int i = 0; i < RandomGenerator.getDefault().nextInt(20, 50); i++) {
+        for (int i = 0; i < RandomGenerator.getDefault().nextInt(2, 5); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             add(enemy);

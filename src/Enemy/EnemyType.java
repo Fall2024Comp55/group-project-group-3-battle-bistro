@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public enum EnemyType {
-    DOUGH(100, 20, 20),
+    DOUGH(250, 20, 20),
     MOZZARELLA(150, 1, 30),
     PEPPERONI(200, 1, 40),
     MUSHROOM(250, 3, 50);
