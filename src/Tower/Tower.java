@@ -85,9 +85,6 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                 }
             }
         });
-        if (!enemyFound) {
-            attackTarget = null;
-        }
         return enemyFound;
     }
 
