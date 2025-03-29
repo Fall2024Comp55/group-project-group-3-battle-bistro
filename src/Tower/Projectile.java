@@ -116,6 +116,25 @@ public abstract class Projectile extends GCompound implements TickListener {
         removeAll();
     }
 
+
+    protected abstract void setupVisuals();
+
+    public String toString() {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
+    public String toPath() {
+        return basePath + name.toLowerCase() + extension;
+    }
+
+    public Image getImage() {
+        URL resource = getClass().getResource(toPath());
+        if (resource != null) {
+            return new ImageIcon(resource).getImage();
+        }
+        throw new RuntimeException("Could not find image for path " + toPath());
+    }
+
     @Override
     public void onCollision() {
      
