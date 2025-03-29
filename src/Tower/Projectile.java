@@ -10,8 +10,17 @@ import acm.graphics.GCompound;
 import acm.graphics.GPoint;
 import acm.graphics.GRectangle;
 
-public abstract class Projectile extends GCompound implements Solid, TickListener {
-    protected GPoint targetPoint; // The target position 
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public abstract class Projectile extends GCompound implements TickListener {
+    public static final String basePath = "/resources/projectile/";
+    public static final String extension = ".png";
+    protected GImage gImage;
+    protected GPoint targetPoint; // The target position
+    private String name;
     protected Enemy targetEnemy;  // The target enemy 
     protected double speed;       // Speed of the projectile 
     protected double moveRate;    // Movement rate
