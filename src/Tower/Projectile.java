@@ -77,6 +77,21 @@ public abstract class Projectile extends GCompound implements Solid, TickListene
         }
     }
 
+    public Boolean checkHit() {
+        AtomicBoolean hit = new AtomicBoolean(false);
+
+        GameScreen.getInstance().forEach(object -> {
+            if (object instanceof Enemy e) {
+                if (e.getBounds() != null && this.getBounds().intersects(e.getBounds())) {
+                    hit.set(true);
+                }
+            }
+        });
+
+
+        return hit.get();
+    }
+
     protected void hitTarget() {
         if (targetEnemy != null && targetEnemy.isAlive()) {
             targetEnemy.takeDamage(damage);
