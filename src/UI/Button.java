@@ -10,9 +10,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class Button extends GCompound implements MouseInteract {
-    private static final String globalFont = "Arial-20";
+    private static final String globalFont = "Arial-16"; // Reduced font size for better fit
     private static final Color globalColor = Color.BLACK;
-    // TODO find needed variables and methods
     protected GLabel label;
     protected GRect box;
     protected GImage gImage;
@@ -22,31 +21,29 @@ public class Button extends GCompound implements MouseInteract {
         label = new GLabel(text);
         label.setFont(globalFont);
         label.setColor(globalColor);
-        box = new GRect(label.getWidth() + 10, label.getHeight() + 10);
+        box = new GRect(label.getWidth() + 20, label.getHeight() + 10); // Added padding
         box.setColor(globalColor);
-        add(box);
-        add(label);
-        label.setLocation(-label.getWidth() / 2, -label.getHeight() / 2);
+        box.setFilled(true);
+        box.setFillColor(Color.WHITE);
+        add(box, -box.getWidth() / 2, -box.getHeight() / 2); // Center the box
+        add(label, -label.getWidth() / 2, -label.getHeight() / 2); // Center the label
     }
 
     @Override
     public void onPress(MouseEvent e) {
-
     }
 
     @Override
     public void onDrag(MouseEvent e) {
-
     }
 
     @Override
     public void onRelease(MouseEvent e) {
-
     }
 
     @Override
     public void onHover(MouseEvent e) {
-        if(!hovering) {
+        if (!hovering) {
             hovering = true;
             scale(1.2, 1.2);
         }
@@ -54,10 +51,9 @@ public class Button extends GCompound implements MouseInteract {
 
     @Override
     public void stopHover() {
-        if(hovering) {
+        if (hovering) {
             hovering = false;
-            scale(1/1.2, 1/1.2);
+            scale(1 / 1.2, 1 / 1.2);
         }
-
     }
 }

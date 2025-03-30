@@ -1,6 +1,7 @@
 package UI;
 
 import Character.Character;
+import Character.Player;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
@@ -13,19 +14,19 @@ import Utils.MouseManager;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
+import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.random.RandomGenerator;
-
 
 public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
     private static Path path;
     private static GameScreen instance;
-    // TODO FIX EVERYTHING ALL TEST STUFF
     private GImage background;
     private GameTick tick;
 
@@ -44,8 +45,6 @@ public class GameScreen extends GraphicsProgram {
         return path;
     }
 
-
-
     public void init() {
         setSize(WIDTH, HEIGHT);
         this.gw.setTitle("Battle Bistro");
@@ -54,6 +53,19 @@ public class GameScreen extends GraphicsProgram {
         this.requestFocus();
         this.tick = new GameTick();
         this.setAutoRepaintFlag(false);
+
+       
+        GRect menuBar = new GRect(WIDTH, 50);
+        menuBar.setFilled(true);
+        menuBar.setFillColor(Color.LIGHT_GRAY);
+        add(menuBar, 0, 0);
+
+       
+        Player player = Player.getInstance();
+
+      
+        NewTowerButton newTowerButton = new NewTowerButton("New Tower");
+        add(newTowerButton, 650, 25); // Moved to the right side
     }
 
     @Override
@@ -61,32 +73,17 @@ public class GameScreen extends GraphicsProgram {
         add(Character.getInstance());
         GameTick.TickManager.registerTickListener(Character.getInstance());
 
-
-//        URL resource = getClass().getResource("/resources/enemy/dough.png");
-//        if (resource != null) {
-//        	System.out.println("Resource found" + resource);
-//        	GImage test = new GImage(new ImageIcon(resource).getImage());
-//        	add(test);
-//        	test.setSize(100, 100);
-//        	test.setLocation(100, 100);
-//        } else {
-//        	System.out.println("Resource not found" + resource);
-//        }
-
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
 
-
         tick.start();
-
 
         for (int i = 0; i < 3; i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
             System.out.println("Enemy added");
-//            enemies.add(enemy);
         }
 
         GameTick.ActionManager.addAction(1, () -> {
@@ -96,31 +93,23 @@ public class GameScreen extends GraphicsProgram {
         Tower testTower;
         testTower = new MeleeTower();
         GameTick.TickManager.registerTickListener(testTower);
-
         add(testTower);
 
         Tower testTower2;
         testTower2 = new MeleeTower();
         GameTick.TickManager.registerTickListener(testTower2);
-
         add(testTower2);
 
         testTower2.sendToFront();
 
         Enemy enemy = new Enemy(EnemyType.DOUGH);
-
         SpatulaProjectile spatulaProjectile = new SpatulaProjectile(new GPoint(7, 7), new GPoint(100, 100), enemy, 1, 1, 10);
-
         add(spatulaProjectile, 500, 500);
-
 
         addKeyListeners(Character.getInstance());
         addMouseListeners();
-
     }
 
-
-    // !!! Testing for GameTick actions
     public void addEnemy() {
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(2, 5); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
@@ -138,7 +127,6 @@ public class GameScreen extends GraphicsProgram {
         GObject object = getElementAt(e.getX(), e.getY());
         System.out.println(getElementCount());
 
-        // set last click point in MouseManager
         MouseManager.setLastClickPoint(e.getPoint());
         MouseManager.setLastMousePoint(e.getPoint());
 
@@ -152,10 +140,7 @@ public class GameScreen extends GraphicsProgram {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        // get selected object
         GObject object = MouseManager.getSelectedObject();
-
-        // set last mouse point in MouseManager
 
         if (object != null) {
             if (object instanceof MouseInteract o) {
@@ -167,7 +152,6 @@ public class GameScreen extends GraphicsProgram {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // get selected object
         GObject object = MouseManager.getSelectedObject();
 
         if (object != null) {
@@ -181,7 +165,6 @@ public class GameScreen extends GraphicsProgram {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        // set current mouse point in MouseManager
         MouseManager.setHoverPoint(e.getPoint());
 
         GObject object = getElementAt(e.getX(), e.getY());
@@ -196,5 +179,4 @@ public class GameScreen extends GraphicsProgram {
             MouseManager.setHoverObject(object);
         }
     }
-
 }
