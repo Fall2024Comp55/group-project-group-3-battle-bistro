@@ -29,6 +29,7 @@ public class NewTowerButton extends Button {
             tower.setLocation(e.getX(), e.getY());
             GameScreen.getInstance().add(tower);
             MouseManager.setSelectedObject(tower);
+            GameTick.TickManager.registerTickListener(tower);
             tower.onPress(e);
         }
     }
