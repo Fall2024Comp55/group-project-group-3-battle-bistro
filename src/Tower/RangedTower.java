@@ -28,7 +28,7 @@ public class RangedTower extends Tower implements TickListener {
         }
 
         if (attackTarget != null && attackTarget.isAlive()) {
-          
+
             GPoint startPoint = Utils.getCenter(this.getLocation(), this.getBounds());
             GPoint targetPoint = Utils.getCenter(attackTarget.getLocation(), attackTarget.getBounds());
             new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, 0.1, state.getDamage());
