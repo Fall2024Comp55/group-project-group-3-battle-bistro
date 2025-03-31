@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class IngredientStation extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
-    private static final String basePath = "/resources/restaurant/door/";
+    private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
     private String name;
     private IngredientsType ingredient;

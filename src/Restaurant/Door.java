@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class Door extends GCompound implements Solid {
     // TODO find needed variables and methods
-    private static final String basePath = "/resources/restaurant/door/";
+    private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
     private String name;
     private GImage gImage;
