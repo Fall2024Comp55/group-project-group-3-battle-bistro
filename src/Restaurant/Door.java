@@ -15,12 +15,15 @@ public class Door extends GCompound implements Solid {
     private static final String extension = ".png";
     private String name;
     private GImage gImage;
+
     public Door(String name) {
         this.name = name;
         GImage gImage = new GImage(getImage());
+        this.gImage = gImage;
         gImage.setLocation(0, 0);
         add(gImage);
     }
+
     public String toPath() {
         return basePath + name.toLowerCase() + extension;
     }
