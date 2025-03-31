@@ -1,6 +1,7 @@
 package Character;
 
 import Food.Food;
+import Food.IngredientsType;
 import UI.GameScreen;
 import Utils.GameTick;
 import Utils.Solid;
@@ -9,18 +10,22 @@ import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRect;
 import acm.graphics.GRectangle;
+import com.google.common.collect.Maps;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static Utils.Utils.lerp;
 
 public class Character extends GCompound implements Solid, KeyListener, TickListener {
     private static Character instance;
+    private static final int speed = 5;
 
     private GImage gImage;
     private Food holding;
@@ -29,14 +34,24 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
     private Set<Integer> actions;
     private int health;
     private int balance;
+
+    static {
+        try {
+            instance = new Character();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception occurred in creating Character singleton instance");
+        }
+    }
     // health here or in other class?
 
+    private Map<IngredientsType, AtomicInteger> ingredients;
 
     private Character() {
         URL resource = getClass().getResource("/resources/placeholder.png");
         if (resource != null) {
             gImage = new GImage(new ImageIcon(resource).getImage());
         }
+        ingredients = Maps.newHashMap();
         actions = new HashSet<>();
         gImage.setSize(20, 20);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
@@ -47,10 +62,32 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         balance = 100;
     }
 
-    public static Character getInstance() {
-        if (instance == null) {
-            instance = new Character();
+    public void addIngredient(IngredientsType type, int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
         }
+        if (!ingredients.containsKey(type)) {
+            ingredients.put(type, new AtomicInteger(amount));
+        }
+        else {
+            ingredients.get(type).addAndGet(amount);
+        }
+    }
+
+    public Boolean removeIngredient(String type, int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+        if (!ingredients.containsKey(type)) {
+            return false;
+        }
+        else {
+            ingredients.get(type).addAndGet(-amount);
+        }
+        return true;
+    }
+
+    public static Character getInstance() {
         return instance;
     }
 
@@ -93,14 +130,14 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void up() {
         System.out.println("up");
-        this.move(0, lerp(0, -10, .5));
+        this.move(0, lerp(0, -speed, .5));
         repaint();
 
     }
 
     public void down() {
         System.out.println("down");
-        this.move(0, lerp(0, 10, .5));
+        this.move(0, lerp(0, speed, .5));
 
         repaint();
 
@@ -108,14 +145,14 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void left() {
         System.out.println("left");
-        this.move(lerp(0, -10, .5), 0);
+        this.move(lerp(0, -speed, .5), 0);
         repaint();
 
     }
 
     public void right() {
         System.out.println("right");
-        this.move(lerp(0, 10, 0.5), 0);
+        this.move(lerp(0, speed, 0.5), 0);
         repaint();
 
     }
