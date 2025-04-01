@@ -69,18 +69,6 @@ public class GardenUI extends GCompound implements Solid {
         return instance;
     }
 
-    public void show() {
-        elements.forEach(e -> {
-            e.setVisible(true);
-        });
-    }
-
-    public void hide() {
-        elements.forEach(e -> {
-            e.setVisible(false);
-        });
-    }
-
     public void update() {
         updateMoneyLabel();
         updateHealthBar();
