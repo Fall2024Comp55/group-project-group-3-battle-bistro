@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static UI.GameScreen.*;
 
-public class GardenUI extends GCompound {
+public class GardenUI extends GCompound implements Solid {
     private Set<GObject> elements;
     private GLabel moneyLabel;
     private GRect healthBarBackground;
