@@ -29,7 +29,8 @@ public class GameScreen extends GraphicsProgram {
     private static GameScreen instance;
     private static CurrentScreen currentScreen;
     private static Path path;
-    private static GameScreen instance;
+
+
     private GImage background;
     private GameTick tick;
 
