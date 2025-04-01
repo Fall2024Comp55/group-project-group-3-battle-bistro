@@ -39,7 +39,7 @@ public class NewTowerButton extends Button {
     public void onRelease(MouseEvent e) {
         if (tower != null) {
             /*
-            GRectangle towerBounds = tower.getHitbox();
+            GRectangle towerBounds = tower.getInteractHitbox();
             boolean onPath = false;
             for (GPoint point : GameScreen.getPath().getPoints()) {
                 GRectangle pointBounds = new GRectangle(point.getX(), point.getY(), 1, 1);

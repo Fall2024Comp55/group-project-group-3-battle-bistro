@@ -58,4 +58,9 @@ public class PrepTable extends GCompound implements Interact, Solid {
         return null;
     }
 
+    @Override
+    public GRectangle getInteractHitbox() {
+        return null;
+    }
+
 }

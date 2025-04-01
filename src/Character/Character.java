@@ -2,8 +2,8 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
-import UI.GameScreen;
 import UI.GardenUI;
+import Utils.Interact;
 import Utils.Solid;
 import Utils.TickListener;
 import acm.graphics.GCompound;
@@ -27,18 +27,19 @@ import static Utils.Utils.lerp;
  * The Character class represents a character in the game. It handles movement, health,
  * balance, and interactions with food, ingredients, and customers.
  */
-public class Character extends GCompound implements Solid, KeyListener, TickListener {
+public class Character extends GCompound implements Solid, Interact, KeyListener, TickListener {
     private static final int speed = 5;
     private static final Character instance;
 
+    private final Set<Integer> actions;
+    private final Map<IngredientsType, AtomicInteger> ingredients;
+    private final GRect collision;
     private GImage gImage;
     private Food holding;
-    private final GRect collision;
     private boolean moving;
-    private final Set<Integer> actions;
     private int health;
     private int balance;
-    private final Map<IngredientsType, AtomicInteger> ingredients;
+    private boolean interactHeld;
 
     static {
         try {
@@ -271,6 +272,18 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         }
     }
 
+    public void interact() {
+        if (actions.contains(KeyEvent.VK_E)) {
+            interactHeld = true;
+            Interact interactable = checkForInteractable();
+            if (interactable != null) {
+                interactable.interact();
+            }
+        } else {
+            interactHeld = false;
+        }
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -279,20 +292,20 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
     public void keyPressed(KeyEvent e) {
 //        GameScreen.getInstance().setAutoRepaintFlag(true);
         actions.add(e.getKeyCode());
-        moving = true;
+        interact();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         System.out.println("key released");
-        GameScreen.getInstance().setAutoRepaintFlag(false);
         actions.remove(e.getKeyCode());
-        moving = false;
+        interact();
     }
 
     @Override
     public void onTick() {
-        if (!actions.isEmpty()) {
+        if (!actions.isEmpty() && !(actions.size() == 1 && actions.contains(KeyEvent.VK_E))) {
+            System.out.println("moving");
             move();
         }
     }
@@ -303,6 +316,12 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     @Override
     public GRectangle getHitbox() {
+        return this.getBounds();
+    }
+
+    @Override
+    public GRectangle getInteractHitbox() {
         return null;
     }
+
 }
