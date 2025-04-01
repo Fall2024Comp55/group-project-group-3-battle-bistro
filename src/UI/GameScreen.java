@@ -123,9 +123,11 @@ public class GameScreen extends GraphicsProgram {
         AtomicInteger endX = new AtomicInteger();
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
+            GardenUI.getInstance().hide();
             endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
+            GardenUI.getInstance().show();
             endX.set(0);
         }
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
