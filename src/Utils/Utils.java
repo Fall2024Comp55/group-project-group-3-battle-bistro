@@ -32,4 +32,8 @@ public class Utils {
         return start + (end - start) * t;
     }
 
+    public static double easeInOutCubic(double t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - (double) Math.pow(-2 * t + 2, 3) / 2;
+    }
+
 }
