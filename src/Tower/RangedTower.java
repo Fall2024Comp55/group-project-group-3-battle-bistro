@@ -22,18 +22,20 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void attack() {
-        if (cooldownTimer > 0) {
-            cooldownTimer--;
-            return;
-        }
+        if (placed) {
+            if (cooldownTimer > 0) {
+                cooldownTimer--;
+                return;
+            }
 
-        if (attackTarget != null && attackTarget.isAlive()) {
+            if (attackTarget != null && attackTarget.isAlive()) {
 
-            GPoint startPoint = Utils.getCenter(this.getLocation(), this.getBounds());
-            GPoint targetPoint = Utils.getCenter(attackTarget.getLocation(), attackTarget.getBounds());
-            new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, 0.1, state.getDamage());
-            cooldownTimer = ATTACK_COOLDOWN;
-            System.out.println("RangedTower fired a spatula at enemy!");
+                GPoint startPoint = Utils.getCenter(this.getLocation(), this.getBounds());
+                GPoint targetPoint = Utils.getCenter(attackTarget.getLocation(), attackTarget.getBounds());
+                new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, 0.1, state.getDamage());
+                cooldownTimer = ATTACK_COOLDOWN;
+                System.out.println("RangedTower fired a spatula at enemy!");
+            }
         }
     }
 
