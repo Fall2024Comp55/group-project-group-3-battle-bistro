@@ -21,25 +21,22 @@ public class GameTick implements ActionListener, Runnable {
     public static final int tickRate = 20;
     public static final int tickDelay = 50;
     public static final int timerDelay = 5;
-    private final ScheduledExecutorService scheduler;
+    private final ScheduledExecutorService gameTick;
 
     private long lastTickTime;
     private long ticksPerSecond;
 
     public GameTick() {
-//        timer = new Timer(timerDelay, this);
-        scheduler = Executors.newScheduledThreadPool(2);
+        gameTick = Executors.newScheduledThreadPool(2);
     }
 
     public void start() {
-//        timer.start();
-        scheduler.scheduleAtFixedRate(this, 0, timerDelay, TimeUnit.MILLISECONDS);
+        gameTick.scheduleAtFixedRate(this, 0, timerDelay, TimeUnit.MILLISECONDS);
         lastTickTime = System.currentTimeMillis();
     }
 
     public void stop() {
-//        timer.stop();
-        scheduler.shutdown();
+        gameTick.shutdown();
     }
 
     // !!! need to work on this and figure out what is best
@@ -74,7 +71,7 @@ public class GameTick implements ActionListener, Runnable {
 //        }
 
         TickManager.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
-            listener.onTick(this);
+            listener.onTick();
         });
 
         performActions();
@@ -95,7 +92,7 @@ public class GameTick implements ActionListener, Runnable {
 //        });
     }
 
-    public void performActions() {
+    public synchronized void performActions() {
         if (!ActionManager.getActions().isEmpty() && ActionManager.getActions().containsKey(TickManager.getCurrentTickValue())) {
             ActionManager.getActions().get(TickManager.getCurrentTickValue()).parallelStream().spliterator().forEachRemaining(action -> {
                 if (action instanceof Action act) {
@@ -136,11 +133,28 @@ public class GameTick implements ActionListener, Runnable {
     }
 
 
+    /**
+     * The TickManager class manages the registration and tracking of tick listeners
+     * and the current tick value in the game.
+     */
     public static class TickManager {
-        private static final Set<TickListener> registeredTickListeners = new LinkedHashSet<TickListener>();
-        private static final AtomicLong currentTick = new AtomicLong(0);
+        private static final Set<TickListener> registeredTickListeners;
+        private static final AtomicLong currentTick;
 
-        public static void registerTickListener(TickListener tickListener) {
+        // initializing the static variables
+        static {
+            registeredTickListeners = new LinkedHashSet<TickListener>();
+            currentTick = new AtomicLong(0);
+        }
+
+        // register a tick listener TODO split into registering to check tickManager
+
+        /**
+         * Registers a tick listener from the respective TickManager.
+         *
+         * @param tickListener the tick listener to register
+         */
+        public synchronized static void registerTickListener(TickListener tickListener) {
             registeredTickListeners.add(tickListener);
             if (tickListener instanceof Tower) {
                 // register to TowerManager
@@ -155,7 +169,14 @@ public class GameTick implements ActionListener, Runnable {
             }
         }
 
-        public static void unregisterTickListener(TickListener tickListener) {
+        // unregister a tick listener TODO split into unregistering to check tickManager
+
+        /**
+         * Unregisters a tick listener from the respective TickManager.
+         *
+         * @param tickListener the tick listener to unregister
+         */
+        public synchronized static void unregisterTickListener(TickListener tickListener) {
             registeredTickListeners.remove(tickListener);
             if (tickListener instanceof Tower) {
                 // unregister from TowerManager
@@ -170,32 +191,66 @@ public class GameTick implements ActionListener, Runnable {
             }
         }
 
+        /**
+         * @return the set of registered tick listeners
+         */
         public static Set<TickListener> getRegisteredTickListeners() {
             return registeredTickListeners;
         }
 
+        /**
+         * @return the current tick as an AtomicLong
+         */
         public static AtomicLong getCurrentTick() {
             return currentTick;
         }
 
+        /**
+         * Sets the current tick to the specified value. Should be used to reset the tick counter.
+         *
+         * @param tick the new tick value
+         */
         public static void setCurrentTick(long tick) {
             currentTick.set(tick);
         }
 
+        /**
+         * @return the current tick value
+         */
         public static long getCurrentTickValue() {
             return currentTick.get();
         }
 
-        public static void incrementCurrentTick() {
+        /**
+         * Increments the current tick value by one.
+         * Should not be called outside of GameTick Class.
+         */
+        public synchronized static void incrementCurrentTick() {
             currentTick.incrementAndGet();
         }
 
 
     }
 
+    /**
+     * The ActionManager class manages actions that are to be performed
+     * at specific future tick in the game.
+     */
     public static class ActionManager {
-        private static final Multimap<Long, Action> actions = ArrayListMultimap.create();
+        private static final Multimap<Long, Action> actions;
 
+        // initializing the static variables
+        static {
+            actions = ArrayListMultimap.create();
+        }
+
+        /**
+         * Adds an action to be performed after a specified tick delay.
+         *
+         * @param tickDelay the delay in ticks after which the action should be performed
+         * @param action    the action to be performed
+         * @throws IllegalArgumentException if the tick delay is less than 0
+         */
         public static void addAction(long tickDelay, Action action) {
             if (tickDelay < 0) {
                 throw new IllegalArgumentException("Tick delay must be greater than or equal to 0");
@@ -203,13 +258,20 @@ public class GameTick implements ActionListener, Runnable {
             actions.put(tickDelay + TickManager.getCurrentTickValue(), action);
         }
 
+        /**
+         * Removes a specified action from the scheduled actions.
+         *
+         * @param action the action to be removed
+         */
         public static void removeAction(Action action) {
             actions.values().remove(action);
         }
 
+        /**
+         * @return the multimap of scheduled actions
+         */
         public static Multimap<Long, Action> getActions() {
             return actions;
         }
     }
-
 }
