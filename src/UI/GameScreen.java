@@ -5,9 +5,7 @@ import Character.Player;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
-import Tower.MeleeTower;
 import Tower.SpatulaProjectile;
-import Tower.Tower;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
@@ -89,18 +87,6 @@ public class GameScreen extends GraphicsProgram {
         GameTick.ActionManager.addAction(1, () -> {
             addEnemy();
         });
-
-//        Tower testTower;
-//        testTower = new MeleeTower();
-//        GameTick.TickManager.registerTickListener(testTower);
-//        add(testTower);
-//
-//        Tower testTower2;
-//        testTower2 = new MeleeTower();
-//        GameTick.TickManager.registerTickListener(testTower2);
-//        add(testTower2);
-//
-//        testTower2.sendToFront();
 
         Enemy enemy = new Enemy(EnemyType.DOUGH);
         SpatulaProjectile spatulaProjectile = new SpatulaProjectile(new GPoint(7, 7), new GPoint(100, 100), enemy, 1, 1, 10);
