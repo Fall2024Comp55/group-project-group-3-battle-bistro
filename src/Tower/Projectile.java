@@ -89,7 +89,7 @@ public abstract class Projectile extends GCompound implements TickListener {
         active = false;
     }
 
-    protected void removeSelf() {
+    protected void remove() {
         GameScreen.getInstance().remove(this);
         removeAll();
     }
@@ -119,7 +119,7 @@ public abstract class Projectile extends GCompound implements TickListener {
             GameTick.ActionManager.addAction(1, () -> {
                 GameTick.TickManager.unregisterTickListener(this);
             });
-            removeSelf();
+            remove();
             return;
         }
 
