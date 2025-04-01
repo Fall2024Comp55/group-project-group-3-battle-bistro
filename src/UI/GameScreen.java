@@ -74,6 +74,7 @@ public class GameScreen extends GraphicsProgram {
         GameTick.TickManager.registerTickListener(Character.getInstance());
         currentScreen = CurrentScreen.MAIN_MENU;
         currentScreen = CurrentScreen.GARDEN;
+        add(GardenUI.getInstance());
 
         ArrayList<Enemy> enemies = new ArrayList<>();
 
