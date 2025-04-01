@@ -17,9 +17,8 @@ public class NewTowerButton extends Button {
     @Override
     public void onPress(MouseEvent e) {
         tower = new MeleeTower();
-        if (Character.getInstance().getBalance() >= tower.getCost()) {
+        if (Character.getInstance().subtractBalance(tower.getCost())) {
 
-            Character.getInstance().addMoney(-tower.getCost());
             tower.setLocation(e.getX(), e.getY());
             GameScreen.getInstance().add(tower);
             MouseManager.setSelectedObject(tower);
