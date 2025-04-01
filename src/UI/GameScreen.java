@@ -76,6 +76,8 @@ public class GameScreen extends GraphicsProgram {
         // start GameTick
         tick.start();
 
+        addEnemy();
+
         /* // Door animation test
         GameTick.ActionManager.addAction(40, this::enterDoor);
         GameTick.ActionManager.addAction(80, this::enterDoor);
