@@ -3,6 +3,7 @@ package Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.GameScreen;
+import UI.GardenUI;
 import Utils.GameTick;
 import Utils.Solid;
 import Utils.TickListener;
