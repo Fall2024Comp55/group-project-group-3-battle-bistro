@@ -205,7 +205,7 @@ public class GameScreen extends GraphicsProgram {
                 MouseManager.setHoverObject(object);
             }
         } else {
-            MouseManager.setHoverObject(object);
+            MouseManager.setHoverObject(null);
         }
     }
 
