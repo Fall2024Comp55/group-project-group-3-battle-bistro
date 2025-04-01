@@ -208,4 +208,13 @@ public class GameScreen extends GraphicsProgram {
             MouseManager.setHoverObject(object);
         }
     }
+
+    public enum CurrentScreen {
+        MAIN_MENU,
+        SUMMARY,
+        GARDEN,
+        RESTAURANT,
+        SETTINGS;
+    }
+
 }
