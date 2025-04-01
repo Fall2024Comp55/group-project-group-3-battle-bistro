@@ -59,6 +59,12 @@ public class GardenUI extends GCompound implements Solid {
         elements.add(healthBar);
     }
 
+    public void update() {
+        updateMoneyLabel();
+        updateHealthBar();
+    }
+
+
     private void updateMoneyLabel() {
         moneyLabel.setLabel("Money: " + Character.getInstance().getBalance());
     }
