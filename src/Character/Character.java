@@ -98,14 +98,17 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void setBalance(int balance) {
         this.balance = balance;
+        updateUIs();
     }
 
-    public void addBalance(int balance) {
+    public void addMoney(int balance) {
         this.balance += balance;
+        updateUIs();
     }
 
     public void takeDamage(int damage) {
         health -= damage;
+        updateUIs();
         if (health <= 0) {
             // Game Over screen
 //            GameScreen.getInstance().removeAll();
@@ -119,6 +122,7 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
             throw new IllegalArgumentException("Health cannot be negative");
         }
         this.health += health;
+        updateUIs();
     }
 
     public int getHealth() {
@@ -127,6 +131,11 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     public void setHealth(int health) {
         this.health = health;
+        updateUIs();
+    }
+
+    public void updateUIs() {
+        GardenUI.getInstance().update();
     }
 
     public void up() {
