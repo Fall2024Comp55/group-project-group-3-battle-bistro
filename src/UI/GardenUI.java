@@ -29,9 +29,14 @@ public class GardenUI extends GCompound implements Solid {
     private GardenUI() {
         elements = new HashSet<>();
         Character c = Character.getInstance();
-        GLabel moneyLabel = new GLabel("Money: " + c.getBalance());
-        GRect healthBarBackground = new GRect(200, 20);
-        GRect healthBar = new GRect(200, 20);
+        moneyLabel = new GLabel("Money: " + c.getBalance());
+        healthBarBackground = new GRect(200, 20);
+        healthBar = new GRect(200, 20);
+
+        GRect menuBar = new GRect(WIDTH, 50);
+        menuBar.setFilled(true);
+        menuBar.setFillColor(Color.LIGHT_GRAY);
+        add(menuBar, 0, 0);
 
 
         moneyLabel.setFont(globalFont);
