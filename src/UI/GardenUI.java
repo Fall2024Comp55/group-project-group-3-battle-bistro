@@ -82,4 +82,13 @@ public class GardenUI extends GCompound implements Solid {
         }
     }
 
+    @Override
+    public void onCollision() {
+
+    }
+
+    @Override
+    public GRectangle getHitbox() {
+        return getBounds();
+    }
 }
