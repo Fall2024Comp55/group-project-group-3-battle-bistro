@@ -106,6 +106,14 @@ public class GameScreen extends GraphicsProgram {
 
         addKeyListeners(Character.getInstance());
         addMouseListeners();
+        GameTick.ActionManager.addAction(40, () -> {
+            enterDoor();
+        });
+
+        GameTick.ActionManager.addAction(80, () -> {
+            enterDoor();
+        });
+
     }
 
     public void addEnemy() {
