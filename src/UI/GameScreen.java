@@ -34,10 +34,15 @@ public class GameScreen extends GraphicsProgram {
     private GImage background;
     private GameTick tick;
 
-    public static GameScreen getInstance() {
-        if (instance == null) {
+    static {
+        try {
             instance = new GameScreen();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception occurred in creating GameScreen singleton instance");
         }
+    }
+
+    public static GameScreen getInstance() {
         return instance;
     }
 
