@@ -23,6 +23,11 @@ import java.util.random.RandomGenerator;
 public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
+    public static final String globalFont = "Arial-16"; // Reduced font size for better fit
+    public static final Color globalColor = Color.BLACK;
+
+    private static GameScreen instance;
+    private static CurrentScreen currentScreen;
     private static Path path;
     private static GameScreen instance;
     private GImage background;
