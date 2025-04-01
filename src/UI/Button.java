@@ -9,9 +9,10 @@ import acm.graphics.GRect;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+import static UI.GameScreen.globalColor;
+import static UI.GameScreen.globalFont;
+
 public class Button extends GCompound implements MouseInteract {
-    private static final String globalFont = "Arial-16"; // Reduced font size for better fit
-    private static final Color globalColor = Color.BLACK;
     protected GLabel label;
     protected GRect box;
     protected GImage gImage;
