@@ -109,7 +109,7 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
             // Game Over screen
 //            GameScreen.getInstance().removeAll();
 //            GameScreen.getInstance().remove(this);
-            System.out.println("Game Over");
+//            System.out.println("Game Over");
         }
     }
 
