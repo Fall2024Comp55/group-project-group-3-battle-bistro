@@ -72,22 +72,26 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public boolean inRange() {
-        enemyFound = false;
-        attackTarget = null;
-        GameScreen.getInstance().forEach(object -> {
-            if (object instanceof Enemy e) {
-                if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
-                    enemyFound = true;
-                    if (attackTarget == null) {
-                        attackTarget = e;
-                    }
-                    if (e.getPathTraversed() > attackTarget.getPathTraversed()) {
-                        attackTarget = e;
+        if (placed) {
+            enemyFound = false;
+            attackTarget = null;
+            GameScreen.getInstance().forEach(object -> {
+                if (object instanceof Enemy e) {
+                    if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
+                        enemyFound = true;
+                        if (attackTarget == null) {
+                            attackTarget = e;
+                        }
+                        if (e.getPathTraversed() > attackTarget.getPathTraversed()) {
+                            attackTarget = e;
+                        }
                     }
                 }
-            }
-        });
-        return enemyFound;
+            });
+            return enemyFound;
+        } else {
+            return false;
+        }
     }
 
     public void getNextUpgrade() {
