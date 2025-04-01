@@ -87,7 +87,6 @@ public abstract class Projectile extends GCompound implements TickListener {
             System.out.println("Projectile hit enemy, dealt " + damage + " damage!");
         }
         active = false;
-        removeSelf();
     }
 
     protected void removeSelf() {
