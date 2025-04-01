@@ -119,6 +119,22 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         return balance;
     }
 
+
+    /**
+     * Subtracts the specified amount from the character's balance if sufficient funds are available.
+     *
+     * @param amount The amount to subtract from the balance.
+     * @return True if the balance was successfully subtracted, false if there were insufficient funds.
+     */
+    public boolean subtractBalance(int amount) {
+        if (balance - amount < 0) {
+            return false;
+        }
+        balance -= amount;
+        updateUIs();
+        return true;
+    }
+
     /**
      * Sets the character's balance.
      *
