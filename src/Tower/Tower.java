@@ -1,12 +1,12 @@
 package Tower;
 
+import Character.Character;
 import Enemy.Enemy;
 import UI.GameScreen;
 import Utils.*;
+import Utils.GameTick.ActionManager;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
-
-import Character.Player;
 
 import javax.swing.*;
 import java.awt.*;
