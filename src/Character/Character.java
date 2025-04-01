@@ -4,7 +4,6 @@ import Food.Food;
 import Food.IngredientsType;
 import UI.GameScreen;
 import UI.GardenUI;
-import Utils.GameTick;
 import Utils.Solid;
 import Utils.TickListener;
 import acm.graphics.GCompound;
@@ -198,7 +197,7 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
     }
 
     @Override
-    public void onTick(GameTick tick) {
+    public void onTick() {
         if (!actions.isEmpty()) {
             move();
         }

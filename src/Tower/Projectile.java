@@ -116,7 +116,7 @@ public abstract class Projectile extends GCompound implements TickListener {
     }
 
     @Override
-    public void onTick(GameTick tick) {
+    public void onTick() {
         //TODO rework this
         if (!active) {
             GameTick.ActionManager.addAction(1, () -> {

@@ -72,7 +72,7 @@ public class RangedTower extends Tower implements TickListener {
     }
 
     @Override
-    public void onTick(GameTick tick) {
+    public void onTick() {
         if (inRange()) {
             attack();
         }

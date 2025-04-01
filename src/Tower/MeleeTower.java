@@ -2,7 +2,6 @@ package Tower;
 
 import Enemy.Enemy;
 import Utils.Action;
-import Utils.GameTick;
 import Utils.TickListener;
 import acm.graphics.GObject;
 
@@ -54,7 +53,7 @@ public class MeleeTower extends Tower implements TickListener {
     }
 
     @Override
-    public void onTick(GameTick tick) {
+    public void onTick() {
         if (inRange()) {
             attack();
         }

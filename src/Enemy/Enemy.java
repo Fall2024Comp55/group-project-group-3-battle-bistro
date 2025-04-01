@@ -121,7 +121,7 @@ public class Enemy extends GCompound implements TickListener {
     }
 
     @Override
-    public void onTick(GameTick tick) {
+    public void onTick() {
         move();
         if (!alive) {
             GameTick.ActionManager.addAction(1, () -> {
