@@ -7,8 +7,6 @@ import Utils.TickListener;
 import acm.graphics.GObject;
 
 public class MeleeTower extends Tower implements TickListener {
-    // Might also be able to use enum for updgrade code
-    // private Action variable that can store code
     private Action attack1;
     private Upgrade_Tree state;
 
