@@ -57,6 +57,28 @@ public class GardenUI extends GCompound implements Solid {
         healthBar.setLocation(300, 15);
         add(healthBar);
         elements.add(healthBar);
+
+
+        NewTowerButton tower1 = new NewTowerButton("New Tower");
+        add(tower1, 650, 25);
+        elements.add(tower1);
+
+    }
+
+    public static GardenUI getInstance() {
+        return instance;
+    }
+
+    public void show() {
+        elements.forEach(e -> {
+            e.setVisible(true);
+        });
+    }
+
+    public void hide() {
+        elements.forEach(e -> {
+            e.setVisible(false);
+        });
     }
 
     public void update() {
