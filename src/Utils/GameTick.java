@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class GameTick implements ActionListener, Runnable{
+public class GameTick implements ActionListener, Runnable {
     public static final int tickRate = 20;
     public static final int tickDelay = 50;
     public static final int timerDelay = 5;
-//    private final Timer timer;
     private final ScheduledExecutorService scheduler;
+
     private long lastTickTime;
     private long ticksPerSecond;
 

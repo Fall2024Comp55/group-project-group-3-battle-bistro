@@ -17,9 +17,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class Projectile extends GCompound implements TickListener {
     public static final String basePath = "/resources/projectile/";
     public static final String extension = ".png";
+    private final String name;
+
     protected GImage gImage;
     protected GPoint targetPoint; // The target position
-    private String name;
     protected Enemy targetEnemy;  // The target enemy
     protected double speed;       // Speed of the projectile
     protected double moveRate;    // Movement rate
@@ -35,6 +36,7 @@ public abstract class Projectile extends GCompound implements TickListener {
         this.damage = damage;
         this.active = true;
 
+        GameScreen.getInstance().add(this);
         GameTick.TickManager.registerTickListener(this);
     }
 

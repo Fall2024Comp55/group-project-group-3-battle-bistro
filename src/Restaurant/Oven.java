@@ -1,7 +1,6 @@
 package Restaurant;
 
 import Food.Food;
-import Food.IngredientsType;
 import Utils.Action;
 import Utils.GameTick;
 import Utils.Interact;
@@ -18,20 +17,19 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     // TODO find needed variables and methods
     private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
-    private String name;
-    private GImage gImage;
+    private static final String name = "oven";
+
+    private final GImage gImage;
     private Food item;
 
-
-    public Oven(String name, IngredientsType ingredient) {
-        this.name = name;
+    public Oven() {
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
     }
 
-    public void interact(){
+    public void interact() {
         boolean ready;
 
         GameTick.ActionManager.addAction(120, () -> {

@@ -14,7 +14,7 @@ public enum IngredientsType {
     private static final String stationBasePath = "/stations/";
     private static final String extension = ".png";
 
-    IngredientsType () {
+    IngredientsType() {
     }
 
     public String toString() {

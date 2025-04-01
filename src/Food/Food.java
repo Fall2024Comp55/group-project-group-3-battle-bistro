@@ -7,7 +7,7 @@ import java.util.EnumSet;
 
 public class Food extends GCompound {
 
-    private EnumSet<IngredientsType> ingredients;
+    private final EnumSet<IngredientsType> ingredients;
     private OrderTicket orderTicket;
     private boolean sauce;
     private boolean cheese;

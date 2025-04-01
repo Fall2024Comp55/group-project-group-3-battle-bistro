@@ -25,7 +25,7 @@ public class NewTowerButton extends Button {
             MouseManager.setSelectedObject(tower);
             tower.onPress(e);
         } else {
-        	tower = null;
+            tower = null;
         }
     }
 
@@ -62,7 +62,7 @@ public class NewTowerButton extends Button {
             MouseManager.setSelectedObject(null);
             */
 
-        	tower.onRelease(e);
+            tower.onRelease(e);
 
         }
     }

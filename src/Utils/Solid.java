@@ -1,7 +1,6 @@
 package Utils;
 
 import UI.GameScreen;
-import acm.graphics.GObject;
 import acm.graphics.GRectangle;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,7 +15,7 @@ public interface Solid {
         AtomicBoolean hit = new AtomicBoolean(false);
 
         GameScreen.getInstance().forEach(object -> {
-            if (object instanceof Solid s && object != (GObject) this) {
+            if (object instanceof Solid s && object != this) {
                 if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
                     hit.set(true);
                 }

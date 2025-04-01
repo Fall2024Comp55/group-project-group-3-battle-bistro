@@ -55,7 +55,9 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void onTick(GameTick tick) {
-        if (inRange()) { attack(); }
+        if (inRange()) {
+            attack();
+        }
     }
 
     @Override
@@ -95,7 +97,5 @@ public class MeleeTower extends Tower implements TickListener {
         // other version specific code
 
     }
-
-
 }
 

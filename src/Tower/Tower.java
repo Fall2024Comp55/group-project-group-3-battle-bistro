@@ -17,6 +17,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     private static final String basePath = "/resources/tower/";
     private static final String extension = ".png";
     private static final double sellModifier = 0.8;
+
     protected Enemy attackTarget;
     protected String name;
     protected GImage gImage;
@@ -146,7 +147,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         }
         throw new RuntimeException("Could not find image for path " + toPath());
     }
-    
+
     private void remove() {
         removeAll();
         GameScreen.getInstance().remove(this);
@@ -191,7 +192,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
-            	remove();
+                remove();
             } else {
                 placed = true;
                 this.setLocation(placedLocation);

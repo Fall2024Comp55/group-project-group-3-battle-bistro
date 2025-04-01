@@ -9,12 +9,14 @@ import acm.graphics.GObject;
 import acm.graphics.GPoint;
 
 public class RangedTower extends Tower implements TickListener {
-    private static final int ATTACK_COOLDOWN = 20; 
+    // TODO: look into reworking cooldown and other code
+    private static final int ATTACK_COOLDOWN = 20;
+
     private int cooldownTimer;
     private UpgradeTree state;
 
     public RangedTower() {
-        super("rangedkirby", 2, 1, 1, 150); 
+        super("rangedkirby", 2, 1, 1, 150);
         state = UpgradeTree.BASE;
         cooldownTimer = 0;
         GameTick.TickManager.registerTickListener(this);
@@ -59,7 +61,7 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void move() {
-      
+
     }
 
     @Override
@@ -85,13 +87,13 @@ public class RangedTower extends Tower implements TickListener {
         BASE {
             @Override
             int getDamage() {
-                return 30; 
+                return 30;
             }
         },
         UPGRADE1 {
             @Override
             int getDamage() {
-                return 50; 
+                return 50;
             }
         },
         UPGRADE2 {

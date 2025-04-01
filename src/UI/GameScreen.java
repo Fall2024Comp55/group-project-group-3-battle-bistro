@@ -34,7 +34,6 @@ public class GameScreen extends GraphicsProgram {
     private static CurrentScreen currentScreen;
     private static Path path;
 
-
     private GImage background;
     private GameTick tick;
 
@@ -48,10 +47,6 @@ public class GameScreen extends GraphicsProgram {
 
     public static GameScreen getInstance() {
         return instance;
-    }
-
-    public void setInstance(GameScreen gameScreen) {
-        instance = gameScreen;
     }
 
     public static Path getPath() {
@@ -119,7 +114,7 @@ public class GameScreen extends GraphicsProgram {
         });
     }
 
-    public void enterDoor () {
+    public void enterDoor() {
         AtomicInteger endX = new AtomicInteger();
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
@@ -233,7 +228,7 @@ public class GameScreen extends GraphicsProgram {
         SUMMARY,
         GARDEN,
         RESTAURANT,
-        SETTINGS;
+        SETTINGS
     }
 
 }

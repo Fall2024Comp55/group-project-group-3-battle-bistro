@@ -15,12 +15,12 @@ public class IngredientStation extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
     private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
-    private String name;
-    private IngredientsType ingredient;
-    private GImage gImage;
+    private final String name;
+    private final IngredientsType ingredient;
+    private final GImage gImage;
 
-    public IngredientStation(String name, IngredientsType ingredient) {
-        this.name = name;
+    public IngredientStation(IngredientsType ingredient) {
+        this.name = ingredient.name() + "_station";
         this.ingredient = ingredient;
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;

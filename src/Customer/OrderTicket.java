@@ -6,7 +6,7 @@ import acm.graphics.GCompound;
 import java.util.EnumSet;
 
 public class OrderTicket extends GCompound {
-    private EnumSet<IngredientsType> order;
+    private final EnumSet<IngredientsType> order;
 
     public OrderTicket() {
         order = EnumSet.noneOf(IngredientsType.class);

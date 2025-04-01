@@ -13,11 +13,11 @@ public enum EnemyType {
     private static final String basePath = "/resources/enemy/";
     private static final String extension = ".png";
 
-    private int health;
-    private int speed;
-    private int damage;
+    private final int health;
+    private final int speed;
+    private final int damage;
 
-    EnemyType (int health, int speed, int damage) {
+    EnemyType(int health, int speed, int damage) {
         this.health = health;
         this.speed = speed;
         this.damage = damage;

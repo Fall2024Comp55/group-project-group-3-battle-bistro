@@ -16,12 +16,12 @@ public class PrepTable extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
     private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
-    private String name;
-    private GImage gImage;
+    private static final String name = "prep_table";
+
+    private final GImage gImage;
     private ArrayList<Food> items;
 
-    public PrepTable(String name) {
-        this.name = name;
+    public PrepTable() {
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         //gImage.setLocation(0, 0);

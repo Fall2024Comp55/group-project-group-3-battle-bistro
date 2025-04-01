@@ -13,11 +13,11 @@ public class Door extends GCompound implements Solid {
     // TODO find needed variables and methods
     private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
-    private String name;
-    private GImage gImage;
+    private static final String name = "door";
 
-    public Door(String name) {
-        this.name = name;
+    private final GImage gImage;
+
+    public Door() {
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         gImage.setLocation(0, 0);

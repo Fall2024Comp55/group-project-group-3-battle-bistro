@@ -1,14 +1,11 @@
 package Customer;
 
-import Food.IngredientsType;
 import acm.graphics.GCompound;
-
-import java.util.EnumSet;
 
 public class Customer extends GCompound {
     // TODO find needed variables and methods
-    private OrderTicket orderTicket;
-    private double waitTime;
+    private final OrderTicket orderTicket;
+    private final double waitTime;
     // other variables needed?
 
     public Customer() {

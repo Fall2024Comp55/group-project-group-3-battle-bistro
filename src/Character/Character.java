@@ -25,16 +25,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static Utils.Utils.lerp;
 
 public class Character extends GCompound implements Solid, KeyListener, TickListener {
-    private static Character instance;
     private static final int speed = 5;
+    private static final Character instance;
 
     private GImage gImage;
     private Food holding;
-    private GRect collision;
+    private final GRect collision;
     private boolean moving;
-    private Set<Integer> actions;
+    private final Set<Integer> actions;
     private int health;
     private int balance;
+    private final Map<IngredientsType, AtomicInteger> ingredients;
 
     static {
         try {
@@ -43,9 +44,6 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
             throw new RuntimeException("Exception occurred in creating Character singleton instance");
         }
     }
-    // health here or in other class?
-
-    private Map<IngredientsType, AtomicInteger> ingredients;
 
     private Character() {
         URL resource = getClass().getResource("/resources/placeholder.png");
@@ -63,14 +61,17 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         balance = 100;
     }
 
+    public static Character getInstance() {
+        return instance;
+    }
+
     public void addIngredient(IngredientsType type, int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
         if (!ingredients.containsKey(type)) {
             ingredients.put(type, new AtomicInteger(amount));
-        }
-        else {
+        } else {
             ingredients.get(type).addAndGet(amount);
         }
     }
@@ -81,15 +82,10 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         }
         if (!ingredients.containsKey(type)) {
             return false;
-        }
-        else {
+        } else {
             ingredients.get(type).addAndGet(-amount);
         }
         return true;
-    }
-
-    public static Character getInstance() {
-        return instance;
     }
 
     public int getBalance() {

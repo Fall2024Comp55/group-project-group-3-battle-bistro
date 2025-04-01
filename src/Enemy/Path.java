@@ -80,7 +80,7 @@ public class Path {
     }
 
 
-     public static class PathLine extends GLine implements Solid, MouseInteract {
+    public static class PathLine extends GLine implements Solid, MouseInteract {
 
         public PathLine(double x0, double y0, double x1, double y1) {
             super(x0, y0, x1, y1);
