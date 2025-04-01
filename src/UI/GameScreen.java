@@ -20,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.random.RandomGenerator;
 
+import static Utils.Utils.easeInOutCubic;
+
 public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
