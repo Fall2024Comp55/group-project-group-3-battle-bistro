@@ -6,6 +6,8 @@ import Utils.*;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
+import Character.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -140,6 +142,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         }
         throw new RuntimeException("Could not find image for path " + toPath());
     }
+    
+    private void remove() {
+        removeAll();
+        GameScreen.getInstance().remove(this);
+    }
 
     @Override
     public GRectangle getHitbox() {
@@ -171,13 +178,17 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (!checkCollision()) {
             placed = true;
             placedLocation = this.getLocation();
+            GameTick.TickManager.registerTickListener(this);
         } else {
             this.setLocation(placedLocation);
+            if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
+                Player.getInstance().addMoney(cost);
+            	remove();
+            }
         }
         if (hitbox.isFilled()) {
             hitbox.setFilled(false);
         }
-
     }
 
 

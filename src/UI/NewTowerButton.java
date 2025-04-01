@@ -20,17 +20,18 @@ public class NewTowerButton extends Button {
 
     @Override
     public void onPress(MouseEvent e) {
+    	tower = new MeleeTower();
+    	//System.out.println("-------------------" + tower.getCost());
         Player player = Player.getInstance();
-        if (player.getMoney() >= TOWER_COST) {
-     
-            player.subtractMoney(TOWER_COST);
-   
-            tower = new MeleeTower();
+        if (player.getMoney() >= tower.getCost()) {
+            player.subtractMoney(tower.getCost());
             tower.setLocation(e.getX(), e.getY());
             GameScreen.getInstance().add(tower);
             MouseManager.setSelectedObject(tower);
             GameTick.TickManager.registerTickListener(tower);
             tower.onPress(e);
+        } else {
+        	tower = null;
         }
     }
 
@@ -44,7 +45,7 @@ public class NewTowerButton extends Button {
     @Override
     public void onRelease(MouseEvent e) {
         if (tower != null) {
-            
+            /*
             GRectangle towerBounds = tower.getHitbox();
             boolean onPath = false;
             for (GPoint point : GameScreen.getPath().getPoints()) {
@@ -56,7 +57,6 @@ public class NewTowerButton extends Button {
             }
 
             if (onPath) {
-               
                 Player.getInstance().addMoney(TOWER_COST);
                 GameScreen.getInstance().remove(tower);
             } else {
@@ -66,6 +66,10 @@ public class NewTowerButton extends Button {
             }
             tower = null;
             MouseManager.setSelectedObject(null);
+            */
+
+        	tower.onRelease(e);
+
         }
     }
 }
