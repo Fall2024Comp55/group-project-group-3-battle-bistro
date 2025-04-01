@@ -5,10 +5,10 @@ import java.awt.*;
 import java.net.URL;
 
 public enum EnemyType {
-    DOUGH(250, 20, 20),
-    MOZZARELLA(150, 1, 30),
-    PEPPERONI(200, 1, 40),
-    MUSHROOM(250, 3, 50);
+    DOUGH(250, 20, 2),
+    MOZZARELLA(150, 1, 3),
+    PEPPERONI(200, 1, 4),
+    MUSHROOM(250, 3, 5);
 
     private static final String basePath = "/resources/enemy/";
     private static final String extension = ".png";
