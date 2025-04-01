@@ -123,13 +123,11 @@ public abstract class Projectile extends GCompound implements TickListener {
             return;
         }
 
-
-        if (targetEnemy == null || !targetEnemy.isAlive()) {
-            active = false;
-            removeSelf();
-            return;
-        }
-
+        // TODO: check if this code is needed and if so, rework it
+//        if (targetEnemy == null || !targetEnemy.isAlive()) {
+//            active = false;
+//            return;
+//        }
 
         targetPoint = Utils.getCenter(targetEnemy.getLocation(), targetEnemy.getBounds());
         move();
