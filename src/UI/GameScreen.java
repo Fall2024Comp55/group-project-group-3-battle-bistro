@@ -66,16 +66,6 @@ public class GameScreen extends GraphicsProgram {
         this.requestFocus();
         this.tick = new GameTick();
         this.setAutoRepaintFlag(false);
-
-       
-        GRect menuBar = new GRect(WIDTH, 50);
-        menuBar.setFilled(true);
-        menuBar.setFillColor(Color.LIGHT_GRAY);
-        add(menuBar, 0, 0);
-
-      
-        NewTowerButton newTowerButton = new NewTowerButton("New Tower");
-        add(newTowerButton, 650, 25); // Moved to the right side
     }
 
     @Override
