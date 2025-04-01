@@ -168,6 +168,13 @@ public class GameScreen extends GraphicsProgram {
             if (object instanceof MouseInteract o) {
                 MouseManager.setSelectedObject(object);
                 o.onPress(e);
+            } else if (object instanceof GCompound c) {
+                c.forEach(o -> {
+                    if (o instanceof MouseInteract m && o.contains(new GPoint(e.getX(), e.getY()))) {
+                        MouseManager.setSelectedObject(o);
+                        m.onPress(e);
+                    }
+                });
             }
         }
     }
@@ -206,6 +213,13 @@ public class GameScreen extends GraphicsProgram {
             if (object instanceof MouseInteract o && object != MouseManager.getHoverObject()) {
                 MouseManager.setHoverObject(object);
                 o.onHover(e);
+            } else if (object instanceof GCompound c) {
+                c.forEach(o -> {
+                    if (o instanceof MouseInteract m && o != MouseManager.getHoverObject() && o.contains(new GPoint(e.getX(), e.getY()))) {
+                        MouseManager.setHoverObject(o);
+                        m.onHover(e);
+                    }
+                });
             } else {
                 MouseManager.setHoverObject(object);
             }
