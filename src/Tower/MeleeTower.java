@@ -19,11 +19,12 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void attack() {
-        // preform attack code
-        state.attack(attackTarget);
-        if (!attackTarget.isAlive()) {
-            System.out.println("Target is dead");
-            attackTarget = null;
+        if (placed) {
+            // preform attack code
+            state.attack(attackTarget);
+            if (!attackTarget.isAlive()) {
+                attackTarget = null;
+            }
         }
     }
 
