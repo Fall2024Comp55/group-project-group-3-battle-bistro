@@ -7,9 +7,10 @@ import Enemy.Path;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
+import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
-import acm.graphics.GRect;
+import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
