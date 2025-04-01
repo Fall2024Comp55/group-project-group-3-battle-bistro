@@ -23,6 +23,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static Utils.Utils.lerp;
 
+/**
+ * The Character class represents a character in the game. It handles movement, health,
+ * balance, and interactions with food, ingredients, and customers.
+ */
 public class Character extends GCompound implements Solid, KeyListener, TickListener {
     private static final int speed = 5;
     private static final Character instance;
@@ -44,6 +48,9 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         }
     }
 
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
     private Character() {
         URL resource = getClass().getResource("/resources/placeholder.png");
         if (resource != null) {
@@ -60,10 +67,20 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         balance = 100;
     }
 
+    /**
+     * @return The singleton instance of the Character.
+     */
     public static Character getInstance() {
         return instance;
     }
 
+    /**
+     * Adds an ingredient to the character's list of available ingredients.
+     *
+     * @param type   The type of ingredient to add.
+     * @param amount The amount of the ingredient to add.
+     * @throws IllegalArgumentException if the amount is negative.
+     */
     public void addIngredient(IngredientsType type, int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
@@ -75,6 +92,14 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         }
     }
 
+    /**
+     * Removes an ingredient from the character's list of available ingredients.
+     *
+     * @param type   The type of ingredient to remove.
+     * @param amount The amount of the ingredient to remove.
+     * @return True if the ingredient was successfully removed, false otherwise.
+     * @throws IllegalArgumentException if the amount is negative.
+     */
     public Boolean removeIngredient(String type, int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
@@ -87,31 +112,59 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         return true;
     }
 
+    /**
+     * @return The character's balance.
+     */
     public int getBalance() {
         return balance;
     }
 
+    /**
+     * Sets the character's balance.
+     *
+     * @param balance The new balance to set.
+     */
     public void setBalance(int balance) {
         this.balance = balance;
         updateUIs();
     }
 
+    /**
+     * Adds money to the character's balance. The amount can be positive or negative.
+     *
+     * @param balance The amount (+/-) of money to add.
+     */
     public void addMoney(int balance) {
         this.balance += balance;
         updateUIs();
     }
 
+    /**
+     * Reduces the character's health by the specified damage amount.
+     *
+     * @param damage The amount of damage to take.
+     * @throws IllegalArgumentException if the damage is negative.
+     */
     public void takeDamage(int damage) {
+        if (damage < 0) {
+            throw new IllegalArgumentException("Damage cannot be negative");
+        }
         health -= damage;
         updateUIs();
         if (health <= 0) {
-            // Game Over screen
+            // TODO handle game over
 //            GameScreen.getInstance().removeAll();
 //            GameScreen.getInstance().remove(this);
 //            System.out.println("Game Over");
         }
     }
 
+    /**
+     * Adds health to the character.
+     *
+     * @param health The amount of health to add.
+     * @throws IllegalArgumentException if the health amount is negative.
+     */
     public void addHealth(int health) {
         if (health < 0) {
             throw new IllegalArgumentException("Health cannot be negative");
@@ -120,48 +173,69 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
         updateUIs();
     }
 
+    /**
+     * @return The character's health.
+     */
     public int getHealth() {
         return health;
     }
 
+    /**
+     * Sets the character's health.
+     *
+     * @param health The new health to set.
+     */
     public void setHealth(int health) {
         this.health = health;
         updateUIs();
     }
 
+    /**
+     * Updates the user interfaces.
+     */
     public void updateUIs() {
         GardenUI.getInstance().update();
     }
 
+    /**
+     * Moves the character up.
+     */
     public void up() {
         System.out.println("up");
         this.move(0, lerp(0, -speed, .5));
         repaint();
-
     }
 
+    /**
+     * Moves the character down.
+     */
     public void down() {
         System.out.println("down");
         this.move(0, lerp(0, speed, .5));
-
         repaint();
-
     }
 
+    /**
+     * Moves the character left.
+     */
     public void left() {
         System.out.println("left");
         this.move(lerp(0, -speed, .5), 0);
         repaint();
-
     }
 
+    /**
+     * Moves the character right.
+     */
     public void right() {
         System.out.println("right");
         this.move(lerp(0, speed, 0.5), 0);
         repaint();
-
     }
 
+    /**
+     * Moves the character based on the current actions.
+     */
     public void move() {
         if (actions.contains(KeyEvent.VK_W)) {
             up();
@@ -205,7 +279,6 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
 
     @Override
     public void onCollision() {
-
     }
 
     @Override
