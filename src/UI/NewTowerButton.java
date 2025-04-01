@@ -51,7 +51,7 @@ public class NewTowerButton extends Button {
             }
 
             if (onPath) {
-                Player.getInstance().addMoney(TOWER_COST);
+                Character.getInstance().addBalance(TOWER_COST);
                 GameScreen.getInstance().remove(tower);
             } else {
              

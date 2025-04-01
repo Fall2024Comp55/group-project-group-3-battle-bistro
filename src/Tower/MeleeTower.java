@@ -13,7 +13,7 @@ public class MeleeTower extends Tower implements TickListener {
     private Upgrade_Tree state;
 
     public MeleeTower() {
-        super("chefkirby", 1, 1, 1, 120);
+        super("chefkirby", 10, 1, 5, 120);
         state = Upgrade_Tree.BASE;
     }
 
