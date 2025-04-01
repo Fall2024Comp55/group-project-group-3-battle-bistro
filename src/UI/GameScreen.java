@@ -101,8 +101,6 @@ public class GameScreen extends GraphicsProgram {
 //        testTower2.sendToFront();
 
         Enemy enemy = new Enemy(EnemyType.DOUGH);
-        SpatulaProjectile spatulaProjectile = new SpatulaProjectile(new GPoint(7, 7), new GPoint(100, 100), enemy, 1, 1, 10);
-        add(spatulaProjectile, 500, 500);
 
         addKeyListeners(Character.getInstance());
         addMouseListeners();
