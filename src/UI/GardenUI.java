@@ -1,17 +1,14 @@
 package UI;
 
 import Character.Character;
-import acm.graphics.GCompound;
-import acm.graphics.GLabel;
-import acm.graphics.GObject;
-import acm.graphics.GRect;
+import Utils.Solid;
+import acm.graphics.*;
 
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static UI.GameScreen.globalColor;
-import static UI.GameScreen.globalFont;
+import static UI.GameScreen.*;
 
 public class GardenUI extends GCompound {
     private Set<GObject> elements;
