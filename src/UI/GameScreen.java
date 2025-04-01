@@ -1,17 +1,14 @@
 package UI;
 
 import Character.Character;
-import Character.Player;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
-import Tower.SpatulaProjectile;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
-import acm.graphics.GPoint;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
@@ -74,9 +71,6 @@ public class GameScreen extends GraphicsProgram {
         menuBar.setFilled(true);
         menuBar.setFillColor(Color.LIGHT_GRAY);
         add(menuBar, 0, 0);
-
-       
-        Player player = Player.getInstance();
 
       
         NewTowerButton newTowerButton = new NewTowerButton("New Tower");
