@@ -141,10 +141,32 @@ public class GameTick implements ActionListener, Runnable{
 
         public static void registerTickListener(TickListener tickListener) {
             registeredTickListeners.add(tickListener);
+            if (tickListener instanceof Tower) {
+                // register to TowerManager
+            } else if (tickListener instanceof Enemy) {
+                // register to EnemyManager
+            } else if (tickListener instanceof Projectile) {
+                // register to ProjectileManager
+            } else if (tickListener.getClass().getPackageName().equals("Restaurant")) {
+                // register to RestaurantManager
+            } else {
+                // register to GameTick
+            }
         }
 
         public static void unregisterTickListener(TickListener tickListener) {
             registeredTickListeners.remove(tickListener);
+            if (tickListener instanceof Tower) {
+                // unregister from TowerManager
+            } else if (tickListener instanceof Enemy) {
+                // unregister from EnemyManager
+            } else if (tickListener instanceof Projectile) {
+                // unregister from ProjectileManager
+            } else if (tickListener.getClass().getPackageName().equals("Restaurant")) {
+                // unregister from RestaurantManager
+            } else {
+                // unregister from GameTick
+            }
         }
 
         public static Set<TickListener> getRegisteredTickListeners() {
