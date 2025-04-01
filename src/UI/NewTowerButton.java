@@ -1,17 +1,13 @@
 package UI;
 
-import Character.Player;
+import Character.Character;
 import Tower.MeleeTower;
 import Tower.Tower;
-import Utils.GameTick;
 import Utils.MouseManager;
-import acm.graphics.GPoint;
-import acm.graphics.GRectangle;
 
 import java.awt.event.MouseEvent;
 
 public class NewTowerButton extends Button {
-    private static final int TOWER_COST = 5;
     private Tower tower;
 
     public NewTowerButton(String text) {
