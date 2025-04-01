@@ -37,6 +37,7 @@ public class GardenUI extends GCompound implements Solid {
         menuBar.setFilled(true);
         menuBar.setFillColor(Color.LIGHT_GRAY);
         add(menuBar, 0, 0);
+        elements.add(menuBar);
 
 
         moneyLabel.setFont(globalFont);
