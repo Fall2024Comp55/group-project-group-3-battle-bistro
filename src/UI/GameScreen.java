@@ -8,14 +8,12 @@ import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
 import acm.graphics.GCompound;
-import acm.graphics.GImage;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,11 +28,10 @@ public class GameScreen extends GraphicsProgram {
     public static final String globalFont = "Arial-16"; // Reduced font size for better fit
     public static final Color globalColor = Color.BLACK;
 
-    private static GameScreen instance;
+    private static final GameScreen instance;
     private static CurrentScreen currentScreen;
     private static Path path;
 
-    private GImage background;
     private GameTick tick;
 
     static {
@@ -65,50 +62,50 @@ public class GameScreen extends GraphicsProgram {
 
     @Override
     public void run() {
+        // add and register character to tick manager
         add(Character.getInstance());
         GameTick.TickManager.registerTickListener(Character.getInstance());
-        currentScreen = CurrentScreen.MAIN_MENU;
+        // set current screen to GARDEN
         currentScreen = CurrentScreen.GARDEN;
+        // add GardenUI to screen
         add(GardenUI.getInstance());
 
-        ArrayList<Enemy> enemies = new ArrayList<>();
-
+        // create new path
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
 
+        // start GameTick
         tick.start();
 
-        for (int i = 0; i < 3; i++) {
-            Enemy enemy = new Enemy(EnemyType.DOUGH);
-            add(enemy);
-            GameTick.TickManager.registerTickListener(enemy);
-            System.out.println("Enemy added");
-        }
+        /* // Door animation test
+        GameTick.ActionManager.addAction(40, this::enterDoor);
+        GameTick.ActionManager.addAction(80, this::enterDoor);
+         */
 
-        GameTick.ActionManager.addAction(1, () -> {
-            addEnemy();
-        });
+        // Add input listeners
+        addInputListeners();
+    }
 
-        Enemy enemy = new Enemy(EnemyType.DOUGH);
+    public void addInputListeners() {
+        gw.getGCanvas().addKeyListener(Character.getInstance());
+        gw.getGCanvas().addMouseListener(this);
+        gw.getGCanvas().addMouseMotionListener(this);
+    }
 
-        addKeyListeners(Character.getInstance());
-        addMouseListeners();
-        GameTick.ActionManager.addAction(40, () -> {
-            enterDoor();
-        });
-
-        GameTick.ActionManager.addAction(80, () -> {
-            enterDoor();
-        });
-
+    public void removeInputListeners() {
+        gw.getGCanvas().removeKeyListener(Character.getInstance());
+        gw.getGCanvas().removeMouseListener(this);
+        gw.getGCanvas().removeMouseMotionListener(this);
     }
 
     public void addEnemy() {
+        // add 2-5 new enemies and register to tick manager
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(2, 5); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             add(enemy);
             GameTick.TickManager.registerTickListener(enemy);
         }
+        // every 1-10 ms run this function again
         GameTick.ActionManager.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
             addEnemy();
         });
@@ -116,6 +113,7 @@ public class GameScreen extends GraphicsProgram {
 
     public void enterDoor() {
         AtomicInteger endX = new AtomicInteger();
+        // check if currentScreen is GARDEN or RESTAURANT and switch.
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
             remove(GardenUI.getInstance());
@@ -125,10 +123,14 @@ public class GameScreen extends GraphicsProgram {
             add(GardenUI.getInstance());
             endX.set(0);
         }
+
+        // new executor to run the animation
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+        // set the start time
         long startTime = System.currentTimeMillis();
 
+        // setup executor to run screen shift every 10ms until done
         executor.scheduleAtFixedRate(() -> {
             boolean done = shiftScreen(gw.getGCanvas().getX(), endX.get(), startTime);
             if (done) {
@@ -138,15 +140,22 @@ public class GameScreen extends GraphicsProgram {
     }
 
     public boolean shiftScreen(int startX, int endX, long startTime) {
+        // get animation progress
         float progress = (System.currentTimeMillis() - startTime) / 800.0f;
+        // check if progress is at the end
         if (progress >= 1.0f) {
+            // commented out as there was a wierd jump at the end
 //            gw.getGCanvas().setLocation(endX, 0);
+            //TODO remove repaint later
             repaint();
+            // return true ending executor
             return true;
         } else {
-
+            // set the location of the canvas shifted towards the endX
             gw.getGCanvas().setLocation((int) Utils.Utils.lerp(startX, endX, easeInOutCubic(progress)), 0);
+            //TODO remove repaint later
             repaint();
+            // return false to keep executor running
             return false;
         }
     }
@@ -210,7 +219,6 @@ public class GameScreen extends GraphicsProgram {
                 if (object != MouseManager.getHoverObject()) {
                     MouseManager.setHoverObject(object);
                     o.onHover(e);
-                    System.out.println("set Hover 2");
                 }
             } else if (object instanceof GCompound c) {
                 boolean found = false;
@@ -219,18 +227,15 @@ public class GameScreen extends GraphicsProgram {
                         if (o != MouseManager.getHoverObject()) {
                             MouseManager.setHoverObject(o);
                             m.onHover(e);
-                            System.out.println("Set Hover 3");
                         }
                         found = true;
                     }
                 }
                 if (!found && MouseManager.getHoverObject() != null) {
                     MouseManager.setHoverObject(null);
-                    System.out.println("Set Hover null2");
                 }
             }
         } else if (MouseManager.getHoverObject() != null) {
-            System.out.println("Set Hover null");
         }
     }
 
