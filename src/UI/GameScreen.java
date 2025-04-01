@@ -118,11 +118,11 @@ public class GameScreen extends GraphicsProgram {
         AtomicInteger endX = new AtomicInteger();
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
-            GardenUI.getInstance().hide();
+            remove(GardenUI.getInstance());
             endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
-            GardenUI.getInstance().show();
+            add(GardenUI.getInstance());
             endX.set(0);
         }
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -177,6 +177,7 @@ public class GameScreen extends GraphicsProgram {
     @Override
     public void mouseDragged(MouseEvent e) {
         GObject object = MouseManager.getSelectedObject();
+        MouseManager.setHoverObject(object);
 
         if (object != null) {
             if (object instanceof MouseInteract o) {
@@ -205,21 +206,31 @@ public class GameScreen extends GraphicsProgram {
 
         GObject object = getElementAt(e.getX(), e.getY());
         if (object != null) {
-            if (object instanceof MouseInteract o && object != MouseManager.getHoverObject()) {
-                MouseManager.setHoverObject(object);
-                o.onHover(e);
+            if (object instanceof MouseInteract o) {
+                if (object != MouseManager.getHoverObject()) {
+                    MouseManager.setHoverObject(object);
+                    o.onHover(e);
+                    System.out.println("set Hover 2");
+                }
             } else if (object instanceof GCompound c) {
-                c.forEach(o -> {
-                    if (o instanceof MouseInteract m && o != MouseManager.getHoverObject() && o.contains(new GPoint(e.getX(), e.getY()))) {
-                        MouseManager.setHoverObject(o);
-                        m.onHover(e);
+                boolean found = false;
+                for (GObject o : c) {
+                    if (o instanceof MouseInteract m && o.contains(new GPoint(e.getX(), e.getY()))) {
+                        if (o != MouseManager.getHoverObject()) {
+                            MouseManager.setHoverObject(o);
+                            m.onHover(e);
+                            System.out.println("Set Hover 3");
+                        }
+                        found = true;
                     }
-                });
-            } else {
-                MouseManager.setHoverObject(object);
+                }
+                if (!found && MouseManager.getHoverObject() != null) {
+                    MouseManager.setHoverObject(null);
+                    System.out.println("Set Hover null2");
+                }
             }
-        } else {
-            MouseManager.setHoverObject(null);
+        } else if (MouseManager.getHoverObject() != null) {
+            System.out.println("Set Hover null");
         }
     }
 
