@@ -16,6 +16,16 @@ public class GardenUI extends GCompound implements Solid {
     private GRect healthBarBackground;
     private GRect healthBar;
 
+    private static GardenUI instance;
+
+    static {
+        try {
+            instance = new GardenUI();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception occurred in creating GardenUI singleton instance");
+        }
+    }
+
     private GardenUI() {
         elements = new HashSet<>();
         Character c = Character.getInstance();
