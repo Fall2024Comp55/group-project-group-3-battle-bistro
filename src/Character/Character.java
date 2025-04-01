@@ -124,9 +124,13 @@ public class Character extends GCompound implements Solid, KeyListener, TickList
      * Subtracts the specified amount from the character's balance if sufficient funds are available.
      *
      * @param amount The amount to subtract from the balance.
-     * @return True if the balance was successfully subtracted, false if there were insufficient funds.
+     * @return True if the balance was successfully subtracted, false otherwise.
+     * @throws IllegalArgumentException if the amount is negative.
      */
     public boolean subtractBalance(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
         if (balance - amount < 0) {
             return false;
         }
