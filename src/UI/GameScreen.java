@@ -120,6 +120,41 @@ public class GameScreen extends GraphicsProgram {
         });
     }
 
+    public void enterDoor () {
+        AtomicInteger endX = new AtomicInteger();
+        if (currentScreen.equals(CurrentScreen.GARDEN)) {
+            currentScreen = CurrentScreen.RESTAURANT;
+            endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
+        } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
+            currentScreen = CurrentScreen.GARDEN;
+            endX.set(0);
+        }
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+        long startTime = System.currentTimeMillis();
+
+        executor.scheduleAtFixedRate(() -> {
+            boolean done = shiftScreen(gw.getGCanvas().getX(), endX.get(), startTime);
+            if (done) {
+                executor.shutdown();
+            }
+        }, 0, 10, TimeUnit.MILLISECONDS);
+    }
+
+    public boolean shiftScreen(int startX, int endX, long startTime) {
+        float progress = (System.currentTimeMillis() - startTime) / 800.0f;
+        if (progress >= 1.0f) {
+//            gw.getGCanvas().setLocation(endX, 0);
+            repaint();
+            return true;
+        } else {
+
+            gw.getGCanvas().setLocation((int) Utils.Utils.lerp(startX, endX, easeInOutCubic(progress)), 0);
+            repaint();
+            return false;
+        }
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         GObject object = getElementAt(e.getX(), e.getY());
