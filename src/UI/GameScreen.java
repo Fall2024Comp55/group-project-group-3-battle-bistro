@@ -87,18 +87,6 @@ public class GameScreen extends GraphicsProgram {
         GameTick.ActionManager.addAction(1, () -> {
             addEnemy();
         });
-//
-//        Tower testTower;
-//        testTower = new MeleeTower();
-//        GameTick.TickManager.registerTickListener(testTower);
-//        add(testTower);
-//
-//        Tower testTower2;
-//        testTower2 = new MeleeTower();
-//        GameTick.TickManager.registerTickListener(testTower2);
-//        add(testTower2);
-//
-//        testTower2.sendToFront();
 
         Enemy enemy = new Enemy(EnemyType.DOUGH);
 
