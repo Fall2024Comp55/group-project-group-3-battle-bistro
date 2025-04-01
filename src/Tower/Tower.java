@@ -166,6 +166,9 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onDrag(MouseEvent e) {
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
+        ActionManager.addAction(1, () -> {
+            GameTick.TickManager.unregisterTickListener(this);
+        });
         if (checkCollision()) {
             if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
@@ -182,12 +185,19 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (!checkCollision()) {
             placed = true;
             placedLocation = this.getLocation();
-            GameTick.TickManager.registerTickListener(this);
+            ActionManager.addAction(1, () -> {
+                GameTick.TickManager.registerTickListener(this);
+            });
         } else {
-            this.setLocation(placedLocation);
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
-                Player.getInstance().addMoney(cost);
+                Character.getInstance().addMoney(cost);
             	remove();
+            } else {
+                placed = true;
+                this.setLocation(placedLocation);
+                ActionManager.addAction(1, () -> {
+                    GameTick.TickManager.registerTickListener(this);
+                });
             }
         }
         if (hitbox.isFilled()) {
