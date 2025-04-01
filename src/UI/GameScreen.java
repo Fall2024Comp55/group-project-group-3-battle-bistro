@@ -90,17 +90,17 @@ public class GameScreen extends GraphicsProgram {
             addEnemy();
         });
 
-        Tower testTower;
-        testTower = new MeleeTower();
-        GameTick.TickManager.registerTickListener(testTower);
-        add(testTower);
-
-        Tower testTower2;
-        testTower2 = new MeleeTower();
-        GameTick.TickManager.registerTickListener(testTower2);
-        add(testTower2);
-
-        testTower2.sendToFront();
+//        Tower testTower;
+//        testTower = new MeleeTower();
+//        GameTick.TickManager.registerTickListener(testTower);
+//        add(testTower);
+//
+//        Tower testTower2;
+//        testTower2 = new MeleeTower();
+//        GameTick.TickManager.registerTickListener(testTower2);
+//        add(testTower2);
+//
+//        testTower2.sendToFront();
 
         Enemy enemy = new Enemy(EnemyType.DOUGH);
         SpatulaProjectile spatulaProjectile = new SpatulaProjectile(new GPoint(7, 7), new GPoint(100, 100), enemy, 1, 1, 10);
