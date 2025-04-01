@@ -15,15 +15,6 @@ public class SpatulaProjectile extends Projectile {
         add(gImage);
         gImage.setSize(20, 50);
 
-
-        setupVisuals();
-
-
         GameScreen.getInstance().add(this);
-    }
-
-    @Override
-    protected void setupVisuals() {
-
     }
 }

@@ -1,8 +1,8 @@
 package Tower;
 
-import Enemy.Enemy;
 import UI.GameScreen;
 import Utils.GameTick;
+import Utils.GameTick.ActionManager;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GObject;
@@ -12,32 +12,35 @@ public class RangedTower extends Tower implements TickListener {
     // TODO: look into reworking cooldown and other code
     private static final int ATTACK_COOLDOWN = 20;
 
-    private int cooldownTimer;
+    private boolean onCooldown;
     private UpgradeTree state;
 
     public RangedTower() {
-        super("rangedkirby", 2, 1, 1, 150);
+        super("chefkirby", 2, 1, 1, 150);
         state = UpgradeTree.BASE;
-        cooldownTimer = 0;
+        onCooldown = false;
         GameTick.TickManager.registerTickListener(this);
     }
 
     @Override
     public void attack() {
-        if (placed) {
-            if (cooldownTimer > 0) {
-                cooldownTimer--;
-                return;
-            }
-
+        if (placed && !onCooldown) {
             if (attackTarget != null && attackTarget.isAlive()) {
 
                 GPoint startPoint = Utils.getCenter(this.getLocation(), this.getBounds());
                 GPoint targetPoint = Utils.getCenter(attackTarget.getLocation(), attackTarget.getBounds());
-                new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, 0.1, state.getDamage());
-                cooldownTimer = ATTACK_COOLDOWN;
-                System.out.println("RangedTower fired a spatula at enemy!");
+                Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, .5, state.getDamage());
+                p.setLocation(this.getLocation());
+                ActionManager.addAction(1, () -> {
+                    GameScreen.getInstance().add(p);
+                    GameTick.TickManager.registerTickListener(p);
+                });
+                onCooldown = true;
+                ActionManager.addAction(8, () -> {
+                    onCooldown = false;
+                });
             }
+
         }
     }
 
@@ -54,9 +57,6 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void sell() {
-        System.out.println("Selling RangedTower");
-        GameTick.TickManager.unregisterTickListener(this);
-        GameScreen.getInstance().remove(this);
     }
 
     @Override
@@ -66,9 +66,6 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void setTarget(GObject target) {
-        if (target instanceof Enemy enemy) {
-            attackTarget = enemy;
-        }
     }
 
     @Override
