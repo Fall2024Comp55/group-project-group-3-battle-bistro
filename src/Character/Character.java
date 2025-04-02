@@ -3,6 +3,7 @@ package Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.GardenUI;
+import Utils.Directions;
 import Utils.Interact;
 import Utils.Solid;
 import Utils.TickListener;
@@ -40,6 +41,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private int health;
     private int balance;
     private boolean interactHeld;
+    private Directions facing;
 
     static {
         try {
@@ -209,6 +211,22 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void setHealth(int health) {
         this.health = health;
         updateUIs();
+    }
+
+    public Food getHolding() {
+        return holding;
+    }
+
+    public void setHolding(Food holding) {
+        this.holding = holding;
+    }
+
+    public Directions getFacing() {
+        return facing;
+    }
+
+    public void setFacing(Directions facing) {
+        this.facing = facing;
     }
 
     /**
