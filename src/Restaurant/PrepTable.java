@@ -1,5 +1,6 @@
 package Restaurant;
 
+import Character.Character;
 import Food.Food;
 import Utils.Interact;
 import Utils.Solid;
@@ -10,7 +11,6 @@ import acm.graphics.GRectangle;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class PrepTable extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
@@ -19,7 +19,7 @@ public class PrepTable extends GCompound implements Interact, Solid {
     private static final String name = "prep_table";
 
     private final GImage gImage;
-    private ArrayList<Food> items;
+    private Food item;
 
     public PrepTable() {
         GImage gImage = new GImage(getImage());
@@ -34,6 +34,12 @@ public class PrepTable extends GCompound implements Interact, Solid {
         TODO: Upon pressing "e", the player will add one ingredient to the pizza. Decrement amount
          of this ingredient by one. If not holding a pizza, do nothing.
          */
+        if (item != null) {
+            Character.getInstance().setHolding(item);
+            item = null;
+        } else {
+            item = Character.getInstance().getHolding();
+        }
     }
 
     public String toPath() {
