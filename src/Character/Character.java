@@ -103,7 +103,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * @return True if the ingredient was successfully removed, false otherwise.
      * @throws IllegalArgumentException if the amount is negative.
      */
-    public Boolean removeIngredient(String type, int amount) {
+    public Boolean removeIngredient(IngredientsType type, int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
