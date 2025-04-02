@@ -39,6 +39,7 @@ public class PrepTable extends GCompound implements Interact, Solid {
             item = null;
         } else {
             item = Character.getInstance().getHolding();
+            Character.getInstance().setHolding(null);
         }
     }
 
