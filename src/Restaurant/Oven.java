@@ -12,6 +12,7 @@ import acm.graphics.GRectangle;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Oven extends GCompound implements Action, Solid, Interact {
     // TODO find needed variables and methods
@@ -21,19 +22,21 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     private final GImage gImage;
     private Food item;
+    private int tick_speed;
 
     public Oven() {
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
+        tick_speed = 100;
     }
 
     public void interact() {
-        boolean ready;
+        AtomicBoolean ready = new AtomicBoolean(false);
 
-        GameTick.ActionManager.addAction(120, () -> {
-            //ready = true;
+        GameTick.ActionManager.addAction(tick_speed, () -> {
+            ready.set(true);
         });
     }
 
