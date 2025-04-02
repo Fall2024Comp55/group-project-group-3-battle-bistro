@@ -78,10 +78,18 @@ public class GameScreen extends GraphicsProgram {
 
         addEnemy();
 
-        /* // Door animation test
+       /*  // Door animation test
         GameTick.ActionManager.addAction(40, this::enterDoor);
         GameTick.ActionManager.addAction(80, this::enterDoor);
-         */
+*/
+
+        Button screenSwitch = new ActionButton("Screen Switch", () -> {
+            ;
+            enterDoor();
+        });
+        add(screenSwitch);
+
+        screenSwitch.setLocation(WIDTH - screenSwitch.getWidth(), HEIGHT - screenSwitch.getHeight());
 
         // Add input listeners
         addInputListeners();

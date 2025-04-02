@@ -1,7 +1,7 @@
 package UI;
 
 import Character.Character;
-import Tower.RangedTower;
+import Tower.MeleeTower;
 import Tower.Tower;
 import Utils.MouseManager;
 
@@ -16,7 +16,7 @@ public class NewTowerButton extends Button {
 
     @Override
     public void onPress(MouseEvent e) {
-        tower = new RangedTower();
+        tower = new MeleeTower();
         if (Character.getInstance().subtractBalance(tower.getCost())) {
 
             tower.setLocation(e.getX(), e.getY());
