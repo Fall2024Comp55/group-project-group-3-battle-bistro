@@ -52,7 +52,7 @@ public class OrderWindow extends GCompound implements Solid, Interact {
 
     @Override
     public GRectangle getInteractHitbox() {
-        return null;
+        return this.getBounds();
     }
 
     @Override

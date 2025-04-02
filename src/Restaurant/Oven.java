@@ -65,7 +65,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     @Override
     public GRectangle getHitbox() {
-        return null;
+        return this.getBounds();
     }
 
     @Override
