@@ -109,10 +109,12 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         }
         if (!ingredients.containsKey(type)) {
             return false;
+        } else if (ingredients.get(type).get() < amount) {
+            return false;
         } else {
             ingredients.get(type).addAndGet(-amount);
+            return true;
         }
-        return true;
     }
 
     /**
