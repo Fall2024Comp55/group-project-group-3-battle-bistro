@@ -1,5 +1,7 @@
 package Restaurant;
 
+import UI.GameScreen;
+import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
@@ -9,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class Door extends GCompound implements Solid {
+public class Door extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
     private static final String basePath = "/resources/restaurant/";
     private static final String extension = ".png";
@@ -39,13 +41,20 @@ public class Door extends GCompound implements Solid {
 
     @Override
     public void onCollision() {
-        if (checkCollision()) {
-            //TODO: Remove Restaurant Screen, then add Garden Screen
-        }
     }
 
     @Override
     public GRectangle getHitbox() {
+        return this.getBounds();
+    }
+
+    @Override
+    public void interact() {
+        GameScreen.getInstance().enterDoor();
+    }
+
+    @Override
+    public GRectangle getInteractHitbox() {
         return null;
     }
 }
