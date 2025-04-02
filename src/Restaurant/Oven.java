@@ -1,5 +1,6 @@
 package Restaurant;
 
+import Character.Character;
 import Food.Food;
 import Utils.Action;
 import Utils.GameTick;
@@ -12,7 +13,6 @@ import acm.graphics.GRectangle;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Oven extends GCompound implements Action, Solid, Interact {
     // TODO find needed variables and methods
@@ -22,7 +22,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     private final GImage gImage;
     private Food item;
-    private int tick_speed;
+    private int tick_speed = 200;
 
     public Oven() {
         GImage gImage = new GImage(getImage());
@@ -33,11 +33,12 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     }
 
     public void interact() {
-        AtomicBoolean ready = new AtomicBoolean(false);
-
-        GameTick.ActionManager.addAction(tick_speed, () -> {
-            ready.set(true);
-        });
+        Food pizza = Character.getInstance().getHolding();
+        if (pizza != null && !pizza.isCooked()) {
+            GameTick.ActionManager.addAction(tick_speed, () -> {
+                pizza.setCooked(true);
+            });
+        }
     }
 
     public String toPath() {

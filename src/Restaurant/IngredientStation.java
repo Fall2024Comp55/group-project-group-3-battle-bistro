@@ -60,7 +60,7 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     @Override
     public GRectangle getHitbox() {
-        return null;
+        return this.getBounds();
     }
 
     @Override
