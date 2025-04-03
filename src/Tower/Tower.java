@@ -55,21 +55,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public Tower(String name, int cost, int level, int damage, Projectile projectile, int range) {
-        this.name = name;
-        this.cost = cost;
-        this.level = level;
-        this.damage = damage;
-        this.placed = true;
-        this.placedLocation = this.getLocation();
-        gImage = new GImage(getImage());
-        gImage.setSize(20, 20);
-        add(gImage);
-        hitbox = new GOval(20, 20);
-        add(hitbox);
+        this(name, cost, level, damage, range);
         this.projectile = projectile;
-        this.range = new GOval(range, range);
-        this.range.setLocation(Utils.getCenter(this.getLocation(), this.range.getBounds()));
-        add(this.range);
     }
 
     public boolean inRange() {

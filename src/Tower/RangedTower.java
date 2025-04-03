@@ -4,7 +4,6 @@ import UI.GameScreen;
 import Utils.GameTick;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
-import Utils.Utils;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
 
@@ -27,8 +26,8 @@ public class RangedTower extends Tower implements TickListener {
         if (placed && !onCooldown) {
             if (attackTarget != null && attackTarget.isAlive()) {
 
-                GPoint startPoint = Utils.getCenter(this.getLocation(), this.getBounds());
-                GPoint targetPoint = Utils.getCenter(attackTarget.getLocation(), attackTarget.getBounds());
+                GPoint startPoint = this.getLocation();
+                GPoint targetPoint = attackTarget.getLocation();
                 Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, .5, state.getDamage());
                 p.setLocation(this.getLocation());
                 ActionManager.addAction(1, () -> {

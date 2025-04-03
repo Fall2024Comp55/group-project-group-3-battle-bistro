@@ -151,7 +151,7 @@ public class GameScreen extends GraphicsProgram {
 
     public boolean shiftScreen(int startX, int endX, long startTime) {
         // get animation progress
-        float progress = (System.currentTimeMillis() - startTime) / 800.0f;
+        float progress = (System.currentTimeMillis() - startTime) / 2000.0f;
         // check if progress is at the end
         if (progress >= 1.0f) {
             // commented out as there was a wierd jump at the end

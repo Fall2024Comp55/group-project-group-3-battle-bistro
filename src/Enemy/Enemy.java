@@ -33,7 +33,9 @@ public class Enemy extends GCompound implements TickListener {
         this.targetPoint = path.getPoint(1);
         gImage = new GImage(type.getImage());
         gImage.setSize(size, size);
+        gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         bounds = this.getBounds();
+        bounds.setLocation(Utils.getCenter(bounds));
         add();
     }
 
@@ -43,7 +45,7 @@ public class Enemy extends GCompound implements TickListener {
 
     public void add() {
         this.add(gImage);
-        this.setLocation(Utils.getCenterOffset(path.getStart(), this.getBounds()));
+        this.setLocation(path.getStart());
         bounds = this.getBounds();
     }
 
@@ -60,7 +62,7 @@ public class Enemy extends GCompound implements TickListener {
             double targetX = targetPoint.getX();
             double targetY = targetPoint.getY();
 
-            GPoint point = Utils.getCenter(this.getLocation(), bounds);
+            GPoint point = this.getLocation();
 
             double dx = targetX - point.getX();
             double dy = targetY - point.getY();
@@ -68,7 +70,7 @@ public class Enemy extends GCompound implements TickListener {
             double distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < type.getSpeed() * moveRate) {
-                this.setLocation(Utils.getCenterOffset(targetPoint, bounds));
+                this.setLocation(targetPoint);
                 if (targetPoint.equals(path.getEnd())) {
                     pathTraversed += distance;
                     reachedEnd();

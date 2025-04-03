@@ -44,7 +44,7 @@ public abstract class Projectile extends GCompound implements TickListener {
         double targetX = targetPoint.getX();
         double targetY = targetPoint.getY();
 
-        GPoint point = Utils.getCenter(this.getLocation(), this.getBounds());
+        GPoint point = this.getLocation();
 
         double dx = targetX - point.getX();
         double dy = targetY - point.getY();
@@ -129,7 +129,7 @@ public abstract class Projectile extends GCompound implements TickListener {
 //            return;
 //        }
 
-        targetPoint = Utils.getCenter(targetEnemy.getLocation(), targetEnemy.getBounds());
+        targetPoint = targetEnemy.getLocation();
         move();
     }
 }
