@@ -20,9 +20,11 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static Utils.Utils.lerp;
+import static Utils.Utils.getCenter;
 
 /**
  * The Character class represents a character in the game. It handles movement, health,
@@ -42,6 +44,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private int balance;
     private boolean interactHeld;
     private Directions facing;
+    private int currentTheta;
+    private ScheduledExecutorService movementExecutor;
 
     static {
         try {
@@ -63,11 +67,15 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         actions = new HashSet<>();
         gImage.setSize(20, 20);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
+        this.setLocation(200, 200);
+        System.out.println(this.getBounds() + " " + gImage.getBounds() + getCenter(gImage.getBounds()) + " " + getCenter(this.getBounds()));
         add(gImage);
-        add(collision);
+        gImage.setLocation(getCenter(gImage.getBounds()));
+        System.out.println(this.getBounds() + " " + gImage.getBounds() + getCenter(gImage.getBounds()) + " " + getCenter(this.getBounds()));
         moving = false;
         health = 100;
         balance = 100;
+        currentTheta = 0;
     }
 
     /**
@@ -239,58 +247,68 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     }
 
     /**
-     * Moves the character up.
-     */
-    public void up() {
-        System.out.println("up");
-        this.move(0, lerp(0, -speed, .5));
-        repaint();
-    }
-
-    /**
-     * Moves the character down.
-     */
-    public void down() {
-        System.out.println("down");
-        this.move(0, lerp(0, speed, .5));
-        repaint();
-    }
-
-    /**
-     * Moves the character left.
-     */
-    public void left() {
-        System.out.println("left");
-        this.move(lerp(0, -speed, .5), 0);
-        repaint();
-    }
-
-    /**
-     * Moves the character right.
-     */
-    public void right() {
-        System.out.println("right");
-        this.move(lerp(0, speed, 0.5), 0);
-        repaint();
-    }
-
-    /**
      * Moves the character based on the current actions.
      */
     public void move() {
-        if (actions.contains(KeyEvent.VK_W)) {
-            up();
+        if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) {
+            if (actions.contains(KeyEvent.VK_W)) {
+                facing = Directions.UP;
+            } else if (actions.contains(KeyEvent.VK_S)) {
+                facing = Directions.DOWN;
+            } else if (actions.contains(KeyEvent.VK_A)) {
+                facing = Directions.LEFT;
+            } else if (actions.contains(KeyEvent.VK_D)) {
+                facing = Directions.RIGHT;
+            }
+        } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) {
+            if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_A)) {
+                facing = Directions.UP_LEFT;
+            } else if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_D)) {
+                facing = Directions.UP_RIGHT;
+            } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_A)) {
+                facing = Directions.DOWN_LEFT;
+            } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_D)) {
+                facing = Directions.DOWN_RIGHT;
+            }
         }
-        if (actions.contains(KeyEvent.VK_S)) {
-            down();
+        // set desired direction
+        double dx = facing.getX();
+        double dy = facing.getY();
+        // get length of the vector
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if (length != 0) {
+            // normalize the vector
+            dx = (dx / length) * speed;
+            dy = (dy / length) * speed;
         }
-        if (actions.contains(KeyEvent.VK_A)) {
-            left();
+        // move the character by a total distance of the speed in the direction of the vector
+        move(dx, dy);
+
+        int rotateSpeed = 12;
+        int rotateDistance = facing.getTheta() - currentTheta;
+        if (rotateDistance > 180) {
+            rotateDistance -= 360;
+        } else if (rotateDistance < -180) {
+            rotateDistance += 360;
         }
-        if (actions.contains(KeyEvent.VK_D)) {
-            right();
+        if (rotateSpeed < Math.abs(rotateDistance)) {
+            this.rotate(rotateSpeed * Math.signum(rotateDistance));
+            currentTheta += rotateSpeed * (int) Math.signum(rotateDistance);
+        } else {
+            this.rotate(rotateDistance);
+            currentTheta += rotateDistance;
         }
+
+        if (currentTheta > 360) {
+            currentTheta -= 360;
+        } else if (currentTheta < 0) {
+            currentTheta += 360;
+        }
+
+        System.out.println("current theta: " + currentTheta);
+
     }
+
 
     public void interact() {
         if (actions.contains(KeyEvent.VK_E)) {
@@ -312,6 +330,11 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void keyPressed(KeyEvent e) {
 //        GameScreen.getInstance().setAutoRepaintFlag(true);
         actions.add(e.getKeyCode());
+        if (!moving && !(actions.size() == 1 && actions.contains(KeyEvent.VK_E))) {
+            moving = true;
+            movementExecutor = Executors.newSingleThreadScheduledExecutor();
+            movementExecutor.scheduleAtFixedRate(this::move, 0, 16, java.util.concurrent.TimeUnit.MILLISECONDS);
+        }
         interact();
     }
 
@@ -319,15 +342,15 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void keyReleased(KeyEvent e) {
         System.out.println("key released");
         actions.remove(e.getKeyCode());
+        if (moving && ((actions.size() == 1 && actions.contains(KeyEvent.VK_E)) || actions.isEmpty())) {
+            moving = false;
+            movementExecutor.shutdown();
+        }
         interact();
     }
 
     @Override
     public void onTick() {
-        if (!actions.isEmpty() && !(actions.size() == 1 && actions.contains(KeyEvent.VK_E))) {
-            System.out.println("moving");
-            move();
-        }
     }
 
     @Override
@@ -341,6 +364,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public GRectangle getInteractHitbox() {
+
+
         return null;
     }
 
