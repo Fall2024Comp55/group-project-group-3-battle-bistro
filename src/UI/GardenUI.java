@@ -7,6 +7,10 @@ import acm.graphics.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.Executors;
 
 import static UI.GameScreen.*;
 
@@ -17,6 +21,11 @@ public class GardenUI extends GCompound implements Solid {
     private final GLabel moneyLabel;
     private final GRect healthBarBackground;
     private final GRect healthBar;
+    private int starRating;
+    private GCompound starDisplay;
+    private GCompound notificationArea;
+    private GLabel notificationLabel;
+    private ScheduledExecutorService notificationExecutor;
 
     static {
         try {
@@ -39,7 +48,6 @@ public class GardenUI extends GCompound implements Solid {
         add(menuBar, 0, 0);
         elements.add(menuBar);
 
-
         moneyLabel.setFont(GLOBAL_FONT);
         moneyLabel.setColor(GLOBAL_COLOR);
         moneyLabel.setLocation(20, 35);
@@ -48,33 +56,97 @@ public class GardenUI extends GCompound implements Solid {
 
         healthBarBackground.setFilled(true);
         healthBarBackground.setFillColor(Color.GRAY);
-        healthBarBackground.setLocation(300, 15);
+        healthBarBackground.setLocation(150, 15); 
         add(healthBarBackground);
         elements.add(healthBarBackground);
 
-
         healthBar.setFilled(true);
         healthBar.setFillColor(Color.GREEN);
-        healthBar.setLocation(300, 15);
+        healthBar.setLocation(150, 15); 
         add(healthBar);
         elements.add(healthBar);
 
-
         NewTowerButton tower1 = new NewTowerButton("New Tower");
-        add(tower1, 650, 25);
+        add(tower1, 500, 25);
         elements.add(tower1);
 
+        initStarRating();
+        initNotificationArea();
     }
 
     public static GardenUI getInstance() {
         return GARDEN_UI;
     }
 
+    private void initStarRating() {
+        starRating = 3;
+        starDisplay = new GCompound();
+
+        for (int i = 0; i < 5; i++) {
+            GLabel star = new GLabel("★");
+            star.setFont("Arial-20");
+            star.setColor(i < starRating ? Color.YELLOW : Color.GRAY);
+            star.setLocation(i * 25, 0);
+            starDisplay.add(star);
+        }
+
+        starDisplay.setLocation(WIDTH - starDisplay.getWidth() - 10, 15);
+        add(starDisplay);
+        elements.add(starDisplay);
+    }
+
+    public void updateStarRating(int newRating) {
+        starRating = Math.max(0, Math.min(5, newRating));
+        for (int i = 0; i < 5; i++) {
+            GLabel star = (GLabel) starDisplay.getElement(i);
+            star.setColor(i < starRating ? Color.YELLOW : Color.GRAY);
+        }
+    }
+
+    private void initNotificationArea() {
+        notificationArea = new GCompound();
+        notificationLabel = new GLabel("");
+        notificationLabel.setFont(GLOBAL_FONT);
+        notificationLabel.setColor(GLOBAL_COLOR);
+        notificationArea.add(notificationLabel);
+
+        notificationArea.setLocation(
+            (WIDTH - notificationLabel.getWidth()) / 2,
+            HEIGHT / 2
+        );
+        add(notificationArea);
+        elements.add(notificationArea);
+    }
+
+    public void showNotification(String message, int durationMs) {
+        notificationLabel.setLabel(message);
+        notificationLabel.setLocation(
+            -notificationLabel.getWidth() / 2,
+            -notificationLabel.getHeight() / 2
+        );
+
+        notificationLabel.setVisible(true);
+
+        if (notificationExecutor != null) {
+            notificationExecutor.shutdownNow();
+        }
+        notificationExecutor = Executors.newSingleThreadScheduledExecutor();
+
+        AtomicInteger alpha = new AtomicInteger(255);
+        notificationExecutor.scheduleAtFixedRate(() -> {
+            alpha.set(Math.max(0, alpha.get() - 5));
+            notificationLabel.setColor(new Color(0, 0, 0, alpha.get()));
+            if (alpha.get() <= 0) {
+                notificationLabel.setVisible(false);
+                notificationExecutor.shutdown();
+            }
+        }, durationMs, 50, TimeUnit.MILLISECONDS);
+    }
+
     public void update() {
         updateMoneyLabel();
         updateHealthBar();
     }
-
 
     private void updateMoneyLabel() {
         moneyLabel.setLabel("Money: " + Character.getInstance().getBalance());
@@ -84,6 +156,7 @@ public class GardenUI extends GCompound implements Solid {
         double health = Character.getInstance().getHealth();
         double healthPercentage = health / 100.0;
         healthBar.setSize(200 * healthPercentage, 20);
+        healthBar.setLocation(150, 15); 
         if (health > 50) {
             healthBar.setFillColor(Color.GREEN);
         } else if (health > 25) {
@@ -95,7 +168,6 @@ public class GardenUI extends GCompound implements Solid {
 
     @Override
     public void onCollision() {
-
     }
 
     @Override
