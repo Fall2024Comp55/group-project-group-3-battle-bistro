@@ -255,6 +255,7 @@ public class GameScreen extends GraphicsProgram {
                 }
             }
         } else if (MouseManager.getHoverObject() != null) {
+            MouseManager.setHoverObject(null);
         }
     }
 
