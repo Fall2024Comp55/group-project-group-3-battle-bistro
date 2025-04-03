@@ -14,9 +14,9 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 
 public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
-    private static final String basePath = "/resources/tower/";
-    private static final String extension = ".png";
-    private static final double sellModifier = 0.8;
+    private static final String BASE_PATH = "/resources/tower/";
+    private static final String EXTENSION = ".png";
+    private static final double SELL_MODIFIER = 0.8;
 
     protected Enemy attackTarget;
     protected String name;
@@ -98,7 +98,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public int getSellCost() {
-        return Math.round((float) (cost * sellModifier));
+        return Math.round((float) (cost * SELL_MODIFIER));
     }
 
     public int getUpgradeCost() {
@@ -124,7 +124,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public String toPath() {
-        return basePath + name.toLowerCase() + extension;
+        return BASE_PATH + name.toLowerCase() + EXTENSION;
     }
 
     public Image getImage() {

@@ -14,7 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Path {
-    private static final int segmentWidth = 20;
+    private static final int SEGMENT_WIDTH = 20;
+
     private final List<PathLine> path;
     private final LinkedList<GPoint> points;
 
@@ -96,9 +97,9 @@ public class Path {
             GRectangle hitbox = getBounds();
 
             if (hitbox.getWidth() == 0) {
-                hitbox.setBounds(hitbox.getX() - segmentWidth / 2, hitbox.getY() - segmentWidth / 2, segmentWidth, hitbox.getHeight() + segmentWidth);
+                hitbox.setBounds(hitbox.getX() - SEGMENT_WIDTH / 2, hitbox.getY() - SEGMENT_WIDTH / 2, SEGMENT_WIDTH, hitbox.getHeight() + SEGMENT_WIDTH);
             } else {
-                hitbox.setBounds(hitbox.getX() - segmentWidth / 2, hitbox.getY() - segmentWidth / 2, hitbox.getWidth() + segmentWidth, segmentWidth);
+                hitbox.setBounds(hitbox.getX() - SEGMENT_WIDTH / 2, hitbox.getY() - SEGMENT_WIDTH / 2, hitbox.getWidth() + SEGMENT_WIDTH, SEGMENT_WIDTH);
             }
 
             return hitbox;

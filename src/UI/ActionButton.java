@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 public class ActionButton extends Button implements ActionListener {
-    private Action action;
+    private final Action action;
 
     public ActionButton(String text, Action action) {
         super(text);

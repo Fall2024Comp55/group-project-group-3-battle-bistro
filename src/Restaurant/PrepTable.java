@@ -14,9 +14,7 @@ import java.net.URL;
 
 public class PrepTable extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
-    private static final String basePath = "/resources/restaurant/";
-    private static final String extension = ".png";
-    private static final String name = "prep_table";
+    private static final String PATH = "/resources/restaurant/prep_table.png";
 
     private final GImage gImage;
     private Food item;
@@ -43,16 +41,12 @@ public class PrepTable extends GCompound implements Interact, Solid {
         }
     }
 
-    public String toPath() {
-        return basePath + name.toLowerCase() + extension;
-    }
-
     public Image getImage() {
-        URL resource = getClass().getResource(toPath());
+        URL resource = getClass().getResource(PATH);
         if (resource != null) {
             return new ImageIcon(resource).getImage();
         }
-        throw new RuntimeException("Could not find image for path " + toPath());
+        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
     @Override

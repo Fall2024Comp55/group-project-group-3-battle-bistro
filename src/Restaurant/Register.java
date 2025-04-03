@@ -12,12 +12,11 @@ import java.awt.*;
 import java.net.URL;
 
 public class Register extends GCompound implements Solid, Interact {
-    private static final String basePath = "/resources/OrderWindow/";
-    private static final String extension = ".png";
+    private static final String PATH = "/resources/restaurant/register.png";
 
-    private String name;
-    private GImage gImage;
-    protected Food item;
+    private final String name;
+    private final GImage gImage;
+    private Food item;
 
     public Register(String name) {
         this.name = name;
@@ -27,16 +26,12 @@ public class Register extends GCompound implements Solid, Interact {
         add(gImage);
     }
 
-    public String toPath() {
-        return basePath + name.toLowerCase() + extension;
-    }
-
     public Image getImage() {
-        URL resource = getClass().getResource(toPath());
+        URL resource = getClass().getResource(PATH);
         if (resource != null) {
             return new ImageIcon(resource).getImage();
         }
-        throw new RuntimeException("Could not find image for path " + toPath());
+        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
     @Override

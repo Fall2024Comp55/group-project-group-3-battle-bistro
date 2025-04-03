@@ -10,8 +10,8 @@ public enum EnemyType {
     PEPPERONI(200, 1, 4),
     MUSHROOM(250, 3, 5);
 
-    private static final String basePath = "/resources/enemy/";
-    private static final String extension = ".png";
+    private static final String BASE_PATH = "/resources/enemy/";
+    private static final String EXTENSION = ".png";
 
     private final int health;
     private final int speed;
@@ -34,10 +34,10 @@ public enum EnemyType {
 
     public String toPath() {
         return switch (this) {
-            case DOUGH -> basePath + "dough" + extension;
-            case MOZZARELLA -> basePath + "mozzarella" + extension;
-            case PEPPERONI -> basePath + "pepperoni" + extension;
-            case MUSHROOM -> basePath + "mushroom" + extension;
+            case DOUGH -> BASE_PATH + "dough" + EXTENSION;
+            case MOZZARELLA -> BASE_PATH + "mozzarella" + EXTENSION;
+            case PEPPERONI -> BASE_PATH + "pepperoni" + EXTENSION;
+            case MUSHROOM -> BASE_PATH + "mushroom" + EXTENSION;
         };
     }
 

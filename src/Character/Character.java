@@ -31,8 +31,10 @@ import static Utils.Utils.getCenter;
  * balance, and interactions with food, ingredients, and customers.
  */
 public class Character extends GCompound implements Solid, Interact, KeyListener, TickListener {
-    private static final int speed = 5;
-    private static final Character instance;
+    public static final int ROTATE_SPEED = 12;
+    private static final int SPEED = 5;
+
+    private static final Character CHARACTER;
 
     private final Set<Integer> actions;
     private final Map<IngredientsType, AtomicInteger> ingredients;
@@ -49,7 +51,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     static {
         try {
-            instance = new Character();
+            CHARACTER = new Character();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating Character singleton instance");
         }
@@ -82,7 +84,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * @return The singleton instance of the Character.
      */
     public static Character getInstance() {
-        return instance;
+        return CHARACTER;
     }
 
     /**
@@ -223,18 +225,34 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         updateUIs();
     }
 
+    /**
+     * @return The food item the character is currently holding.
+     */
     public Food getHolding() {
         return holding;
     }
 
+    /**
+     * Sets the food item the character is holding.
+     *
+     * @param holding The food item to set.
+     */
     public void setHolding(Food holding) {
         this.holding = holding;
     }
 
+    /**
+     * @return The direction the character is currently facing.
+     */
     public Directions getFacing() {
         return facing;
     }
 
+    /**
+     * Sets the direction the character is facing.
+     *
+     * @param facing The direction to set.
+     */
     public void setFacing(Directions facing) {
         this.facing = facing;
     }
@@ -248,65 +266,68 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     /**
      * Moves the character based on the current actions.
+     * Updates the character's facing direction and position based on the pressed keys.
      */
     public void move() {
-        if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) {
+        if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) { // if only one movement key is pressed
             if (actions.contains(KeyEvent.VK_W)) {
-                facing = Directions.UP;
+                setFacing(Directions.UP);
             } else if (actions.contains(KeyEvent.VK_S)) {
-                facing = Directions.DOWN;
+                setFacing(Directions.DOWN);
             } else if (actions.contains(KeyEvent.VK_A)) {
-                facing = Directions.LEFT;
+                setFacing(Directions.LEFT);
             } else if (actions.contains(KeyEvent.VK_D)) {
-                facing = Directions.RIGHT;
+                setFacing(Directions.RIGHT);
             }
-        } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) {
+        } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
             if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_A)) {
-                facing = Directions.UP_LEFT;
+                setFacing(Directions.UP_LEFT);
             } else if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_D)) {
-                facing = Directions.UP_RIGHT;
+                setFacing(Directions.UP_RIGHT);
             } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_A)) {
-                facing = Directions.DOWN_LEFT;
+                setFacing(Directions.DOWN_LEFT);
             } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_D)) {
-                facing = Directions.DOWN_RIGHT;
+                setFacing(Directions.DOWN_RIGHT);
             }
         }
-        // set desired direction
+
+        // get desired direction
         double dx = facing.getX();
         double dy = facing.getY();
-        // get length of the vector
-        double length = Math.sqrt(dx * dx + dy * dy);
-        if (length != 0) {
-            // normalize the vector
-            dx = (dx / length) * speed;
-            dy = (dy / length) * speed;
-        }
-        // move the character by a total distance of the speed in the direction of the vector
-        move(dx, dy);
 
-        int rotateSpeed = 12;
-        int rotateDistance = facing.getTheta() - currentTheta;
+        double length = Math.sqrt(dx * dx + dy * dy); // get length of the vector
+
+        if (length != 0) {
+            // normalize the vector so the character moves at a constant speed in any direction
+            dx = (dx / length) * SPEED;
+            dy = (dy / length) * SPEED;
+        }
+
+        move(dx, dy); // move the character by the normalized vector
+
+        int rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
+
+        // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
         if (rotateDistance > 180) {
             rotateDistance -= 360;
         } else if (rotateDistance < -180) {
             rotateDistance += 360;
         }
-        if (rotateSpeed < Math.abs(rotateDistance)) {
-            this.rotate(rotateSpeed * Math.signum(rotateDistance));
-            currentTheta += rotateSpeed * (int) Math.signum(rotateDistance);
-        } else {
+
+        if (ROTATE_SPEED < Math.abs(rotateDistance)) { // if the distance is greater than the speed, rotate by the speed
+            this.rotate(ROTATE_SPEED * Math.signum(rotateDistance)); // rotate by the speed times the sign of the distance
+            currentTheta += ROTATE_SPEED * (int) Math.signum(rotateDistance); // track the current angle
+        } else { // if the distance is less than the speed, rotate by the distance
             this.rotate(rotateDistance);
-            currentTheta += rotateDistance;
+            currentTheta += rotateDistance; // track the current angle
         }
 
+        // keep the current angle between 0 and 360 degrees
         if (currentTheta > 360) {
             currentTheta -= 360;
         } else if (currentTheta < 0) {
             currentTheta += 360;
         }
-
-        System.out.println("current theta: " + currentTheta);
-
     }
 
 
@@ -328,7 +349,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
-//        GameScreen.getInstance().setAutoRepaintFlag(true);
         actions.add(e.getKeyCode());
         if (!moving && !(actions.size() == 1 && actions.contains(KeyEvent.VK_E))) {
             moving = true;

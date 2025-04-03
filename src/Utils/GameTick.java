@@ -18,11 +18,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 public class GameTick implements ActionListener, Runnable {
-    public static final int tickRate = 20;
-    public static final int tickDelay = 50;
-    public static final int timerDelay = 5;
-    private final ScheduledExecutorService gameTick;
+    public static final int TICK_RATE = 20;
+    public static final int TICK_DELAY = 50;
+    public static final int TIMER_DELAY = 5;
 
+    private final ScheduledExecutorService gameTick;
     private long lastTickTime;
     private long ticksPerSecond;
 
@@ -31,7 +31,7 @@ public class GameTick implements ActionListener, Runnable {
     }
 
     public void start() {
-        gameTick.scheduleAtFixedRate(this, 0, timerDelay, TimeUnit.MILLISECONDS);
+        gameTick.scheduleAtFixedRate(this, 0, TIMER_DELAY, TimeUnit.MILLISECONDS);
         lastTickTime = System.currentTimeMillis();
     }
 
@@ -48,10 +48,10 @@ public class GameTick implements ActionListener, Runnable {
         System.out.println("Action performed");
         long currentTime = System.currentTimeMillis();
         ticksPerSecond = Math.ceilDiv(1000, currentTime - lastTickTime);
-        if (ticksPerSecond < tickRate) {
+        if (ticksPerSecond < TICK_RATE) {
             System.out.println("Warning: Ticks per second is less than the tick rate" + ticksPerSecond + " " + (currentTime - lastTickTime));
         }
-        if (currentTime - lastTickTime >= tickDelay) {
+        if (currentTime - lastTickTime >= TICK_DELAY) {
             tick();
             lastTickTime = currentTime;
         }
@@ -103,10 +103,10 @@ public class GameTick implements ActionListener, Runnable {
     }
 
     public void tickReclaimer() {
-        if (System.currentTimeMillis() - lastTickTime >= tickDelay) {
+        if (System.currentTimeMillis() - lastTickTime >= TICK_DELAY) {
             System.out.println("Tick reclaimer");
             tick();
-            lastTickTime += tickDelay;
+            lastTickTime += TICK_DELAY;
         }
     }
 
@@ -122,7 +122,7 @@ public class GameTick implements ActionListener, Runnable {
     @Override
     public void run() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastTickTime >= tickDelay) {
+        if (currentTime - lastTickTime >= TICK_DELAY) {
             long timeBetweenTicks = currentTime - lastTickTime;
 //            System.out.println("Time between ticks: " + timeBetweenTicks + " ms");
             tick();

@@ -11,9 +11,11 @@ import acm.graphics.GPoint;
 import acm.graphics.GRectangle;
 
 public class Enemy extends GCompound implements TickListener {
-    public static final int size = 20;
-    public static final double moveRate = .1;
+    public static final int SIZE = 20;
+    public static final double MOVE_RATE = .1;
+
     private static Path path;
+
     private final GImage gImage;
     private final EnemyType type;
     private int health;
@@ -32,7 +34,7 @@ public class Enemy extends GCompound implements TickListener {
         }
         this.targetPoint = path.getPoint(1);
         gImage = new GImage(type.getImage());
-        gImage.setSize(size, size);
+        gImage.setSize(SIZE, SIZE);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         bounds = this.getBounds();
         bounds.setLocation(Utils.getCenter(bounds));
@@ -69,7 +71,7 @@ public class Enemy extends GCompound implements TickListener {
 
             double distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < type.getSpeed() * moveRate) {
+            if (distance < type.getSpeed() * MOVE_RATE) {
                 this.setLocation(targetPoint);
                 if (targetPoint.equals(path.getEnd())) {
                     pathTraversed += distance;
@@ -78,9 +80,9 @@ public class Enemy extends GCompound implements TickListener {
                     targetPoint = path.getNext(targetPoint);
                 }
             } else {
-                pathTraversed += type.getSpeed() * moveRate;
+                pathTraversed += type.getSpeed() * MOVE_RATE;
 
-                this.move((dx / distance) * type.getSpeed() * moveRate, (dy / distance) * type.getSpeed() * moveRate);
+                this.move((dx / distance) * type.getSpeed() * MOVE_RATE, (dy / distance) * type.getSpeed() * MOVE_RATE);
             }
 
         }

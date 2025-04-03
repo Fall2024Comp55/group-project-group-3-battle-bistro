@@ -16,8 +16,9 @@ import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Projectile extends GCompound implements TickListener {
-    public static final String basePath = "/resources/projectile/";
-    public static final String extension = ".png";
+    public static final String BASE_PATH = "/resources/projectile/";
+    public static final String EXTENSION = ".png";
+
     private final String name;
 
     protected GImage gImage;
@@ -101,7 +102,7 @@ public abstract class Projectile extends GCompound implements TickListener {
     }
 
     public String toPath() {
-        return basePath + name.toLowerCase() + extension;
+        return BASE_PATH + name.toLowerCase() + EXTENSION;
     }
 
     public Image getImage() {

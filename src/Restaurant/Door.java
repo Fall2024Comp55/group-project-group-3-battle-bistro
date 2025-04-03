@@ -13,9 +13,7 @@ import java.net.URL;
 
 public class Door extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
-    private static final String basePath = "/resources/restaurant/";
-    private static final String extension = ".png";
-    private static final String name = "door";
+    private static final String PATH = "/resources/restaurant/door.png";
 
     private final GImage gImage;
 
@@ -26,16 +24,12 @@ public class Door extends GCompound implements Solid, Interact {
         add(gImage);
     }
 
-    public String toPath() {
-        return basePath + name.toLowerCase() + extension;
-    }
-
     public Image getImage() {
-        URL resource = getClass().getResource(toPath());
+        URL resource = getClass().getResource(PATH);
         if (resource != null) {
             return new ImageIcon(resource).getImage();
         }
-        throw new RuntimeException("Could not find image for path " + toPath());
+        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
 

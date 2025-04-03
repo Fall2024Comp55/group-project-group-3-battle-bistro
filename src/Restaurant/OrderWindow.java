@@ -14,31 +14,24 @@ import java.net.URL;
 
 public class OrderWindow extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
-    private static final String basePath = "/resources/OrderWindow/";
-    private static final String extension = ".png";
+    private static final String PATH = "/resources/restaurant/order_window.png";
 
-    private String name;
-    private GImage gImage;
+    private final GImage gImage;
     protected Food item;
 
     public OrderWindow(String name) {
-        this.name = name;
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
     }
 
-    public String toPath() {
-        return basePath + name.toLowerCase() + extension;
-    }
-
     public Image getImage() {
-        URL resource = getClass().getResource(toPath());
+        URL resource = getClass().getResource(PATH);
         if (resource != null) {
             return new ImageIcon(resource).getImage();
         }
-        throw new RuntimeException("Could not find image for path " + toPath());
+        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
     @Override

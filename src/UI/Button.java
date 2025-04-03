@@ -9,8 +9,8 @@ import acm.graphics.GRect;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import static UI.GameScreen.globalColor;
-import static UI.GameScreen.globalFont;
+import static UI.GameScreen.GLOBAL_COLOR;
+import static UI.GameScreen.GLOBAL_FONT;
 
 public class Button extends GCompound implements MouseInteract {
     protected GLabel label;
@@ -20,10 +20,10 @@ public class Button extends GCompound implements MouseInteract {
 
     public Button(String text) {
         label = new GLabel(text);
-        label.setFont(globalFont);
-        label.setColor(globalColor);
+        label.setFont(GLOBAL_FONT);
+        label.setColor(GLOBAL_COLOR);
         box = new GRect(label.getWidth() + 20, label.getHeight() + 10); // Added padding
-        box.setColor(globalColor);
+        box.setColor(GLOBAL_COLOR);
         box.setFilled(true);
         box.setFillColor(Color.WHITE);
         add(box, -box.getWidth() / 2, -box.getHeight() / 2); // Center the box

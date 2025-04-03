@@ -25,10 +25,11 @@ import static Utils.Utils.easeInOutCubic;
 public class GameScreen extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
-    public static final String globalFont = "Arial-16"; // Reduced font size for better fit
-    public static final Color globalColor = Color.BLACK;
+    public static final String GLOBAL_FONT = "Arial-16"; // Reduced font size for better fit
+    public static final Color GLOBAL_COLOR = Color.BLACK;
 
-    private static final GameScreen instance;
+    private static final GameScreen GAME_SCREEN;
+
     private static CurrentScreen currentScreen;
     private static Path path;
 
@@ -36,14 +37,14 @@ public class GameScreen extends GraphicsProgram {
 
     static {
         try {
-            instance = new GameScreen();
+            GAME_SCREEN = new GameScreen();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating GameScreen singleton instance");
         }
     }
 
     public static GameScreen getInstance() {
-        return instance;
+        return GAME_SCREEN;
     }
 
     public static Path getPath() {
@@ -84,7 +85,6 @@ public class GameScreen extends GraphicsProgram {
 */
 
         Button screenSwitch = new ActionButton("Screen Switch", () -> {
-            ;
             enterDoor();
         });
         add(screenSwitch);

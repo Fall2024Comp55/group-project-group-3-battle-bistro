@@ -11,7 +11,7 @@ import java.util.Set;
 import static UI.GameScreen.*;
 
 public class GardenUI extends GCompound implements Solid {
-    private static final GardenUI instance;
+    private static final GardenUI GARDEN_UI;
 
     private final Set<GObject> elements;
     private final GLabel moneyLabel;
@@ -20,7 +20,7 @@ public class GardenUI extends GCompound implements Solid {
 
     static {
         try {
-            instance = new GardenUI();
+            GARDEN_UI = new GardenUI();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating GardenUI singleton instance");
         }
@@ -40,8 +40,8 @@ public class GardenUI extends GCompound implements Solid {
         elements.add(menuBar);
 
 
-        moneyLabel.setFont(globalFont);
-        moneyLabel.setColor(globalColor);
+        moneyLabel.setFont(GLOBAL_FONT);
+        moneyLabel.setColor(GLOBAL_COLOR);
         moneyLabel.setLocation(20, 35);
         add(moneyLabel);
         elements.add(moneyLabel);
@@ -67,7 +67,7 @@ public class GardenUI extends GCompound implements Solid {
     }
 
     public static GardenUI getInstance() {
-        return instance;
+        return GARDEN_UI;
     }
 
     public void update() {

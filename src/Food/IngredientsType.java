@@ -10,9 +10,9 @@ public enum IngredientsType {
     PEPPERONI,
     MUSHROOM;
 
-    private static final String ingredientsBasePath = "/resources/ingredients/";
-    private static final String stationBasePath = "/stations/";
-    private static final String extension = ".png";
+    private static final String INGREDIENTS_BASE_PATH = "/resources/ingredients/";
+    private static final String STATION_BASE_PATH = "/stations/";
+    private static final String EXTENSION = ".png";
 
     IngredientsType() {
     }
@@ -28,19 +28,19 @@ public enum IngredientsType {
 
     public String toStationPath() {
         return switch (this) {
-            case DOUGH -> stationBasePath + "dough" + extension;
-            case MOZZARELLA -> stationBasePath + "mozzarella" + extension;
-            case PEPPERONI -> stationBasePath + "pepperoni" + extension;
-            case MUSHROOM -> stationBasePath + "mushroom" + extension;
+            case DOUGH -> STATION_BASE_PATH + "dough" + EXTENSION;
+            case MOZZARELLA -> STATION_BASE_PATH + "mozzarella" + EXTENSION;
+            case PEPPERONI -> STATION_BASE_PATH + "pepperoni" + EXTENSION;
+            case MUSHROOM -> STATION_BASE_PATH + "mushroom" + EXTENSION;
         };
     }
 
     public String toIngredientPath() {
         return switch (this) {
-            case DOUGH -> ingredientsBasePath + "dough" + extension;
-            case MOZZARELLA -> ingredientsBasePath + "mozzarella" + extension;
-            case PEPPERONI -> ingredientsBasePath + "pepperoni" + extension;
-            case MUSHROOM -> ingredientsBasePath + "mushroom" + extension;
+            case DOUGH -> INGREDIENTS_BASE_PATH + "dough" + EXTENSION;
+            case MOZZARELLA -> INGREDIENTS_BASE_PATH + "mozzarella" + EXTENSION;
+            case PEPPERONI -> INGREDIENTS_BASE_PATH + "pepperoni" + EXTENSION;
+            case MUSHROOM -> INGREDIENTS_BASE_PATH + "mushroom" + EXTENSION;
         };
     }
 

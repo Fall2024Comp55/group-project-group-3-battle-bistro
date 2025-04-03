@@ -6,7 +6,6 @@ import acm.graphics.GCompound;
 import java.util.EnumSet;
 
 public class Food extends GCompound {
-
     private final EnumSet<IngredientsType> ingredients;
     private OrderTicket orderTicket;
     private boolean sauce;
