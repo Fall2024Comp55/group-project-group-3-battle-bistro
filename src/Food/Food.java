@@ -52,4 +52,24 @@ public class Food extends GCompound {
     public boolean isBoxed() {
         return boxed;
     }
+
+    public void setOrderTicket(OrderTicket orderTicket) {
+        this.orderTicket = orderTicket;
+    }
+
+    public void setSauce(boolean sauce) {
+        this.sauce = sauce;
+    }
+
+    public void setCheese(boolean cheese) {
+        this.cheese = cheese;
+    }
+
+    public void setCooked(boolean cooked) {
+        this.cooked = cooked;
+    }
+
+    public void setBoxed(boolean boxed) {
+        this.boxed = boxed;
+    }
 }

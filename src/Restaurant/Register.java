@@ -1,9 +1,6 @@
 package Restaurant;
 
-import Character.Character;
 import Food.Food;
-import Utils.Action;
-import Utils.GameTick;
 import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
@@ -14,31 +11,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class Oven extends GCompound implements Action, Solid, Interact {
-    // TODO find needed variables and methods
-    private static final String basePath = "/resources/restaurant/";
+public class Register extends GCompound implements Solid, Interact {
+    private static final String basePath = "/resources/OrderWindow/";
     private static final String extension = ".png";
-    private static final String name = "oven";
 
-    private final GImage gImage;
-    private Food item;
-    private int tick_speed = 200;
+    private String name;
+    private GImage gImage;
+    protected Food item;
 
-    public Oven() {
+    public Register(String name) {
+        this.name = name;
         GImage gImage = new GImage(getImage());
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
-        tick_speed = 100;
-    }
-
-    public void interact() {
-        Food pizza = Character.getInstance().getHolding();
-        if (pizza != null && !pizza.isCooked()) {
-            GameTick.ActionManager.addAction(tick_speed, () -> {
-                pizza.setCooked(true);
-            });
-        }
     }
 
     public String toPath() {
@@ -54,8 +40,13 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     }
 
     @Override
-    public void performAction() {
+    public void interact() {
+        //TODO: Check if customer is present upon interaction, take order and retrieve order ticket.
+    }
 
+    @Override
+    public GRectangle getInteractHitbox() {
+        return this.getBounds();
     }
 
     @Override
@@ -65,11 +56,6 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
-    }
-
-    @Override
-    public GRectangle getInteractHitbox() {
         return null;
     }
 }
