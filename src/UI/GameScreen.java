@@ -43,6 +43,8 @@ public class GameScreen extends GraphicsProgram {
         }
     }
 
+    private boolean shifting;
+
     public static GameScreen getInstance() {
         return GAME_SCREEN;
     }
@@ -59,6 +61,7 @@ public class GameScreen extends GraphicsProgram {
         this.requestFocus();
         this.tick = new GameTick();
         this.setAutoRepaintFlag(false);
+        this.shifting = false;
     }
 
     @Override
@@ -123,6 +126,9 @@ public class GameScreen extends GraphicsProgram {
 
     public void enterDoor() {
         AtomicInteger endX = new AtomicInteger();
+        if (shifting) {
+            return;
+        }
         // check if currentScreen is GARDEN or RESTAURANT and switch.
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
@@ -134,6 +140,8 @@ public class GameScreen extends GraphicsProgram {
             endX.set(0);
         }
 
+
+        shifting = true;
         // new executor to run the animation
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
@@ -144,6 +152,7 @@ public class GameScreen extends GraphicsProgram {
         executor.scheduleAtFixedRate(() -> {
             boolean done = shiftScreen(gw.getGCanvas().getX(), endX.get(), startTime);
             if (done) {
+                shifting = false;
                 executor.shutdown();
             }
         }, 0, 10, TimeUnit.MILLISECONDS);
@@ -155,7 +164,7 @@ public class GameScreen extends GraphicsProgram {
         // check if progress is at the end
         if (progress >= 1.0f) {
             // commented out as there was a wierd jump at the end
-//            gw.getGCanvas().setLocation(endX, 0);
+            gw.getGCanvas().setLocation(endX, 0);
             //TODO remove repaint later
             repaint();
             // return true ending executor
