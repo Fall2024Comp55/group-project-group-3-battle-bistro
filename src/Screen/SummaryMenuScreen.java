@@ -19,4 +19,8 @@ public class SummaryMenuScreen extends Screen {
         return SUMMARY_MENU_SCREEN;
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
 }

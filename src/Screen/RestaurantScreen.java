@@ -19,4 +19,8 @@ public class RestaurantScreen extends Screen {
         return RESTAURANT_SCREEN;
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
 }

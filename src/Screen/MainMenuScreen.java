@@ -19,4 +19,8 @@ public class MainMenuScreen extends Screen {
         return MAIN_MENU_SCREEN;
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
 }

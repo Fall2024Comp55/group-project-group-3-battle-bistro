@@ -20,4 +20,8 @@ public class GardenScreen extends Screen {
         return GARDEN_SCREEN;
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
 }
