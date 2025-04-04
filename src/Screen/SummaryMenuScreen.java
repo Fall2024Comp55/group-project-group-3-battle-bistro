@@ -1,17 +1,22 @@
 package Screen;
 
-import acm.graphics.GCompound;
-import acm.graphics.GObject;
+public class SummaryMenuScreen extends Screen {
+    private static final SummaryMenuScreen SUMMARY_MENU_SCREEN;
 
-import java.util.Set;
-
-public class SummaryMenuScreen extends GCompound {
-    private Set<GObject> elements;
-
-    SummaryMenuScreen() {
+    static {
+        try {
+            SUMMARY_MENU_SCREEN = new SummaryMenuScreen();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception occurred in creating RestaurantScreen singleton instance");
+        }
     }
 
+    private SummaryMenuScreen() {
+        // Initialize the summary menu screen components here
+    }
 
-    // TODO find needed variables and methods
+    public static SummaryMenuScreen getInstance() {
+        return SUMMARY_MENU_SCREEN;
+    }
 
 }
