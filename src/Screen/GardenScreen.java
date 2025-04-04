@@ -1,5 +1,7 @@
 package Screen;
 
+import Utils.TickListener;
+
 public class GardenScreen extends Screen {
 
     private static final GardenScreen GARDEN_SCREEN;
@@ -22,6 +24,21 @@ public class GardenScreen extends Screen {
 
     @Override
     public void initializeComponents() {
+
+    }
+
+    @Override
+    public void registerTickListener(TickListener listener) {
+
+    }
+
+    @Override
+    public void unregisterTickListener(TickListener listener) {
+
+    }
+
+    @Override
+    public void unregisterAllTickListener() {
 
     }
 }

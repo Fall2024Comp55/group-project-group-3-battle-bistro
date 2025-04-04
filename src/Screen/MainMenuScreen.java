@@ -1,5 +1,7 @@
 package Screen;
 
+import Utils.TickListener;
+
 public class MainMenuScreen extends Screen {
     private static final MainMenuScreen MAIN_MENU_SCREEN;
 
@@ -21,6 +23,21 @@ public class MainMenuScreen extends Screen {
 
     @Override
     public void initializeComponents() {
+
+    }
+
+    @Override
+    public void registerTickListener(TickListener listener) {
+
+    }
+
+    @Override
+    public void unregisterTickListener(TickListener listener) {
+
+    }
+
+    @Override
+    public void unregisterAllTickListener() {
 
     }
 }
