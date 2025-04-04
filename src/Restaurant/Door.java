@@ -36,7 +36,7 @@ public class Door extends GCompound implements Solid, Interact {
     @Override
     public void onCollision() {
     }
-
+    
     @Override
     public GRectangle getHitbox() {
         return this.getBounds();
