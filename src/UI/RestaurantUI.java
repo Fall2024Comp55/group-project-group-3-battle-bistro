@@ -3,13 +3,8 @@ package UI;
 import Character.Character;
 import Customer.Customer;
 import Food.IngredientsType;
-import Restaurant.Door;
-import Restaurant.IngredientStation;
-import Restaurant.OrderWindow;
-import Restaurant.Oven;
-import Restaurant.PrepTable;
+import Restaurant.*;
 import Utils.Solid;
-
 import acm.graphics.*;
 
 import java.awt.*;
@@ -20,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static UI.GameScreen.*;
+import static Screen.ProgramWindow.*;
 
 public class RestaurantUI extends GCompound implements Solid {
     private static final RestaurantUI RESTAURANT_UI;

@@ -9,8 +9,8 @@ import acm.graphics.GRect;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import static UI.GameScreen.GLOBAL_COLOR;
-import static UI.GameScreen.GLOBAL_FONT;
+import static Screen.ProgramWindow.GLOBAL_COLOR;
+import static Screen.ProgramWindow.GLOBAL_FONT;
 
 public class Button extends GCompound implements MouseInteract {
     protected GLabel label;

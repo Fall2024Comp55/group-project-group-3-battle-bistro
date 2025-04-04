@@ -2,7 +2,7 @@ package Tower;
 
 import Character.Character;
 import Enemy.Enemy;
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import Utils.*;
 import Utils.GameTick.ActionManager;
 import acm.graphics.*;
@@ -63,7 +63,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (placed) {
             enemyFound = false;
             attackTarget = null;
-            GameScreen.getInstance().forEach(object -> {
+            ProgramWindow.getInstance().forEach(object -> {
                 if (object instanceof Enemy e) {
                     if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
                         enemyFound = true;
@@ -137,7 +137,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     private void remove() {
         removeAll();
-        GameScreen.getInstance().remove(this);
+        ProgramWindow.getInstance().remove(this);
     }
 
     @Override

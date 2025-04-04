@@ -1,6 +1,6 @@
 package Restaurant;
 
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
@@ -44,7 +44,7 @@ public class Door extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-        GameScreen.getInstance().enterDoor();
+        ProgramWindow.getInstance().enterDoor();
     }
 
     @Override

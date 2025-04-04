@@ -1,7 +1,7 @@
 package Enemy;
 
 import Character.Character;
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
@@ -30,7 +30,7 @@ public class Enemy extends GCompound implements TickListener {
         this.alive = true;
         this.pathTraversed = 0;
         if (path == null) {
-            path = GameScreen.getPath();
+            path = ProgramWindow.getPath();
         }
         this.targetPoint = path.getPoint(1);
         gImage = new GImage(type.getImage());
@@ -91,7 +91,7 @@ public class Enemy extends GCompound implements TickListener {
     private void remove() {
         GameTick.ActionManager.addAction(1, () -> {
             removeAll();
-            GameScreen.getInstance().remove(this);
+            ProgramWindow.getInstance().remove(this);
         });
     }
 

@@ -1,7 +1,7 @@
 package Tower;
 
 import Enemy.Enemy;
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
 
@@ -15,6 +15,6 @@ public class SpatulaProjectile extends Projectile {
         add(gImage);
         gImage.setSize(20, 50);
 
-        GameScreen.getInstance().add(this);
+        ProgramWindow.getInstance().add(this);
     }
 }

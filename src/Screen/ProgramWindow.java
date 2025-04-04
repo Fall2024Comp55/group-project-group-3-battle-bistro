@@ -1,9 +1,12 @@
-package UI;
+package Screen;
 
 import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
+import UI.ActionButton;
+import UI.Button;
+import UI.GardenUI;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
@@ -23,14 +26,13 @@ import java.util.random.RandomGenerator;
 import static Utils.Utils.easeInOutCubic;
 
 
-
-public class GameScreen extends GraphicsProgram {
+public class ProgramWindow extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
     public static final String GLOBAL_FONT = "Arial-16"; // Reduced font size for better fit
     public static final Color GLOBAL_COLOR = Color.BLACK;
 
-    private static final GameScreen GAME_SCREEN;
+    private static final ProgramWindow GAME_SCREEN;
 
     private static CurrentScreen currentScreen;
     private static Path path;
@@ -39,7 +41,7 @@ public class GameScreen extends GraphicsProgram {
 
     static {
         try {
-            GAME_SCREEN = new GameScreen();
+            GAME_SCREEN = new ProgramWindow();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating GameScreen singleton instance");
         }
@@ -47,7 +49,7 @@ public class GameScreen extends GraphicsProgram {
 
     private boolean shifting;
 
-    public static GameScreen getInstance() {
+    public static ProgramWindow getInstance() {
         return GAME_SCREEN;
     }
 

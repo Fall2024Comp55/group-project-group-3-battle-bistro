@@ -1,9 +1,9 @@
-import UI.GameScreen;
+import Screen.ProgramWindow;
 
 public class BattleBistro {
 
     public static void main(String[] args) {
-        GameScreen.getInstance().start();
+        ProgramWindow.getInstance().start();
     }
 
 }

@@ -1,6 +1,6 @@
 package Enemy;
 
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import Utils.MouseInteract;
 import Utils.Solid;
 import acm.graphics.GLine;
@@ -33,9 +33,9 @@ public class Path {
             GPoint p1 = points.get(i - 1);
             GPoint p2 = points.get(i);
             PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-            GameScreen.getInstance().add(segment);
+            ProgramWindow.getInstance().add(segment);
             path.add(segment);
-            GameScreen.getInstance().add(new GRect(segment.getHitbox().getX(), segment.getHitbox().getY(), segment.getHitbox().getWidth(), segment.getHitbox().getHeight()));
+            ProgramWindow.getInstance().add(new GRect(segment.getHitbox().getX(), segment.getHitbox().getY(), segment.getHitbox().getWidth(), segment.getHitbox().getHeight()));
         }
         hidePath();
     }

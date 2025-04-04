@@ -1,9 +1,9 @@
 package Utils;
 
 import Enemy.Enemy;
+import Screen.ProgramWindow;
 import Tower.Projectile;
 import Tower.Tower;
-import UI.GameScreen;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -128,7 +128,7 @@ public class GameTick implements ActionListener, Runnable {
             tick();
             lastTickTime = currentTime;
         }
-        GameScreen.getInstance().repaint();
+        ProgramWindow.getInstance().repaint();
         tickReclaimer();
     }
 

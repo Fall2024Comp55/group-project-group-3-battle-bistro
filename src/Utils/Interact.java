@@ -1,6 +1,6 @@
 package Utils;
 
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import acm.graphics.GObject;
 import acm.graphics.GRectangle;
 
@@ -27,7 +27,7 @@ public interface Interact {
      */
     default Interact checkForInteractable() {
 
-        for (GObject object : GameScreen.getInstance()) {
+        for (GObject object : ProgramWindow.getInstance()) {
             if (object instanceof Interact i && object != this) {
                 if (i.getInteractHitbox() != null && this.getInteractHitbox().intersects(i.getInteractHitbox())) {
                     return i;

@@ -7,12 +7,12 @@ import acm.graphics.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.Executors;
 
-import static UI.GameScreen.*;
+import static Screen.ProgramWindow.*;
 
 public class GardenUI extends GCompound implements Solid {
     private static final GardenUI GARDEN_UI;

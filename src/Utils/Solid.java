@@ -1,6 +1,6 @@
 package Utils;
 
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import acm.graphics.GRectangle;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,7 +29,7 @@ public interface Solid {
     default Boolean checkCollision() {
         AtomicBoolean hit = new AtomicBoolean(false);
 
-        GameScreen.getInstance().forEach(object -> {
+        ProgramWindow.getInstance().forEach(object -> {
             if (object instanceof Solid s && object != this) {
                 if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
                     hit.set(true);

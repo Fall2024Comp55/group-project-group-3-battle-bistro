@@ -1,7 +1,7 @@
 package Tower;
 
 import Enemy.Enemy;
-import UI.GameScreen;
+import Screen.ProgramWindow;
 import Utils.GameTick;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
@@ -70,7 +70,7 @@ public abstract class Projectile extends GCompound implements TickListener {
     public Boolean checkHit() {
         AtomicBoolean hit = new AtomicBoolean(false);
 
-        GameScreen.getInstance().forEach(object -> {
+        ProgramWindow.getInstance().forEach(object -> {
             if (object instanceof Enemy e) {
                 if (e.getBounds() != null && this.getBounds().intersects(e.getBounds())) {
                     hit.set(true);
@@ -92,7 +92,7 @@ public abstract class Projectile extends GCompound implements TickListener {
 
     protected void remove() {
         ActionManager.addAction(1, () -> {
-            GameScreen.getInstance().remove(this);
+            ProgramWindow.getInstance().remove(this);
             removeAll();
         });
     }
