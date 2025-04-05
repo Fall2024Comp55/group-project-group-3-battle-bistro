@@ -216,18 +216,7 @@ public class ProgramWindow extends GraphicsProgram {
         MouseManager.setLastMousePoint(e.getPoint());
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        pressed(e);
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        dragged(e);
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
+    private void released(MouseEvent e) {
         GObject object = MouseManager.getSelectedObject();
 
         if (object != null) {
@@ -239,8 +228,7 @@ public class ProgramWindow extends GraphicsProgram {
         MouseManager.setSelectedObject(null);
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
+    private void moved(MouseEvent e) {
         MouseManager.setHoverPoint(e.getPoint());
 
         GObject object = getElementAt(e.getX(), e.getY());
@@ -268,6 +256,26 @@ public class ProgramWindow extends GraphicsProgram {
         } else if (MouseManager.getHoverObject() != null) {
             MouseManager.setHoverObject(null);
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        pressed(e);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        dragged(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        released(e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        moved(e);
     }
 
     public enum CurrentScreen {
