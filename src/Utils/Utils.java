@@ -1,7 +1,13 @@
 package Utils;
 
+import Screen.Screen;
+import UI.UI;
+import acm.graphics.GCompound;
+import acm.graphics.GObject;
 import acm.graphics.GPoint;
 import acm.graphics.GRectangle;
+
+import java.awt.*;
 
 public class Utils {
     //TODO work on getCenter and getCenterOffset methods
@@ -21,6 +27,15 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
+    public static GObject getObjectInCompound(GCompound c, Point p) {
+        GObject object = c.getElementAt(p.getX(), p.getY());
+        if (object instanceof UI ui) {
+            object = getObjectInCompound(ui, p);
+        } else if (object instanceof Screen screen) {
+            object = getObjectInCompound(screen, p);
+        }
+        return object;
+    }
 
     /**
      * Linearly interpolates between two values.

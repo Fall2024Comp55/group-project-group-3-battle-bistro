@@ -13,7 +13,6 @@ import Utils.MouseInteract;
 import Utils.MouseManager;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
-import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
@@ -25,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.random.RandomGenerator;
 
 import static Utils.Utils.easeInOutCubic;
+import static Utils.Utils.getObjectInCompound;
 
 
 public class ProgramWindow extends GraphicsProgram {
@@ -77,7 +77,7 @@ public class ProgramWindow extends GraphicsProgram {
         // set current screen to GARDEN
         currentScreen = CurrentScreen.GARDEN;
         // add GardenUI to screen
-        add(GardenUI.getInstance());
+        add(GardenScreen.getInstance());
 
         // create new path
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
@@ -195,12 +195,11 @@ public class ProgramWindow extends GraphicsProgram {
                 MouseManager.setSelectedObject(object);
                 o.onPress(e);
             } else if (object instanceof GCompound c) {
-                c.forEach(o -> {
-                    if (o instanceof MouseInteract m && o.contains(new GPoint(e.getX(), e.getY()))) {
-                        MouseManager.setSelectedObject(o);
-                        m.onPress(e);
-                    }
-                });
+                object = getObjectInCompound(c, e.getPoint());
+                if (object instanceof MouseInteract m) {
+                    MouseManager.setSelectedObject(object);
+                    m.onPress(e);
+                }
             }
         }
     }
@@ -212,6 +211,12 @@ public class ProgramWindow extends GraphicsProgram {
         if (object != null) {
             if (object instanceof MouseInteract o) {
                 o.onDrag(e);
+            } else if (object instanceof GCompound c) {
+                object = getObjectInCompound(c, e.getPoint());
+                if (object instanceof MouseInteract m) {
+                    MouseManager.setHoverObject(object);
+                    m.onDrag(e);
+                }
             }
         }
         MouseManager.setLastMousePoint(e.getPoint());
@@ -223,6 +228,12 @@ public class ProgramWindow extends GraphicsProgram {
         if (object != null) {
             if (object instanceof MouseInteract o) {
                 o.onRelease(e);
+            } else if (object instanceof GCompound c) {
+                object = getObjectInCompound(c, e.getPoint());
+                if (object instanceof MouseInteract m) {
+                    MouseManager.setSelectedObject(object);
+                    m.onRelease(e);
+                }
             }
         }
         MouseManager.setLastClickPoint(e.getPoint());
@@ -240,16 +251,14 @@ public class ProgramWindow extends GraphicsProgram {
                     o.onHover(e);
                 }
             } else if (object instanceof GCompound c) {
-                getObjectInCompound(c, e.getPoint());
                 boolean found = false;
-                for (GObject o : c) {
-                    if (o instanceof MouseInteract m && o.contains(new GPoint(e.getX(), e.getY()))) {
-                        if (o != MouseManager.getHoverObject()) {
-                            MouseManager.setHoverObject(o);
-                            m.onHover(e);
-                        }
-                        found = true;
+                object = getObjectInCompound(c, e.getPoint());
+                if (object instanceof MouseInteract m) {
+                    if (object != MouseManager.getHoverObject()) {
+                        MouseManager.setHoverObject(object);
+                        m.onHover(e);
                     }
+                    found = true;
                 }
                 if (!found && MouseManager.getHoverObject() != null) {
                     MouseManager.setHoverObject(null);
@@ -258,19 +267,6 @@ public class ProgramWindow extends GraphicsProgram {
         } else if (MouseManager.getHoverObject() != null) {
             MouseManager.setHoverObject(null);
         }
-    }
-
-    public GObject getObjectInCompound(GCompound c, Point p) {
-        GObject object = c.getElementAt(p.getX(), p.getY());
-        System.out.println("Object: " + object);
-        if (object instanceof UI ui) {
-            System.out.println("UI: " + ui);
-            object = getObjectInCompound(ui, p);
-        } else if (object instanceof Screen screen) {
-            System.out.println("Screen: " + screen);
-            object = getObjectInCompound(screen, p);
-        }
-        return object;
     }
 
     @Override

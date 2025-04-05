@@ -1,6 +1,8 @@
 package Utils;
 
 import Screen.ProgramWindow;
+import acm.graphics.GCompound;
+import acm.graphics.GObject;
 import acm.graphics.GRectangle;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,6 +36,16 @@ public interface Solid {
                 if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
                     hit.set(true);
                 }
+            } else if (object instanceof GCompound c) {
+                for (GObject g : c) {
+                    if (g instanceof Solid s && object != this) {
+                        if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
+                            hit.set(true);
+                        }
+                    }
+                }
+
+
             }
         });
 

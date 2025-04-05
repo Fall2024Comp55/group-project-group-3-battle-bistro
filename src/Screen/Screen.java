@@ -4,10 +4,16 @@ import Utils.TickListener;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Screen extends GCompound {
     protected Set<GObject> elements;
+
+    Screen() {
+        // Initialize the elements set
+        elements = new HashSet<GObject>();
+    }
 
     // Abstract method to be implemented by subclasses
     public abstract void initializeComponents();

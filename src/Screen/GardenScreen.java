@@ -1,5 +1,6 @@
 package Screen;
 
+import UI.GardenUI;
 import Utils.TickListener;
 
 import java.util.Set;
@@ -22,6 +23,7 @@ public class GardenScreen extends Screen {
 
     private GardenScreen() {
         // Initialize the garden screen components here
+        initializeComponents();
     }
 
     public static GardenScreen getInstance() {
@@ -30,7 +32,7 @@ public class GardenScreen extends Screen {
 
     @Override
     public void initializeComponents() {
-
+        add(GardenUI.getInstance());
     }
 
     @Override
