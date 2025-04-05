@@ -10,7 +10,7 @@ public class OrderTicketUI extends UI {
 
     protected ArrayList<OrderTicket> tickets;
     public static final int horizontalOffset = 50;
-    public static final  int verticalOffset = 50;
+    public static final  int verticalOffset = 150;
 
     static {
         try {
