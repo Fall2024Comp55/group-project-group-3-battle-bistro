@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static Screen.ProgramWindow.*;
 
-public class GardenUI extends GCompound implements Solid {
+public class GardenUI extends UI implements Solid {
     private static final GardenUI GARDEN_UI;
 
     private final Set<GObject> elements;

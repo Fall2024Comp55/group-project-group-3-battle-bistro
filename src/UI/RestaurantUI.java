@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static Screen.ProgramWindow.*;
 
-public class RestaurantUI extends GCompound implements Solid {
+public class RestaurantUI extends UI implements Solid {
     private static final RestaurantUI RESTAURANT_UI;
 
     private final Set<GObject> elements;

@@ -1,13 +1,10 @@
 package UI;
 
 import Customer.OrderTicket;
-import Utils.Interact;
-import acm.graphics.GCompound;
-import acm.graphics.GRectangle;
 
 import java.util.ArrayList;
 
-public class OrderTicketUI extends GCompound implements Interact {
+public class OrderTicketUI extends UI {
 
     private static final OrderTicketUI tab;
 
@@ -42,13 +39,4 @@ public class OrderTicketUI extends GCompound implements Interact {
         return tab;
     }
 
-    @Override
-    public void interact() {
-
-    }
-
-    @Override
-    public GRectangle getInteractHitbox() {
-        return null;
-    }
 }

@@ -1,12 +1,11 @@
 package UI;
 
 
-import acm.graphics.GCompound;
 import acm.graphics.GObject;
 
 import java.util.Set;
 
-public class TowerUI extends GCompound {
+public class TowerUI extends UI {
     private Set<GObject> elements;
 
     TowerUI() {
