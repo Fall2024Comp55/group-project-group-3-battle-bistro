@@ -8,6 +8,7 @@ import Utils.Solid;
 import acm.graphics.*;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -79,57 +80,6 @@ public class RestaurantUI extends UI implements Solid {
 
         // notification area
         initNotificationArea();
-
-        // door to switch back to the Garden screen
-        Door door = new Door();
-        door.setLocation(50, 100);
-        elements.add(door);
-        add(door);
-
-        // ingredient stations
-        IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
-        doughStation.setLocation(100, 300);
-        elements.add(doughStation);
-        add(doughStation);
-
-        IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
-        pepperoniStation.setLocation(200, 300);
-        elements.add(pepperoniStation);
-        add(pepperoniStation);
-
-        IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
-        mozzarellaStation.setLocation(300, 300);
-        elements.add(mozzarellaStation);
-        add(mozzarellaStation);
-
-        IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
-        mushroomStation.setLocation(400, 300);
-        elements.add(mushroomStation);
-        add(mushroomStation);
-
-        // prep table for assembling pizzas
-        PrepTable prepTable = new PrepTable("Prep Table");
-        prepTable.setLocation(250, 200);
-        elements.add(prepTable);
-        add(prepTable);
-        
-        // oven for cooking pizzas
-        Oven oven = new Oven();
-        oven.setLocation(350, 200);
-        elements.add(oven);
-        add(oven);
-
-        // order window for delivering pizzas
-        OrderWindow orderWindow = new OrderWindow("Order Window");
-        orderWindow.setLocation(450, 200);
-        elements.add(orderWindow);
-        add(orderWindow);
-
-        //customer
-        Customer customer = new Customer();
-        customer.setLocation(500, 100);
-        elements.add(customer);
-        add(customer);
     }
 
     public static RestaurantUI getInstance() {

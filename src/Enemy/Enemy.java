@@ -1,6 +1,7 @@
 package Enemy;
 
 import Character.Character;
+import Screen.GardenScreen;
 import Screen.ProgramWindow;
 import Utils.GameTick;
 import Utils.TickListener;
@@ -30,7 +31,7 @@ public class Enemy extends GCompound implements TickListener {
         this.alive = true;
         this.pathTraversed = 0;
         if (path == null) {
-            path = ProgramWindow.getPath();
+            path = GardenScreen.getPath();
         }
         this.targetPoint = path.getPoint(1);
         gImage = new GImage(type.getImage());
