@@ -2,7 +2,11 @@ package Screen;
 
 import Utils.TickListener;
 
+import java.util.Set;
+
 public class RestaurantScreen extends Screen {
+    private volatile Set<TickListener> restaurantTickListeners;
+
     private static final RestaurantScreen RESTAURANT_SCREEN;
 
     static {

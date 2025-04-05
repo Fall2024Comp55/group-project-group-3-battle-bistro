@@ -61,13 +61,13 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * Private constructor to enforce singleton pattern.
      */
     private Character() {
-        URL resource = getClass().getResource("/resources/placeholder.png");
+        URL resource = getClass().getResource("/resources/character/character.png");
         if (resource != null) {
             gImage = new GImage(new ImageIcon(resource).getImage());
         }
         ingredients = Maps.newHashMap();
         actions = new HashSet<>();
-        gImage.setSize(20, 20);
+        gImage.setSize(50, 50);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
         this.setLocation(200, 200);
         System.out.println(this.getBounds() + " " + gImage.getBounds() + getCenter(gImage.getBounds()) + " " + getCenter(this.getBounds()));
@@ -304,7 +304,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         }
 
         move(dx, dy); // move the character by the normalized vector
-
+/*
         int rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
 
         // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
@@ -327,7 +327,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             currentTheta -= 360;
         } else if (currentTheta < 0) {
             currentTheta += 360;
-        }
+        }*/
     }
 
 

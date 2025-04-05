@@ -183,10 +183,8 @@ public class ProgramWindow extends GraphicsProgram {
         }
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
+    private void pressed(MouseEvent e) {
         GObject object = getElementAt(e.getX(), e.getY());
-        System.out.println(getElementCount());
 
         MouseManager.setLastClickPoint(e.getPoint());
         MouseManager.setLastMousePoint(e.getPoint());
@@ -206,8 +204,7 @@ public class ProgramWindow extends GraphicsProgram {
         }
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
+    private void dragged(MouseEvent e) {
         GObject object = MouseManager.getSelectedObject();
         MouseManager.setHoverObject(object);
 
@@ -217,6 +214,16 @@ public class ProgramWindow extends GraphicsProgram {
             }
         }
         MouseManager.setLastMousePoint(e.getPoint());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        pressed(e);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        dragged(e);
     }
 
     @Override

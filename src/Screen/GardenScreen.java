@@ -2,7 +2,13 @@ package Screen;
 
 import Utils.TickListener;
 
+import java.util.Set;
+
 public class GardenScreen extends Screen {
+    private volatile Set<TickListener> enemyTickListeners;
+    private volatile Set<TickListener> towerTickListeners;
+    private volatile Set<TickListener> projectileTickListeners;
+
 
     private static final GardenScreen GARDEN_SCREEN;
 

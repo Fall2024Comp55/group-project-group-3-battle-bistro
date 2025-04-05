@@ -2,7 +2,11 @@ package Screen;
 
 import Utils.TickListener;
 
+import java.util.Set;
+
 public class SummaryMenuScreen extends Screen {
+    private volatile Set<TickListener> summaryTickListeners;
+
     private static final SummaryMenuScreen SUMMARY_MENU_SCREEN;
 
     static {

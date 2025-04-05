@@ -2,7 +2,10 @@ package Screen;
 
 import Utils.TickListener;
 
+import java.util.Set;
+
 public class MainMenuScreen extends Screen {
+    private volatile Set<TickListener> mainMenuTickListeners;
     private static final MainMenuScreen MAIN_MENU_SCREEN;
 
     static {
