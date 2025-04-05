@@ -29,6 +29,7 @@ public class RestaurantUI extends GCompound implements Solid {
     private GCompound notificationArea;
     private GLabel notificationLabel;
     private ScheduledExecutorService notificationExecutor;
+    private OrderTicketUI orderTicketMenu;
 
     static {
         try {

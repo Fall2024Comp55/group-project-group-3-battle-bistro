@@ -5,13 +5,15 @@ import Utils.Interact;
 import acm.graphics.GCompound;
 import acm.graphics.GRectangle;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class OrderTicketUI extends GCompound implements Interact {
 
     private static final OrderTicketUI tab;
 
-    protected HashSet<OrderTicket> tickets;
+    protected ArrayList<OrderTicket> tickets;
+    public static final int horizontalOffset = 50;
+    public static final  int verticalOffset = 50;
 
     static {
         try {
@@ -22,8 +24,19 @@ public class OrderTicketUI extends GCompound implements Interact {
     }
 
     public OrderTicketUI() {
-        tickets = new HashSet<>();
+        tickets = new ArrayList<>();
+        OrderTicket ticket1 = new OrderTicket();
+        OrderTicket ticket2 = new OrderTicket();
+        tickets.add(ticket1);
+        tickets.add(ticket2);
+        int count = 1;
+        for (OrderTicket ticket : tickets) {
+            ticket.setLocation(horizontalOffset, verticalOffset * count);
+            add(ticket);
+            count++;
+        }
     }
+
 
     public static OrderTicketUI getInstance() {
         return tab;

@@ -7,6 +7,7 @@ import Enemy.Path;
 import UI.ActionButton;
 import UI.Button;
 import UI.GardenUI;
+import UI.OrderTicketUI;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
@@ -80,7 +81,7 @@ public class ProgramWindow extends GraphicsProgram {
 
         // create new path
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
-
+        add(OrderTicketUI.getInstance());
         // start GameTick
         tick.start();
 
