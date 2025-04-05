@@ -240,6 +240,7 @@ public class ProgramWindow extends GraphicsProgram {
                     o.onHover(e);
                 }
             } else if (object instanceof GCompound c) {
+                getObjectInCompound(c, e.getPoint());
                 boolean found = false;
                 for (GObject o : c) {
                     if (o instanceof MouseInteract m && o.contains(new GPoint(e.getX(), e.getY()))) {
@@ -257,6 +258,19 @@ public class ProgramWindow extends GraphicsProgram {
         } else if (MouseManager.getHoverObject() != null) {
             MouseManager.setHoverObject(null);
         }
+    }
+
+    public GObject getObjectInCompound(GCompound c, Point p) {
+        GObject object = c.getElementAt(p.getX(), p.getY());
+        System.out.println("Object: " + object);
+        if (object instanceof UI ui) {
+            System.out.println("UI: " + ui);
+            object = getObjectInCompound(ui, p);
+        } else if (object instanceof Screen screen) {
+            System.out.println("Screen: " + screen);
+            object = getObjectInCompound(screen, p);
+        }
+        return object;
     }
 
     @Override
