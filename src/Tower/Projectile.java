@@ -102,10 +102,10 @@ public abstract class Projectile extends GCompound implements TickListener {
         }
 
         // TODO: check if this code is needed and if so, rework it
-//        if (targetEnemy == null || !targetEnemy.isAlive()) {
-//            active = false;
-//            return;
-//        }
+        if (targetEnemy == null || !targetEnemy.isAlive()) {
+            active = false;
+            return;
+        }
 
         targetPoint = targetEnemy.getLocation();
         move();

@@ -22,11 +22,11 @@ public class RangedTower extends Tower implements TickListener {
     @Override
     public void attack() {
         if (placed && !onCooldown) {
-            if (attackTarget != null && attackTarget.isAlive()) {
+            if (attackTarget != null && attackTarget.isAlive() && getBounds().intersects(attackTarget.getBounds())) {
 
                 GPoint startPoint = this.getLocation();
                 GPoint targetPoint = attackTarget.getLocation();
-                Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, .5, state.getDamage());
+                Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 20, .5, state.getDamage());
                 p.setLocation(this.getLocation());
                 GardenScreen.getInstance().add(p);
                 onCooldown = true;

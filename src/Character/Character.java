@@ -46,6 +46,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private int currentTheta;
     private ScheduledExecutorService movementExecutor;
     private GRectangle interactRect;
+    private GRect prototype_box;
 
     static {
         try {
@@ -74,6 +75,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         balance = 100;
         currentTheta = 0;
         interactRect = new GRectangle(-20, -30, 40, 10);
+        prototype_box = new GRect(-20, -30, 40, 10);
+        add(prototype_box);
     }
 
     /**
