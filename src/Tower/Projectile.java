@@ -10,9 +10,6 @@ import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
 
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Projectile extends GCompound implements TickListener {
@@ -37,6 +34,7 @@ public abstract class Projectile extends GCompound implements TickListener {
         this.moveRate = moveRate;
         this.damage = damage;
         this.active = true;
+        this.gImage = new GImage(Utils.getImage(toPath()));
     }
 
     public void move() {
@@ -103,14 +101,6 @@ public abstract class Projectile extends GCompound implements TickListener {
 
     public String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
-    }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(toPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toPath());
     }
 
     @Override

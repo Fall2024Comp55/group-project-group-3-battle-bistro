@@ -1,9 +1,5 @@
 package Enemy;
 
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
-
 public enum EnemyType {
     DOUGH(250, 20, 2),
     MOZZARELLA(150, 1, 3),
@@ -39,14 +35,6 @@ public enum EnemyType {
             case PEPPERONI -> BASE_PATH + "pepperoni" + EXTENSION;
             case MUSHROOM -> BASE_PATH + "mushroom" + EXTENSION;
         };
-    }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(toPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toPath());
     }
 
     public int getHealth() {

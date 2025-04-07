@@ -5,13 +5,10 @@ import Food.IngredientsType;
 import Screen.RestaurantScreen;
 import Utils.Interact;
 import Utils.Solid;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 public class IngredientStation extends GCompound implements Interact, Solid {
     // TODO find needed variables and methods
@@ -23,7 +20,7 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     public IngredientStation(IngredientsType ingredient) {
         this.ingredient = ingredient;
-        GImage gImage = new GImage(getImage());
+        GImage gImage = new GImage(Utils.getImage(toPath()));
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
@@ -45,14 +42,6 @@ public class IngredientStation extends GCompound implements Interact, Solid {
         return BASE_PATH + ingredient.name().toLowerCase() + "_station" + EXTENSION;
     }
 
-    public Image getImage() {
-        URL resource = getClass().getResource(toPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toPath());
-    }
-
     @Override
     public void onCollision() {
 
@@ -60,7 +49,7 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     @Override
     public GRectangle getHitbox() {
-        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override

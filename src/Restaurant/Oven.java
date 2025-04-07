@@ -3,17 +3,10 @@ package Restaurant;
 import Character.Character;
 import Food.Food;
 import Screen.RestaurantScreen;
-import Utils.Action;
-import Utils.GameTick;
-import Utils.Interact;
-import Utils.Solid;
+import Utils.*;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 public class Oven extends GCompound implements Action, Solid, Interact {
     // TODO find needed variables and methods
@@ -24,7 +17,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     private int tick_speed = 200;
 
     public Oven() {
-        GImage gImage = new GImage(getImage());
+        GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
@@ -40,14 +33,6 @@ public class Oven extends GCompound implements Action, Solid, Interact {
         }
     }
 
-    public Image getImage() {
-        URL resource = getClass().getResource(PATH);
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + PATH);
-    }
-
     @Override
     public void performAction() {
 
@@ -60,7 +45,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     @Override
     public GRectangle getHitbox() {
-        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override

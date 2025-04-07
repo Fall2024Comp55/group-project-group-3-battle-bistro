@@ -1,9 +1,5 @@
 package Food;
 
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
-
 public enum IngredientsType {
     DOUGH,
     MOZZARELLA,
@@ -47,21 +43,4 @@ public enum IngredientsType {
             case SAUCE -> INGREDIENTS_BASE_PATH + "sauce" + EXTENSION;
         };
     }
-
-    public Image getStationImage() {
-        URL resource = getClass().getResource(toStationPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toStationPath());
-    }
-
-    public Image getIngredientImage() {
-        URL resource = getClass().getResource(toIngredientPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toIngredientPath());
-    }
-
 }
