@@ -3,20 +3,15 @@ package Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.GardenUI;
-import Utils.Directions;
-import Utils.Interact;
-import Utils.Solid;
-import Utils.TickListener;
+import Utils.*;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRect;
 import acm.graphics.GRectangle;
 import com.google.common.collect.Maps;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +28,7 @@ import static Utils.Utils.getCenter;
 public class Character extends GCompound implements Solid, Interact, KeyListener, TickListener {
     public static final int ROTATE_SPEED = 12;
     private static final int SPEED = 5;
+    private static final String PATH = "/resources/character/character.png";
 
     private static final Character CHARACTER;
 
@@ -61,10 +57,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * Private constructor to enforce singleton pattern.
      */
     private Character() {
-        URL resource = getClass().getResource("/resources/character/character.png");
-        if (resource != null) {
-            gImage = new GImage(new ImageIcon(resource).getImage());
-        }
+        gImage = new GImage(Utils.getImage(PATH));
         ingredients = Maps.newHashMap();
         actions = new HashSet<>();
         gImage.setSize(50, 50);

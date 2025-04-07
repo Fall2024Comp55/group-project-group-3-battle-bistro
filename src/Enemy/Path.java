@@ -1,6 +1,6 @@
 package Enemy;
 
-import Screen.ProgramWindow;
+import Screen.Screen;
 import Utils.MouseInteract;
 import Utils.Solid;
 import acm.graphics.GLine;
@@ -33,9 +33,7 @@ public class Path {
             GPoint p1 = points.get(i - 1);
             GPoint p2 = points.get(i);
             PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-            ProgramWindow.getInstance().add(segment);
             path.add(segment);
-            ProgramWindow.getInstance().add(new GRect(segment.getHitbox().getX(), segment.getHitbox().getY(), segment.getHitbox().getWidth(), segment.getHitbox().getHeight()));
         }
         hidePath();
     }
@@ -68,6 +66,30 @@ public class Path {
         return points.getLast();
     }
 
+    public void addPath(Screen screen) {
+        for (PathLine line : path) {
+            screen.add(line);
+        }
+    }
+
+    public void removePath(Screen screen) {
+        for (PathLine line : path) {
+            screen.remove(line);
+        }
+    }
+
+    public void addPathHitbox(Screen screen) {
+        for (PathLine line : path) {
+            screen.add(line.getVisualHitbox());
+        }
+    }
+
+    public void removePathHitbox(Screen screen) {
+        for (PathLine line : path) {
+            screen.remove(line.getVisualHitbox());
+        }
+    }
+
     public void showPath() {
         for (PathLine line : path) {
             line.setVisible(true);
@@ -80,11 +102,33 @@ public class Path {
         }
     }
 
+    public void showPathHitbox() {
+        for (PathLine line : path) {
+            line.getVisualHitbox().setVisible(true);
+        }
+    }
+
+    public void hidePathHitbox() {
+        for (PathLine line : path) {
+            line.getVisualHitbox().setVisible(false);
+        }
+    }
+
 
     public static class PathLine extends GLine implements Solid, MouseInteract {
+        private GRect hitbox;
 
         public PathLine(double x0, double y0, double x1, double y1) {
             super(x0, y0, x1, y1);
+            if (getWidth() == 0) {
+                hitbox = new GRect(getBounds().getX() - SEGMENT_WIDTH / 2, getBounds().getY() - SEGMENT_WIDTH / 2, SEGMENT_WIDTH, getBounds().getHeight() + SEGMENT_WIDTH);
+            } else {
+                hitbox = new GRect(getBounds().getX() - SEGMENT_WIDTH / 2, getBounds().getY() - SEGMENT_WIDTH / 2, getBounds().getWidth() + SEGMENT_WIDTH, SEGMENT_WIDTH);
+            }
+        }
+
+        public GRect getVisualHitbox() {
+            return hitbox;
         }
 
         @Override
@@ -94,15 +138,7 @@ public class Path {
 
         @Override
         public GRectangle getHitbox() {
-            GRectangle hitbox = getBounds();
-
-            if (hitbox.getWidth() == 0) {
-                hitbox.setBounds(hitbox.getX() - SEGMENT_WIDTH / 2, hitbox.getY() - SEGMENT_WIDTH / 2, SEGMENT_WIDTH, hitbox.getHeight() + SEGMENT_WIDTH);
-            } else {
-                hitbox.setBounds(hitbox.getX() - SEGMENT_WIDTH / 2, hitbox.getY() - SEGMENT_WIDTH / 2, hitbox.getWidth() + SEGMENT_WIDTH, SEGMENT_WIDTH);
-            }
-
-            return hitbox;
+            return hitbox.getBounds();
         }
 
         @Override

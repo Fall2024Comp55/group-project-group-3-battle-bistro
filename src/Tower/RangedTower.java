@@ -18,7 +18,6 @@ public class RangedTower extends Tower implements TickListener {
         super("chefkirby", 2, 1, 1, 150);
         state = UpgradeTree.BASE;
         onCooldown = false;
-        GameTick.TickManager.registerTickListener(this);
     }
 
     @Override

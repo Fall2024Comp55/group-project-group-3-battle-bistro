@@ -1,11 +1,11 @@
 package Screen;
 
 import Enemy.Enemy;
+import Enemy.EnemyType;
+import Enemy.Path;
 import UI.GardenUI;
 import Utils.GameTick;
-import Enemy.Path;
 import Utils.TickListener;
-import Enemy.EnemyType;
 
 import java.util.Set;
 import java.util.random.RandomGenerator;
@@ -45,6 +45,7 @@ public class GardenScreen extends Screen {
         path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
         add(GardenUI.getInstance());
         addEnemy();
+        path.addPath(this);
     }
 
     public void addEnemy() {
