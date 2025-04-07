@@ -36,8 +36,8 @@ public class ProgramWindow extends GraphicsProgram {
     private static final ProgramWindow GAME_SCREEN;
 
     private static CurrentScreen currentScreen;
-    private static Path path;
 
+    private boolean shifting;
     private GameTick tick;
 
     static {
@@ -48,14 +48,8 @@ public class ProgramWindow extends GraphicsProgram {
         }
     }
 
-    private boolean shifting;
-
     public static ProgramWindow getInstance() {
         return GAME_SCREEN;
-    }
-
-    public static Path getPath() {
-        return path;
     }
 
     public void init() {
@@ -76,27 +70,20 @@ public class ProgramWindow extends GraphicsProgram {
         GameTick.TickManager.registerTickListener(Character.getInstance());
         // set current screen to GARDEN
         currentScreen = CurrentScreen.GARDEN;
-        // add GardenUI to screen
+        // add Garden and Restaurant Screen to program window
         add(GardenScreen.getInstance());
+        add(RestaurantScreen.getInstance());
+        RestaurantScreen.getInstance().setLocation(WIDTH, 0);
 
-        // create new path
-        path = new Path(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
-        add(OrderTicketUI.getInstance());
         // start GameTick
         tick.start();
 
-        addEnemy();
 
-       /*  // Door animation test
-        GameTick.ActionManager.addAction(40, this::enterDoor);
-        GameTick.ActionManager.addAction(80, this::enterDoor);
-*/
-
+        // test screen switch button
         Button screenSwitch = new ActionButton("Screen Switch", () -> {
             enterDoor();
         });
         add(screenSwitch);
-
         screenSwitch.setLocation(WIDTH - screenSwitch.getWidth(), HEIGHT - screenSwitch.getHeight());
 
         // Add input listeners
@@ -115,20 +102,6 @@ public class ProgramWindow extends GraphicsProgram {
         gw.getGCanvas().removeMouseMotionListener(this);
     }
 
-    public void addEnemy() {
-        // add 2-5 new enemies and register to tick manager
-        for (int i = 0; i < RandomGenerator.getDefault().nextInt(2, 5); i++) {
-            Enemy enemy = new Enemy(EnemyType.DOUGH);
-            enemy.sendToBack();
-            add(enemy);
-            GameTick.TickManager.registerTickListener(enemy);
-        }
-        // every 1-10 ms run this function again
-        GameTick.ActionManager.addAction(RandomGenerator.getDefault().nextInt(1, 10), () -> {
-            addEnemy();
-        });
-    }
-
     public void enterDoor() {
         AtomicInteger endX = new AtomicInteger();
         if (shifting) {
@@ -137,11 +110,9 @@ public class ProgramWindow extends GraphicsProgram {
         // check if currentScreen is GARDEN or RESTAURANT and switch.
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
-            remove(GardenUI.getInstance());
             endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
-            add(GardenUI.getInstance());
             endX.set(0);
         }
 
@@ -155,7 +126,7 @@ public class ProgramWindow extends GraphicsProgram {
 
         // setup executor to run screen shift every 10ms until done
         executor.scheduleAtFixedRate(() -> {
-            boolean done = shiftScreen(gw.getGCanvas().getX(), endX.get(), startTime);
+            boolean done = shiftScreen(endX.get(), startTime);
             if (done) {
                 shifting = false;
                 executor.shutdown();
@@ -163,20 +134,22 @@ public class ProgramWindow extends GraphicsProgram {
         }, 0, 10, TimeUnit.MILLISECONDS);
     }
 
-    public boolean shiftScreen(int startX, int endX, long startTime) {
+    public boolean shiftScreen(int endX, long startTime) {
         // get animation progress
-        float progress = (System.currentTimeMillis() - startTime) / 2000.0f;
+        float progress = (System.currentTimeMillis() - startTime) / 1800.0f;
         // check if progress is at the end
         if (progress >= 1.0f) {
             // commented out as there was a wierd jump at the end
-            gw.getGCanvas().setLocation(endX, 0);
+            GardenScreen.getInstance().setLocation(endX, 0);
+            RestaurantScreen.getInstance().setLocation(WIDTH + endX, 0);
             //TODO remove repaint later
             repaint();
             // return true ending executor
             return true;
         } else {
             // set the location of the canvas shifted towards the endX
-            gw.getGCanvas().setLocation((int) Utils.Utils.lerp(startX, endX, easeInOutCubic(progress)), 0);
+            GardenScreen.getInstance().setLocation(Utils.Utils.lerp(GardenScreen.getInstance().getX(), endX, easeInOutCubic(progress)), 0);
+            RestaurantScreen.getInstance().setLocation(Utils.Utils.lerp(RestaurantScreen.getInstance().getX(), WIDTH + endX, easeInOutCubic(progress)), 0);
             //TODO remove repaint later
             repaint();
             // return false to keep executor running

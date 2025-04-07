@@ -39,7 +39,9 @@ public interface Solid {
             } else if (object instanceof GCompound c) {
                 for (GObject g : c) {
                     if (g instanceof Solid s && object != this) {
+                        System.out.println("Checking collision with " + s);
                         if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
+                            System.out.println("Hit detected with " + s);
                             hit.set(true);
                         }
                     }

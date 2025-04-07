@@ -1,5 +1,6 @@
 package Screen;
 
+import Utils.GameTick;
 import Utils.TickListener;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
@@ -45,7 +46,8 @@ public abstract class Screen extends GCompound {
         super.add(gobj);
         elements.add(gobj);
         if (gobj instanceof TickListener listener) {
-            registerTickListener(listener);
+            // change to registerTickListener(listener);
+            GameTick.TickManager.registerTickListener(listener);
         }
     }
 

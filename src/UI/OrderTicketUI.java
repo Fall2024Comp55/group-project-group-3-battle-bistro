@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class OrderTicketUI extends UI {
 
-    private static final OrderTicketUI tab;
+    private static final OrderTicketUI ORDER_TICKET_UI;
 
     protected ArrayList<OrderTicket> tickets;
     public static final int horizontalOffset = 50;
@@ -14,10 +14,14 @@ public class OrderTicketUI extends UI {
 
     static {
         try {
-            tab = new OrderTicketUI();
+            ORDER_TICKET_UI = new OrderTicketUI();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating OrderTicketUI singleton instance");
         }
+    }
+
+    public static OrderTicketUI getInstance() {
+        return ORDER_TICKET_UI;
     }
 
     public OrderTicketUI() {
@@ -34,9 +38,13 @@ public class OrderTicketUI extends UI {
         }
     }
 
-
-    public static OrderTicketUI getInstance() {
-        return tab;
+    public void addTicket(OrderTicket ticket) {
+        tickets.add(ticket);
+        ticket.setLocation(horizontalOffset, verticalOffset * tickets.size());
+        add(ticket);
     }
 
+    public ArrayList<OrderTicket> getTickets() {
+        return tickets;
+    }
 }
