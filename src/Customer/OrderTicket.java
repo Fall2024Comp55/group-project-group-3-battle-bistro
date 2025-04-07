@@ -1,5 +1,6 @@
 package Customer;
 
+import Food.Food;
 import Food.IngredientsType;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -17,10 +18,8 @@ public class OrderTicket extends GCompound {
     public static final  int verticalOffset = 10;
 
 
-    public OrderTicket() {
-        order = EnumSet.noneOf(IngredientsType.class);
-        order.add(IngredientsType.DOUGH);
-        order.add(IngredientsType.PEPPERONI);
+    public OrderTicket(Food pizza) {
+        order = pizza.getIngredients();
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
         background.setLocation(Utils.getCenter(background.getBounds()));

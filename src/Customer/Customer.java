@@ -3,6 +3,7 @@ package Customer;
 import Food.Food;
 import Food.IngredientsType;
 import acm.graphics.GCompound;
+
 import java.util.Random;
 
 public class Customer extends GCompound {
@@ -13,34 +14,29 @@ public class Customer extends GCompound {
     private double timeWaited;
 
     public Customer() {
-        orderTicket = new OrderTicket();
+        orderTicket = new OrderTicket(generateOrder());
         waitTime = 30000; 
         isSatisfied = false;
         hasOrdered = false;
         timeWaited = 0;
-        generateOrder(); // Generate the order when the customer is created
     }
 
     // Method to generate an order for now, a pizza with pepperoni 
-    private void generateOrder() {
-        // Add pepperoni to the order as per the example
-        orderTicket.getOrder().add(IngredientsType.PEPPERONI);
-        // A pizza typically needs dough, so let's add that as a base
-        orderTicket.getOrder().add(IngredientsType.DOUGH);
-        hasOrdered = true;
-    }
-
-    // Randomize the order if needed
-    public void randomizeOrder() {
-        orderTicket.getOrder().clear(); // Clear previous order
-        orderTicket.getOrder().add(IngredientsType.DOUGH); // Base ingredient
+    private Food generateOrder() {
+        Food pizza = new Food();
         Random random = new Random();
         // Randomly add other ingredients
-        if (random.nextBoolean()) orderTicket.getOrder().add(IngredientsType.PEPPERONI);
-        if (random.nextBoolean()) orderTicket.getOrder().add(IngredientsType.MOZZARELLA);
-        if (random.nextBoolean()) orderTicket.getOrder().add(IngredientsType.MUSHROOM);
+        if (random.nextBoolean()) pizza.setCheese(true);
+        if (random.nextBoolean()) pizza.setSauce(true);
+        if (random.nextBoolean()) pizza.setMushroom(true);
+        if (random.nextBoolean()) pizza.setPepperoni(true);
         hasOrdered = true;
+        return pizza;
     }
+
+//    public static Customer getInstance() {
+//        return CUSTOMER;
+//    }
 
     // Getter for the order ticket
     public OrderTicket getOrderTicket() {
