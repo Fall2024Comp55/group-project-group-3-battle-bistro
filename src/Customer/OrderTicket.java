@@ -20,6 +20,7 @@ public class OrderTicket extends GCompound {
 
     public OrderTicket(Food pizza) {
         order = pizza.getIngredients();
+        System.out.printf("OrderTicket: %s\n", order);
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
         background.setLocation(Utils.getCenter(background.getBounds()));

@@ -88,6 +88,7 @@ public class RestaurantScreen extends Screen {
         customer.setLocation(500, 100);
         elements.add(customer);
         add(customer);
+
     }
 
     @Override
