@@ -1,8 +1,8 @@
 package Tower;
 
 import Enemy.Enemy;
+import Screen.GardenScreen;
 import Screen.ProgramWindow;
-import Utils.GameTick;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
 import Utils.Utils;
@@ -105,11 +105,8 @@ public abstract class Projectile extends GCompound implements TickListener {
 
     @Override
     public void onTick() {
-        //TODO rework this
         if (!active) {
-            GameTick.ActionManager.addAction(1, () -> {
-                GameTick.TickManager.unregisterTickListener(this);
-            });
+            GardenScreen.getInstance().unregisterTickListener(this);
             remove();
             return;
         }

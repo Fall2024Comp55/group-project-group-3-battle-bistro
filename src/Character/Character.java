@@ -3,6 +3,7 @@ package Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.GardenUI;
+import UI.RestaurantUI;
 import Utils.*;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
@@ -44,6 +45,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private Directions facing;
     private int currentTheta;
     private ScheduledExecutorService movementExecutor;
+    private GRectangle interactRect;
 
     static {
         try {
@@ -71,6 +73,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         health = 100;
         balance = 100;
         currentTheta = 0;
+        interactRect = new GRectangle(-20, -30, 40, 10);
     }
 
     /**
@@ -255,6 +258,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      */
     public void updateUIs() {
         GardenUI.getInstance().update();
+        RestaurantUI.getInstance().update();
     }
 
     /**
@@ -377,9 +381,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public GRectangle getInteractHitbox() {
-
-
-        return null;
+        return interactRect;
     }
 
 }

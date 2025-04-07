@@ -1,13 +1,8 @@
 package Screen;
 
 import Character.Character;
-import Enemy.Enemy;
-import Enemy.EnemyType;
-import Enemy.Path;
 import UI.ActionButton;
 import UI.Button;
-import UI.GardenUI;
-import UI.OrderTicketUI;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
@@ -21,7 +16,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.random.RandomGenerator;
 
 import static Utils.Utils.easeInOutCubic;
 import static Utils.Utils.getObjectInCompound;
@@ -65,9 +59,6 @@ public class ProgramWindow extends GraphicsProgram {
 
     @Override
     public void run() {
-        // add and register character to tick manager
-        add(Character.getInstance());
-        GameTick.TickManager.registerTickListener(Character.getInstance());
         // set current screen to GARDEN
         currentScreen = CurrentScreen.GARDEN;
         // add Garden and Restaurant Screen to program window

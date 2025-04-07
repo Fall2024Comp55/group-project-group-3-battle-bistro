@@ -3,10 +3,13 @@ package Screen;
 import Enemy.Enemy;
 import Enemy.EnemyType;
 import Enemy.Path;
+import Tower.Projectile;
+import Tower.Tower;
 import UI.GardenUI;
 import Utils.GameTick;
 import Utils.TickListener;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
@@ -29,6 +32,9 @@ public class GardenScreen extends Screen {
 
     private GardenScreen() {
         // Initialize the garden screen components here
+        enemyTickListeners = new HashSet<>();
+        towerTickListeners = new HashSet<>();
+        projectileTickListeners = new HashSet<>();
         initializeComponents();
     }
 
@@ -61,18 +67,61 @@ public class GardenScreen extends Screen {
         });
     }
 
+    public Set<TickListener> getEnemyTickListeners() {
+        return enemyTickListeners;
+    }
+
+    public Set<TickListener> getTowerTickListeners() {
+        return towerTickListeners;
+    }
+
+    public Set<TickListener> getProjectileTickListeners() {
+        return projectileTickListeners;
+    }
+
     @Override
-    public void registerTickListener(TickListener listener) {
+    public synchronized void registerTickListener(TickListener listener) {
+        if (listener instanceof Enemy) {
+            enemyTickListeners.add(listener);
+        } else if (listener instanceof Tower) {
+            towerTickListeners.add(listener);
+        } else if (listener instanceof Projectile) {
+            projectileTickListeners.add(listener);
+        } else {
+            throw new IllegalArgumentException("Invalid listener type");
+        }
 
     }
 
     @Override
     public void unregisterTickListener(TickListener listener) {
-
+        if (listener instanceof Enemy) {
+            enemyTickListeners.remove(listener);
+        } else if (listener instanceof Tower) {
+            towerTickListeners.remove(listener);
+        } else if (listener instanceof Projectile) {
+            projectileTickListeners.remove(listener);
+        } else {
+            throw new IllegalArgumentException("Invalid listener type");
+        }
     }
 
     @Override
     public void unregisterAllTickListener() {
 
     }
+
+    @Override
+    public void onTick() {
+        screenExecutor.submit(() -> {
+            enemyTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+        });
+        screenExecutor.submit(() -> {
+            towerTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+        });
+        screenExecutor.submit(() -> {
+            projectileTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+        });
+    }
+
 }
