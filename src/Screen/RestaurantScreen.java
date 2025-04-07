@@ -1,5 +1,6 @@
 package Screen;
 
+import Character.Character;
 import Customer.Customer;
 import Food.IngredientsType;
 import Restaurant.*;
@@ -24,6 +25,7 @@ public class RestaurantScreen extends Screen {
 
     private RestaurantScreen() {
         // Initialize the restaurant screen components here
+        add(Character.getInstance());
         initializeComponents();
     }
 
@@ -103,5 +105,12 @@ public class RestaurantScreen extends Screen {
     @Override
     public void unregisterAllTickListener() {
 
+    }
+
+    @Override
+    public void onTick() {
+        screenExecutor.submit(() -> {
+            restaurantTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+        });
     }
 }

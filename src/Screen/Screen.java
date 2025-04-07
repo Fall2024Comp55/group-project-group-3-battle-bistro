@@ -1,19 +1,22 @@
 package Screen;
 
-import Utils.GameTick;
 import Utils.TickListener;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public abstract class Screen extends GCompound {
+public abstract class Screen extends GCompound implements TickListener {
     protected Set<GObject> elements;
+    protected ExecutorService screenExecutor;
 
     Screen() {
         // Initialize the elements set
         elements = new HashSet<GObject>();
+        screenExecutor = Executors.newFixedThreadPool(2);
     }
 
     // Abstract method to be implemented by subclasses
@@ -46,8 +49,7 @@ public abstract class Screen extends GCompound {
         super.add(gobj);
         elements.add(gobj);
         if (gobj instanceof TickListener listener) {
-            // change to registerTickListener(listener);
-            GameTick.TickManager.registerTickListener(listener);
+            registerTickListener(listener);
         }
     }
 

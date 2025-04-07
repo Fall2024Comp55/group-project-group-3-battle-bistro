@@ -2,9 +2,10 @@ package Tower;
 
 import Character.Character;
 import Enemy.Enemy;
+import Screen.GardenScreen;
 import Screen.ProgramWindow;
-import Utils.*;
 import Utils.GameTick.ActionManager;
+import Utils.*;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
@@ -60,8 +61,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (placed) {
             enemyFound = false;
             attackTarget = null;
-            ProgramWindow.getInstance().forEach(object -> {
-                if (object instanceof Enemy e) {
+            GardenScreen.getInstance().getEnemyTickListeners().forEach(enemy -> {
+                if (enemy instanceof Enemy e) {
                     if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
                         enemyFound = true;
                         if (attackTarget == null) {
@@ -143,9 +144,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onDrag(MouseEvent e) {
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
-        ActionManager.addAction(1, () -> {
-            GameTick.TickManager.unregisterTickListener(this);
-        });
+        GardenScreen.getInstance().unregisterTickListener(this);
         if (checkCollision()) {
             if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
@@ -162,9 +161,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (!checkCollision()) {
             placed = true;
             placedLocation = this.getLocation();
-            ActionManager.addAction(1, () -> {
-                GameTick.TickManager.registerTickListener(this);
-            });
+            GardenScreen.getInstance().registerTickListener(this);
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
@@ -173,7 +170,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                 placed = true;
                 this.setLocation(placedLocation);
                 ActionManager.addAction(1, () -> {
-                    GameTick.TickManager.registerTickListener(this);
+                    GardenScreen.getInstance().registerTickListener(this);
                 });
             }
         }

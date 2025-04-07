@@ -44,4 +44,11 @@ public class SummaryMenuScreen extends Screen {
     public void unregisterAllTickListener() {
 
     }
+
+    @Override
+    public void onTick() {
+        screenExecutor.submit(() -> {
+            summaryTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+        });
+    }
 }

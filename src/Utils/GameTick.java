@@ -1,23 +1,16 @@
 package Utils;
 
-import Enemy.Enemy;
-import Screen.ProgramWindow;
-import Tower.Projectile;
-import Tower.Tower;
+import Screen.*;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class GameTick implements ActionListener, Runnable {
+public class GameTick implements Runnable {
     public static final int TICK_RATE = 20;
     public static final int TICK_DELAY = 50;
     public static final int TIMER_DELAY = 5;
@@ -27,7 +20,7 @@ public class GameTick implements ActionListener, Runnable {
     private long ticksPerSecond;
 
     public GameTick() {
-        gameTick = Executors.newScheduledThreadPool(2);
+        gameTick = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void start() {
@@ -39,57 +32,16 @@ public class GameTick implements ActionListener, Runnable {
         gameTick.shutdown();
     }
 
-    // !!! need to work on this and figure out what is best
-
-
-    // !!! FIXME
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Action performed");
-        long currentTime = System.currentTimeMillis();
-        ticksPerSecond = Math.ceilDiv(1000, currentTime - lastTickTime);
-        if (ticksPerSecond < TICK_RATE) {
-            System.out.println("Warning: Ticks per second is less than the tick rate" + ticksPerSecond + " " + (currentTime - lastTickTime));
-        }
-        if (currentTime - lastTickTime >= TICK_DELAY) {
-            tick();
-            lastTickTime = currentTime;
-        }
-        tickReclaimer();
-    }
-
     private void tick() {
         TickManager.incrementCurrentTick();
-        // xxx sout tick and registered tick listeners
-        if (TickManager.getCurrentTickValue() % 100 == 0) {
-            System.out.println("Tick: " + TickManager.getCurrentTickValue());
-            System.out.println("Registered tick listeners: " + TickManager.getRegisteredTickListeners().size());
-        }
 
-//        for (TickListener listener : registeredTickListeners) {
-//            listener.onTick(this);
-//        }
+        GardenScreen.getInstance().onTick();
+        RestaurantScreen.getInstance().onTick();
+        MainMenuScreen.getInstance().onTick();
+        SummaryMenuScreen.getInstance().onTick();
 
-        TickManager.getRegisteredTickListeners().parallelStream().spliterator().forEachRemaining(listener -> {
-            listener.onTick();
-        });
 
         performActions();
-
-//        !!! This is the original code
-//        registeredTickListeners.spliterator().forEachRemaining(object -> {;
-//            if (object instanceof TickListener listener) {
-//                listener.onTick(this);
-//            }
-//        });
-//
-//
-//
-//        registeredTickListeners.forEach(object -> {
-//            if (object instanceof TickListener listener) {
-//                listener.onTick(this);
-//            }
-//        });
     }
 
     public synchronized void performActions() {
@@ -101,15 +53,6 @@ public class GameTick implements ActionListener, Runnable {
             });
         }
     }
-
-    public void tickReclaimer() {
-        if (System.currentTimeMillis() - lastTickTime >= TICK_DELAY) {
-            System.out.println("Tick reclaimer");
-            tick();
-            lastTickTime += TICK_DELAY;
-        }
-    }
-
 
     public long getTicksPerSecond() {
         return ticksPerSecond;
@@ -129,7 +72,6 @@ public class GameTick implements ActionListener, Runnable {
             lastTickTime = currentTime;
         }
         ProgramWindow.getInstance().repaint();
-        tickReclaimer();
     }
 
 
@@ -138,64 +80,11 @@ public class GameTick implements ActionListener, Runnable {
      * and the current tick value in the game.
      */
     public static class TickManager {
-        private static final Set<TickListener> registeredTickListeners;
         private static final AtomicLong currentTick;
 
         // initializing the static variables
         static {
-            registeredTickListeners = new LinkedHashSet<TickListener>();
             currentTick = new AtomicLong(0);
-        }
-
-        // register a tick listener TODO split into registering to check tickManager
-
-        /**
-         * Registers a tick listener from the respective TickManager.
-         *
-         * @param tickListener the tick listener to register
-         */
-        public synchronized static void registerTickListener(TickListener tickListener) {
-            registeredTickListeners.add(tickListener);
-            if (tickListener instanceof Tower) {
-                // register to TowerManager
-            } else if (tickListener instanceof Enemy) {
-                // register to EnemyManager
-            } else if (tickListener instanceof Projectile) {
-                // register to ProjectileManager
-            } else if (tickListener.getClass().getPackageName().equals("Restaurant")) {
-                // register to RestaurantManager
-            } else {
-                // register to GameTick
-            }
-        }
-
-        // unregister a tick listener TODO split into unregistering to check tickManager
-
-        /**
-         * Unregisters a tick listener from the respective TickManager.
-         *
-         * @param tickListener the tick listener to unregister
-         */
-        public synchronized static void unregisterTickListener(TickListener tickListener) {
-            registeredTickListeners.remove(tickListener);
-            if (tickListener instanceof Tower) {
-                // unregister from TowerManager
-            } else if (tickListener instanceof Enemy) {
-                // unregister from EnemyManager
-            } else if (tickListener instanceof Projectile) {
-                // unregister from ProjectileManager
-            } else if (tickListener.getClass().getPackageName().equals("Restaurant")) {
-                // unregister from RestaurantManager
-            } else {
-                // unregister from GameTick
-            }
-        }
-
-        /**
-         * @return the set of registered tick listeners
-         */
-        public static Set<TickListener> getRegisteredTickListeners() {
-            return registeredTickListeners;
         }
 
         /**

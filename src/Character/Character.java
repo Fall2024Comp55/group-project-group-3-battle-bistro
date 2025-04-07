@@ -3,6 +3,7 @@ package Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.GardenUI;
+import UI.RestaurantUI;
 import Utils.*;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
@@ -255,6 +256,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      */
     public void updateUIs() {
         GardenUI.getInstance().update();
+        RestaurantUI.getInstance().update();
     }
 
     /**

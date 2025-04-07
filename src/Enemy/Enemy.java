@@ -129,9 +129,7 @@ public class Enemy extends GCompound implements TickListener {
     public void onTick() {
         move();
         if (!alive) {
-            GameTick.ActionManager.addAction(1, () -> {
-                GameTick.TickManager.unregisterTickListener(this);
-            });
+            GardenScreen.getInstance().remove(this);
         }
     }
 }

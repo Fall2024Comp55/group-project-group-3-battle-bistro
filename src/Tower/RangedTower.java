@@ -1,7 +1,6 @@
 package Tower;
 
-import Screen.ProgramWindow;
-import Utils.GameTick;
+import Screen.GardenScreen;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
 import acm.graphics.GObject;
@@ -29,10 +28,7 @@ public class RangedTower extends Tower implements TickListener {
                 GPoint targetPoint = attackTarget.getLocation();
                 Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, .5, state.getDamage());
                 p.setLocation(this.getLocation());
-                ActionManager.addAction(1, () -> {
-                    ProgramWindow.getInstance().add(p);
-                    GameTick.TickManager.registerTickListener(p);
-                });
+                GardenScreen.getInstance().add(p);
                 onCooldown = true;
                 ActionManager.addAction(8, () -> {
                     onCooldown = false;
