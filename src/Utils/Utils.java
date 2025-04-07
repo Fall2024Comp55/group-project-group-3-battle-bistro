@@ -7,9 +7,12 @@ import acm.graphics.GObject;
 import acm.graphics.GPoint;
 import acm.graphics.GRectangle;
 
+import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class Utils {
+    public static final URL MISSING_TEXTURE = Utils.class.getResource("/resources/missingtexture.png");
     //TODO work on getCenter and getCenterOffset methods
     public static GPoint getCenter(double width, double height) {
         return new GPoint(-width / 2, -height / 2);
@@ -27,22 +30,43 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
-/**
- * Retrieves the object at the specified point within the given compound.
- *
- * @param c the compound to search within
- * @param p the point at which to look for an object
- * @return the object at the specified point, or null if no object is found
- */
-public static GObject getObjectInCompound(GCompound c, Point p) {
-    GObject object = c.getElementAt(p.getX(), p.getY());
-    if (object instanceof UI ui) {
-        object = getObjectInCompound(ui, p);
-    } else if (object instanceof Screen screen) {
-        object = getObjectInCompound(screen, p);
+    public static Image getImage(String path) {
+        URL resource = Utils.class.getResource(path);
+        if (resource != null) {
+            return new ImageIcon(resource).getImage();
+        } else {
+            System.out.println("Could not find image for path " + path);
+            return new ImageIcon(MISSING_TEXTURE).getImage();
+        }
     }
-    return object;
-}
+
+    /**
+     * Retrieves the object at the specified point within the given compound.
+     *
+     * @param c the compound to search within
+     * @param p the point at which to look for an object
+     * @return the object at the specified point, or null if no object is found
+     */
+    public static GObject getObjectInCompound(GCompound c, Point p) {
+        GObject object = c.getElementAt(p.getX(), p.getY());
+        if (object instanceof UI ui) {
+            object = getObjectInCompound(ui, p);
+        } else if (object instanceof Screen screen) {
+            object = getObjectInCompound(screen, p);
+        }
+        return object;
+    }
+
+    /**
+     * Calculates the offset of a hitbox within a parent hitbox.
+     *
+     * @param bounds       the bounds of the hitbox
+     * @param parentBounds the bounds of the parent hitbox
+     * @return a new `GRectangle` representing the offset hitbox
+     */
+    public static GRectangle getHitboxOffset(GRectangle bounds, GRectangle parentBounds) {
+        return new GRectangle(bounds.getX() + parentBounds.getX(), bounds.getY() + parentBounds.getY(), bounds.getWidth(), bounds.getHeight());
+    }
 
     /**
      * Linearly interpolates between two values.

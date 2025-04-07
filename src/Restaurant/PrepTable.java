@@ -2,6 +2,7 @@ package Restaurant;
 
 import Character.Character;
 import Food.Food;
+import Screen.RestaurantScreen;
 import UI.RestaurantUI;
 import Utils.Interact;
 import Utils.Solid;
@@ -40,7 +41,7 @@ public class PrepTable extends GCompound implements Solid, Interact {
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override

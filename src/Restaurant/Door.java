@@ -1,15 +1,12 @@
 package Restaurant;
 
 import Screen.ProgramWindow;
+import Screen.RestaurantScreen;
 import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 public class Door extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
@@ -18,19 +15,11 @@ public class Door extends GCompound implements Solid, Interact {
     private final GImage gImage;
 
     public Door() {
-        gImage = new GImage(getImage());
+        gImage = new GImage(Utils.Utils.getImage(PATH));
         gImage.setLocation(0, 0);
+        gImage.setSize(30, 50);
         add(gImage);
     }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(PATH);
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + PATH);
-    }
-
 
     @Override
     public void onCollision() {
@@ -38,7 +27,7 @@ public class Door extends GCompound implements Solid, Interact {
     
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override

@@ -2,6 +2,7 @@ package Restaurant;
 
 import Character.Character;
 import Food.Food;
+import Screen.RestaurantScreen;
 import Utils.Action;
 import Utils.GameTick;
 import Utils.Interact;
@@ -59,7 +60,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override

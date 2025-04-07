@@ -2,6 +2,7 @@ package Restaurant;
 
 import Character.Character;
 import Food.IngredientsType;
+import Screen.RestaurantScreen;
 import Utils.Interact;
 import Utils.Solid;
 import acm.graphics.GCompound;
@@ -59,7 +60,7 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override
