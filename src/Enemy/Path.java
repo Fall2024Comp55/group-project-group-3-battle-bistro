@@ -1,8 +1,10 @@
 package Enemy;
 
+import Screen.GardenScreen;
 import Screen.Screen;
 import Utils.MouseInteract;
 import Utils.Solid;
+import Utils.Utils;
 import acm.graphics.GLine;
 import acm.graphics.GPoint;
 import acm.graphics.GRect;
@@ -138,7 +140,7 @@ public class Path {
 
         @Override
         public GRectangle getHitbox() {
-            return hitbox.getBounds();
+            return Utils.getHitboxOffset(hitbox.getBounds(), GardenScreen.getInstance().getBounds());
         }
 
         @Override

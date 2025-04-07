@@ -8,10 +8,7 @@ import Utils.GameTick.ActionManager;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
     private static final String BASE_PATH = "/resources/tower/";
@@ -42,7 +39,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-        gImage = new GImage(getImage());
+        gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
         gImage.setLocation(-gImage.getWidth() / 2, -gImage.getHeight() / 2);
         add(gImage);
@@ -125,14 +122,6 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     public String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
-    }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(toPath());
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + toPath());
     }
 
     private void remove() {

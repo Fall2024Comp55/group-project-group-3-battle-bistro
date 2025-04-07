@@ -34,7 +34,7 @@ public class Enemy extends GCompound implements TickListener {
             path = GardenScreen.getPath();
         }
         this.targetPoint = path.getPoint(1);
-        gImage = new GImage(type.getImage());
+        gImage = new GImage(Utils.getImage(type.toPath()));
         gImage.setSize(SIZE, SIZE);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         bounds = this.getBounds();

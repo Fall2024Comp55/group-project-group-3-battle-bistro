@@ -4,13 +4,10 @@ import Character.Character;
 import Food.Food;
 import Utils.Interact;
 import Utils.Solid;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 public class OrderWindow extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
@@ -20,18 +17,10 @@ public class OrderWindow extends GCompound implements Solid, Interact {
     protected Food item;
 
     public OrderWindow(String name) {
-        GImage gImage = new GImage(getImage());
+        GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
-    }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(PATH);
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
     @Override

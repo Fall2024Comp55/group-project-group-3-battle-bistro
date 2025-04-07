@@ -3,13 +3,10 @@ package Restaurant;
 import Food.Food;
 import Utils.Interact;
 import Utils.Solid;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 public class Register extends GCompound implements Solid, Interact {
     private static final String PATH = "/resources/restaurant/register.png";
@@ -20,18 +17,10 @@ public class Register extends GCompound implements Solid, Interact {
 
     public Register(String name) {
         this.name = name;
-        GImage gImage = new GImage(getImage());
+        GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
         add(gImage);
-    }
-
-    public Image getImage() {
-        URL resource = getClass().getResource(PATH);
-        if (resource != null) {
-            return new ImageIcon(resource).getImage();
-        }
-        throw new RuntimeException("Could not find image for path " + PATH);
     }
 
     @Override
