@@ -1,5 +1,6 @@
 package UI;
 
+import Customer.Customer;
 import Customer.OrderTicket;
 
 import java.util.ArrayList;
@@ -26,8 +27,10 @@ public class OrderTicketUI extends UI {
 
     public OrderTicketUI() {
         tickets = new ArrayList<>();
-        OrderTicket ticket1 = new OrderTicket();
-        OrderTicket ticket2 = new OrderTicket();
+        Customer c1 = new Customer();
+        Customer c2 = new Customer();
+        OrderTicket ticket1 = c1.getOrderTicket();
+        OrderTicket ticket2 = c2.getOrderTicket();
         tickets.add(ticket1);
         tickets.add(ticket2);
         int count = 1;

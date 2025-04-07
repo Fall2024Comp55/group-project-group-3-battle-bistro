@@ -10,14 +10,22 @@ public class Food extends GCompound {
     private OrderTicket orderTicket;
     private boolean sauce;
     private boolean cheese;
+    private boolean pepperoni;
+    private boolean mushroom;
     private boolean cooked;
     private boolean boxed;
+
+    public EnumSet<IngredientsType> getIngredients() {
+        return ingredients;
+    }
 
     public Food() {
         ingredients = EnumSet.noneOf(IngredientsType.class);
         orderTicket = null;
         sauce = false;
         cheese = false;
+        pepperoni = false;
+        mushroom = false;
         cooked = false;
         boxed = false;
     }
@@ -54,6 +62,22 @@ public class Food extends GCompound {
 
     public void setOrderTicket(OrderTicket orderTicket) {
         this.orderTicket = orderTicket;
+    }
+
+    public boolean isMushroom() {
+        return mushroom;
+    }
+
+    public void setMushroom(boolean mushroom) {
+        this.mushroom = mushroom;
+    }
+
+    public boolean isPepperoni() {
+        return pepperoni;
+    }
+
+    public void setPepperoni(boolean pepperoni) {
+        this.pepperoni = pepperoni;
     }
 
     public void setSauce(boolean sauce) {
