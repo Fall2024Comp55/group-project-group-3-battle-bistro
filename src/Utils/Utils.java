@@ -27,6 +27,14 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
+    /**
+     * Retrieves the `GObject` at the specified point within the given `GCompound`.
+     * If the `GObject` is an instance of `UI` or `Screen`, it recursively searches within that compound.
+     *
+     * @param c the `GCompound` to search within
+     * @param p the `Point` specifying the location to search for the `GObject`
+     * @return the `GObject` at the specified point, or `null` if no object is found
+     */
     public static GObject getObjectInCompound(GCompound c, Point p) {
         GObject object = c.getElementAt(p.getX(), p.getY());
         if (object instanceof UI ui) {
