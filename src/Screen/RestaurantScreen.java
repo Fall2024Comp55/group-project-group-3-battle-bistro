@@ -38,7 +38,7 @@ public class RestaurantScreen extends Screen {
 
         // door to switch back to the Garden screen
         Door door = new Door();
-        door.setLocation(50, 100);
+        door.setLocation(0, 50);
         elements.add(door);
         add(door);
 
