@@ -29,6 +29,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected GPoint placedLocation;
     protected Projectile projectile;
     protected boolean enemyFound;
+    protected double currentTheta;
 
     // TODO figure out what is needed
 
@@ -55,8 +56,6 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this(name, cost, level, damage, range);
         this.projectile = projectile;
     }
-
-    protected double currentTheta;
 
     public boolean inRange() {
         if (placed) {
