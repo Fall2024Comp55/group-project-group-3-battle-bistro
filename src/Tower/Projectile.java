@@ -33,6 +33,8 @@ public abstract class Projectile extends GCompound implements TickListener {
         this.damage = damage;
         this.active = true;
         this.gImage = new GImage(Utils.getImage(toPath()));
+        gImage.setLocation(Utils.getCenter(this.getBounds()));
+        add(gImage);
     }
 
     public void move() {

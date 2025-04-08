@@ -31,8 +31,6 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected boolean enemyFound;
     protected double currentTheta;
 
-    // TODO figure out what is needed
-
     public Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
         this.cost = cost;
@@ -42,13 +40,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.placedLocation = this.getLocation();
         gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
-        gImage.setLocation(-gImage.getWidth() / 2, -gImage.getHeight() / 2);
+        gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
         hitbox = new GOval(20, 20);
-        hitbox.setLocation(-hitbox.getWidth() / 2, -hitbox.getHeight() / 2);
+        hitbox.setLocation(Utils.getCenter(hitbox.getBounds()));
         add(hitbox);
         this.range = new GOval(range, range);
-        this.range.setLocation(-this.range.getWidth() / 2, -this.range.getHeight() / 2);
+        this.range.setLocation(Utils.getCenter(this.range.getBounds()));
         add(this.range);
     }
 
@@ -77,9 +75,9 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
             if (enemyFound && attackTarget != null) {
                 // Calculate the angle to face the enemy
-                double deltaX = attackTarget.getX() - this.getX();
-                double deltaY = attackTarget.getY() - this.getY();
-                double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+                double dx = attackTarget.getX() - this.getX();
+                double dy = attackTarget.getY() - this.getY();
+                double angle = Math.toDegrees(Math.atan2(dx, dy));
 
                 // Rotate the tower to face the enemy
                 double rotateDistance = angle - currentTheta; // calculate the distance to rotate
@@ -133,6 +131,10 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     public int getCost() {
         return cost;
+    }
+
+    public double getCurrentTheta() {
+        return currentTheta;
     }
 
     public abstract void attack();

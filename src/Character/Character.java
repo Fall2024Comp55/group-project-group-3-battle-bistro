@@ -41,7 +41,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private int balance;
     private boolean interactHeld;
     private Directions facing;
-    private int currentTheta;
+    private double currentTheta;
     private ScheduledExecutorService movementExecutor;
 
     static {
@@ -298,7 +298,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
         move(dx, dy); // move the character by the normalized vector
 
-        int rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
+        double rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
 
         // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
         if (rotateDistance > 180) {
