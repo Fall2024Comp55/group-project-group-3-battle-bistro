@@ -389,6 +389,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         double endX = startX - length * Math.sin(Math.toRadians(currentTheta));
         double endY = startY - length * Math.cos(Math.toRadians(currentTheta));
 
+        // TODO figure out issues when moving out side of screens
+//        ProgramWindow.getInstance().add(new GLine(startX, startY, endX, endY));
+
         // Add the line to the ProgramWindow
         return new GLine(startX, startY, endX, endY);
     }
