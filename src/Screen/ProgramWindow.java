@@ -156,7 +156,7 @@ public class ProgramWindow extends GraphicsProgram {
 
         float progress = (System.currentTimeMillis() - startTime) / 1800.0f;
 
-        if (progress >= 1.0f) {
+        if (progress >= .5f) {
             GardenScreen.getInstance().setLocation(endX, 0);
             RestaurantScreen.getInstance().setLocation(WIDTH + endX, 0);
             repaint();
