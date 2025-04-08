@@ -3,7 +3,6 @@ package Tower;
 import Enemy.Enemy;
 import Screen.GardenScreen;
 import Screen.ProgramWindow;
-import Utils.GameTick.ActionManager;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -88,13 +87,6 @@ public abstract class Projectile extends GCompound implements TickListener {
         active = false;
     }
 
-    protected void remove() {
-        ActionManager.addAction(1, () -> {
-            ProgramWindow.getInstance().remove(this);
-            removeAll();
-        });
-    }
-
     public String toString() {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
@@ -106,8 +98,7 @@ public abstract class Projectile extends GCompound implements TickListener {
     @Override
     public void onTick() {
         if (!active) {
-            GardenScreen.getInstance().unregisterTickListener(this);
-            remove();
+            GardenScreen.getInstance().remove(this);
             return;
         }
 

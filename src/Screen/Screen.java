@@ -16,7 +16,7 @@ public abstract class Screen extends GCompound implements TickListener {
     Screen() {
         // Initialize the elements set
         elements = new HashSet<GObject>();
-        screenExecutor = Executors.newFixedThreadPool(2);
+        screenExecutor = Executors.newFixedThreadPool(10);
     }
 
     // Abstract method to be implemented by subclasses
