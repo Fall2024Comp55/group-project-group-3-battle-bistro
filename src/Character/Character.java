@@ -2,14 +2,12 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
+import Screen.ProgramWindow;
 import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
 import Utils.*;
-import acm.graphics.GCompound;
-import acm.graphics.GImage;
-import acm.graphics.GRect;
-import acm.graphics.GRectangle;
+import acm.graphics.*;
 import com.google.common.collect.Maps;
 
 import java.awt.event.KeyEvent;
@@ -46,8 +44,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private Directions facing;
     private int currentTheta;
     private ScheduledExecutorService movementExecutor;
-    private GRectangle interactRect;
-    private GRect prototype_box;
 
     static {
         try {
@@ -75,9 +71,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         health = 100;
         balance = 100;
         currentTheta = 0;
-        interactRect = new GRectangle(-20, -30, 40, 10);
-        prototype_box = new GRect(-20, -30, 40, 10);
-        add(prototype_box);
     }
 
     /**
@@ -387,9 +380,34 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
+    public GLine linetrace(double length) {
+        // Get the character's current position
+        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds());
+        double startX = p.getX();
+        double startY = p.getY();
+
+        // Calculate the end position based on the direction the character is facing
+        double endX = startX - length * Math.sin(Math.toRadians(currentTheta));
+        double endY = startY - length * Math.cos(Math.toRadians(currentTheta));
+
+        // Create a rectangle to represent the line
+        GLine line = new GLine(startX, startY, endX, endY);
+
+        // Rotate the line to match the character's facing direction
+
+        // Add the line to the ProgramWindow
+        GameTick.ActionManager.addAction(1, () -> {
+            ProgramWindow.getInstance().add(line);
+        });
+        return line;
+    }
+
     @Override
     public GRectangle getInteractHitbox() {
-        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+        GPoint p = linetrace(50).getEndPoint();
+        GOval interactHitbox = new GOval(p.getX(), p.getY(), 20, 20);
+
+        return interactHitbox.getBounds();
     }
 
 }

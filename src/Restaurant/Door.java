@@ -17,7 +17,6 @@ public class Door extends GCompound implements Solid, Interact {
 
     public Door() {
         gImage = new GImage(Utils.getImage(PATH));
-        gImage.setLocation(0, 0);
         gImage.setSize(30, 50);
         add(gImage);
     }

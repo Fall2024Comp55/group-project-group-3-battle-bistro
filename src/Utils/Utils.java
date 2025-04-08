@@ -30,6 +30,10 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
+    public static GPoint getPointOffset(GPoint p, GRectangle bounds) {
+        return new GPoint(p.getX() + bounds.getX(), p.getY() + bounds.getY());
+    }
+
     /**
      * Shrinks the bounds of a rectangle by a specified number of pixels.
      *
