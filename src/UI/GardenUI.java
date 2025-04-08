@@ -19,8 +19,7 @@ public class GardenUI extends UI implements Solid {
 
     private final Set<GObject> elements;
     private final GLabel moneyLabel;
-    private final GRect healthBarBackground;
-    private final GRect healthBar;
+    private final GLabel healthLabel;  
     private int starRating;
     private GCompound starDisplay;
     private GCompound notificationArea;
@@ -39,8 +38,7 @@ public class GardenUI extends UI implements Solid {
         elements = new HashSet<>();
         Character c = Character.getInstance();
         moneyLabel = new GLabel("Money: " + c.getBalance());
-        healthBarBackground = new GRect(200, 20);
-        healthBar = new GRect(200, 20);
+        healthLabel = new GLabel("Health: " + c.getHealth());  
 
         GRect menuBar = new GRect(WIDTH, 50);
         menuBar.setFilled(true);
@@ -54,17 +52,11 @@ public class GardenUI extends UI implements Solid {
         add(moneyLabel);
         elements.add(moneyLabel);
 
-        healthBarBackground.setFilled(true);
-        healthBarBackground.setFillColor(Color.GRAY);
-        healthBarBackground.setLocation(150, 15); 
-        add(healthBarBackground);
-        elements.add(healthBarBackground);
-
-        healthBar.setFilled(true);
-        healthBar.setFillColor(Color.GREEN);
-        healthBar.setLocation(150, 15); 
-        add(healthBar);
-        elements.add(healthBar);
+        healthLabel.setFont(GLOBAL_FONT);  
+        healthLabel.setColor(GLOBAL_COLOR);
+        healthLabel.setLocation(20, 15);
+        add(healthLabel);
+        elements.add(healthLabel);
 
         NewTowerButton tower1 = new NewTowerButton("New Tower");
         add(tower1, 500, 25);
@@ -145,24 +137,23 @@ public class GardenUI extends UI implements Solid {
 
     public void update() {
         updateMoneyLabel();
-        updateHealthBar();
+        updateHealthLabel(); 
     }
 
     private void updateMoneyLabel() {
         moneyLabel.setLabel("Money: " + Character.getInstance().getBalance());
     }
 
-    private void updateHealthBar() {
+    private void updateHealthLabel() {  
         double health = Character.getInstance().getHealth();
-        double healthPercentage = health / 100.0;
-        healthBar.setSize(200 * healthPercentage, 20);
-        healthBar.setLocation(150, 15); 
+        healthLabel.setLabel("Health: " + (int)health);
+        
         if (health > 50) {
-            healthBar.setFillColor(Color.GREEN);
+            healthLabel.setColor(Color.GREEN);
         } else if (health > 25) {
-            healthBar.setFillColor(Color.YELLOW);
+            healthLabel.setColor(Color.YELLOW);
         } else {
-            healthBar.setFillColor(Color.RED);
+            healthLabel.setColor(Color.RED);
         }
     }
 

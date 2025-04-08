@@ -20,11 +20,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static Utils.Utils.easeInOutCubic;
 import static Utils.Utils.getObjectInCompound;
 
-
 public class ProgramWindow extends GraphicsProgram {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
-    public static final String GLOBAL_FONT = "Arial-16"; // Reduced font size for better fit
+    public static final String GLOBAL_FONT = "Arial-16";
     public static final Color GLOBAL_COLOR = Color.BLACK;
 
     private static final ProgramWindow GAME_SCREEN;
@@ -59,26 +58,56 @@ public class ProgramWindow extends GraphicsProgram {
 
     @Override
     public void run() {
-        // set current screen to GARDEN
-        currentScreen = CurrentScreen.GARDEN;
-        // add Garden and Restaurant Screen to program window
-        add(GardenScreen.getInstance());
-        add(RestaurantScreen.getInstance());
+        
+        currentScreen = CurrentScreen.MAIN_MENU;
+
+
+        add(MainMenuScreen.getInstance());
+
+      
+        MainMenuScreen.getInstance().setLocation(0, 0);
         RestaurantScreen.getInstance().setLocation(WIDTH, 0);
 
-        // start GameTick
+      
         tick.start();
 
-
-        // test screen switch button
+    
         Button screenSwitch = new ActionButton("Screen Switch", () -> {
             enterDoor();
         });
         add(screenSwitch);
         screenSwitch.setLocation(WIDTH - screenSwitch.getWidth(), HEIGHT - screenSwitch.getHeight());
 
-        // Add input listeners
+  
         addInputListeners();
+    }
+
+    public void setScreen(CurrentScreen newScreen) {
+
+        currentScreen = newScreen;
+
+        
+        switch (currentScreen) {
+            case MAIN_MENU:
+                MainMenuScreen.getInstance().setLocation(0, 0);
+                GardenScreen.getInstance().setLocation(WIDTH, 0);
+                RestaurantScreen.getInstance().setLocation(WIDTH, 0);
+                break;
+            case GARDEN:
+                MainMenuScreen.getInstance().setLocation(-WIDTH, 0);
+                GardenScreen.getInstance().setLocation(0, 0);
+                RestaurantScreen.getInstance().setLocation(WIDTH, 0);
+                break;
+            case RESTAURANT:
+                MainMenuScreen.getInstance().setLocation(-WIDTH, 0);
+                GardenScreen.getInstance().setLocation(-WIDTH, 0);
+                RestaurantScreen.getInstance().setLocation(0, 0);
+                break;
+            default:
+
+                break;
+        }
+        repaint();
     }
 
     public void addInputListeners() {
@@ -98,7 +127,7 @@ public class ProgramWindow extends GraphicsProgram {
         if (shifting) {
             return;
         }
-        // check if currentScreen is GARDEN or RESTAURANT and switch.
+
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
             endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
@@ -107,15 +136,13 @@ public class ProgramWindow extends GraphicsProgram {
             endX.set(0);
         }
 
-
         shifting = true;
-        // new executor to run the animation
+
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-        // set the start time
+
         long startTime = System.currentTimeMillis();
 
-        // setup executor to run screen shift every 10ms until done
         executor.scheduleAtFixedRate(() -> {
             boolean done = shiftScreen(endX.get(), startTime);
             if (done) {
@@ -126,24 +153,18 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public boolean shiftScreen(int endX, long startTime) {
-        // get animation progress
+
         float progress = (System.currentTimeMillis() - startTime) / 1800.0f;
-        // check if progress is at the end
+
         if (progress >= 1.0f) {
-            // commented out as there was a wierd jump at the end
             GardenScreen.getInstance().setLocation(endX, 0);
             RestaurantScreen.getInstance().setLocation(WIDTH + endX, 0);
-            //TODO remove repaint later
             repaint();
-            // return true ending executor
             return true;
         } else {
-            // set the location of the canvas shifted towards the endX
             GardenScreen.getInstance().setLocation(Utils.Utils.lerp(GardenScreen.getInstance().getX(), endX, easeInOutCubic(progress)), 0);
             RestaurantScreen.getInstance().setLocation(Utils.Utils.lerp(RestaurantScreen.getInstance().getX(), WIDTH + endX, easeInOutCubic(progress)), 0);
-            //TODO remove repaint later
             repaint();
-            // return false to keep executor running
             return false;
         }
     }
@@ -260,5 +281,4 @@ public class ProgramWindow extends GraphicsProgram {
         RESTAURANT,
         SETTINGS
     }
-
 }
