@@ -2,6 +2,7 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
+import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
 import Utils.*;
@@ -328,6 +329,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         } else if (currentTheta < 0) {
             currentTheta += 360;
         }
+        if (checkCollision()) {
+            onCollision();
+        }
     }
 
 
@@ -336,6 +340,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             interactHeld = true;
             Interact interactable = checkForInteractable();
             if (interactable != null) {
+                System.out.println("interact");
                 interactable.interact();
             }
         } else {
@@ -374,16 +379,17 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void onCollision() {
+        System.out.println("Collision detected");
     }
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override
     public GRectangle getInteractHitbox() {
-        return interactRect;
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
 }

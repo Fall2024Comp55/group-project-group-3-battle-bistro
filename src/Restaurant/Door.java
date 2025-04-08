@@ -33,11 +33,12 @@ public class Door extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
+        System.out.println("interact");
         ProgramWindow.getInstance().enterDoor();
     }
 
     @Override
     public GRectangle getInteractHitbox() {
-        return Utils.shrinkBounds(this.getBounds(), 10);
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 }
