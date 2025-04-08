@@ -56,6 +56,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.projectile = projectile;
     }
 
+    protected double currentTheta;
+
     public boolean inRange() {
         if (placed) {
             enemyFound = false;
@@ -73,6 +75,34 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                     }
                 }
             });
+
+            if (enemyFound && attackTarget != null) {
+                // Calculate the angle to face the enemy
+                double deltaX = attackTarget.getX() - this.getX();
+                double deltaY = attackTarget.getY() - this.getY();
+                double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
+                // Rotate the tower to face the enemy
+                double rotateDistance = angle - currentTheta; // calculate the distance to rotate
+
+                // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
+                if (rotateDistance > 180) {
+                    rotateDistance -= 360;
+                } else if (rotateDistance < -180) {
+                    rotateDistance += 360;
+                }
+                // if the distance is less than the speed, rotate by the distance
+                this.rotate(rotateDistance);
+                currentTheta += rotateDistance; // track the current angle
+
+                // keep the current angle between 0 and 360 degrees
+                if (currentTheta > 360) {
+                    currentTheta -= 360;
+                } else if (currentTheta < 0) {
+                    currentTheta += 360;
+                }
+            }
+
             return enemyFound;
         } else {
             return false;
