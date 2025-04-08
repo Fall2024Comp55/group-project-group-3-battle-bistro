@@ -2,7 +2,6 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
-import Screen.ProgramWindow;
 import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
@@ -390,16 +389,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         double endX = startX - length * Math.sin(Math.toRadians(currentTheta));
         double endY = startY - length * Math.cos(Math.toRadians(currentTheta));
 
-        // Create a rectangle to represent the line
-        GLine line = new GLine(startX, startY, endX, endY);
-
-        // Rotate the line to match the character's facing direction
-
         // Add the line to the ProgramWindow
-        GameTick.ActionManager.addAction(1, () -> {
-            ProgramWindow.getInstance().add(line);
-        });
-        return line;
+        return new GLine(startX, startY, endX, endY);
     }
 
     @Override
