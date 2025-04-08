@@ -46,9 +46,9 @@ public class RangedTower extends Tower implements TickListener {
                 GPoint endPoint = new GPoint(endX, endY);
 
                 // Test visual line
-                // ProgramWindow.getInstance().add(new GLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY()));
+//                ProgramWindow.getInstance().add(new GLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY()));
 
-                Projectile p = new SpatulaProjectile(startPoint, endPoint, attackTarget, 20, .5, state.getDamage());
+                Projectile p = new SpatulaProjectile(endPoint, attackTarget, 20, .5, state.getDamage());
                 p.setLocation(this.getLocation());
                 p.rotate(currentTheta);
                 GardenScreen.getInstance().add(p);

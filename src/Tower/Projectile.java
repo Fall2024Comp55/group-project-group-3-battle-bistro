@@ -53,11 +53,13 @@ public abstract class Projectile extends GCompound implements TickListener {
 
         if (distance < speed * moveRate) {
             this.setLocation(Utils.getCenterOffset(targetPoint, this.getBounds()));
-            hitTarget();
+            if (checkHit()) {
+                hitTarget();
+            } else {
+                active = false;
+            }
         } else {
-
             this.move((dx / distance) * speed * moveRate, (dy / distance) * speed * moveRate);
-
 
             if (checkHit()) {
                 hitTarget();
@@ -98,18 +100,17 @@ public abstract class Projectile extends GCompound implements TickListener {
 
     @Override
     public void onTick() {
-        if (!active) {
+        if (active) {
+//        // TODO: check if this code is needed and if so, rework it
+//        if (targetEnemy == null || !targetEnemy.isAlive()) {
+//            active = false;
+//            return;
+//        }
+
+            targetPoint = targetEnemy.getLocation();
+            move();
+        } else {
             GardenScreen.getInstance().remove(this);
-            return;
         }
-
-        // TODO: check if this code is needed and if so, rework it
-        if (targetEnemy == null || !targetEnemy.isAlive()) {
-            active = false;
-            return;
-        }
-
-        targetPoint = targetEnemy.getLocation();
-        move();
     }
 }
