@@ -38,7 +38,7 @@ public interface Solid {
                 }
             } else if (object instanceof GCompound c) {
                 for (GObject g : c) {
-                    if (g instanceof Solid s && object != this) {
+                    if (g instanceof Solid s && s != this) {
                         if (s.getHitbox() != null && this.getHitbox().intersects(s.getHitbox())) {
                             hit.set(true);
                         }

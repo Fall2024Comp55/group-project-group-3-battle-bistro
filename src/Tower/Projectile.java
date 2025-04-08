@@ -2,7 +2,6 @@ package Tower;
 
 import Enemy.Enemy;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -67,8 +66,8 @@ public abstract class Projectile extends GCompound implements TickListener {
     public Boolean checkHit() {
         AtomicBoolean hit = new AtomicBoolean(false);
 
-        ProgramWindow.getInstance().forEach(object -> {
-            if (object instanceof Enemy e) {
+        GardenScreen.getInstance().getEnemyTickListeners().spliterator().forEachRemaining(enemy -> {
+            if (enemy instanceof Enemy e) {
                 if (e.getBounds() != null && this.getBounds().intersects(e.getBounds())) {
                     hit.set(true);
                 }

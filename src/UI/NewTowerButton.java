@@ -1,7 +1,7 @@
 package UI;
 
 import Character.Character;
-import Screen.ProgramWindow;
+import Screen.GardenScreen;
 import Tower.RangedTower;
 import Tower.Tower;
 import Utils.MouseManager;
@@ -21,7 +21,7 @@ public class NewTowerButton extends Button {
         if (Character.getInstance().subtractBalance(tower.getCost())) {
 
             tower.setLocation(e.getX(), e.getY());
-            ProgramWindow.getInstance().add(tower);
+            GardenScreen.getInstance().add(tower);
             MouseManager.setSelectedObject(tower);
             tower.onPress(e);
         } else {

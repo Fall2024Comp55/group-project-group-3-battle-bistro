@@ -3,7 +3,6 @@ package Tower;
 import Character.Character;
 import Enemy.Enemy;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -118,16 +117,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public abstract void setTarget(GObject target);
 
     public String toString() {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+        return name.substring(0, 1).toUpperCase() + name.substring(1) + "[" + this.hashCode() + "]";
     }
 
     public String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
-    }
-
-    private void remove() {
-        removeAll();
-        ProgramWindow.getInstance().remove(this);
     }
 
     @Override
@@ -144,7 +138,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onDrag(MouseEvent e) {
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
-        GardenScreen.getInstance().unregisterTickListener(this);
+//        GardenScreen.getInstance().unregisterTickListener(this);
         if (checkCollision()) {
             if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
@@ -165,7 +159,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
-                remove();
+                GardenScreen.getInstance().remove(this);
             } else {
                 placed = true;
                 this.setLocation(placedLocation);
