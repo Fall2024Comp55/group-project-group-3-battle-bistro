@@ -1,10 +1,8 @@
 package Tower;
 
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
-import acm.graphics.GLine;
 import acm.graphics.GObject;
 import acm.graphics.GPoint;
 
@@ -47,7 +45,8 @@ public class RangedTower extends Tower implements TickListener {
                 double endY = startPoint.getY() + dy * range;
                 GPoint endPoint = new GPoint(endX, endY);
 
-                ProgramWindow.getInstance().add(new GLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY()));
+                // Test visual line
+                // ProgramWindow.getInstance().add(new GLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY()));
 
                 Projectile p = new SpatulaProjectile(startPoint, endPoint, attackTarget, 20, .5, state.getDamage());
                 p.setLocation(this.getLocation());
