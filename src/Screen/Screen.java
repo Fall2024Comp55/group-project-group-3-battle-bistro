@@ -28,6 +28,10 @@ public abstract class Screen extends GCompound implements TickListener {
 
     public abstract void unregisterAllTickListener();
 
+    public Set<GObject> getElements() {
+        return elements;
+    }
+
     @Override
     public void remove(GObject obj) {
         if (obj instanceof TickListener listener) {

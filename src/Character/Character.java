@@ -360,7 +360,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("key released");
         actions.remove(e.getKeyCode());
         if (moving && ((actions.size() == 1 && actions.contains(KeyEvent.VK_E)) || actions.isEmpty())) {
             moving = false;

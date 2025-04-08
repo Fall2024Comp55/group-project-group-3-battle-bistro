@@ -30,6 +30,23 @@ public class Utils {
         return new GPoint(p.getX() - (bounds.getWidth() / 2), p.getY() - (bounds.getHeight() / 2));
     }
 
+    /**
+     * Shrinks the bounds of a rectangle by a specified number of pixels.
+     *
+     * @param bounds      the original bounds
+     * @param pixelShrink the number of pixels to shrink the bounds by
+     * @return a new `GRectangle` with the shrunk bounds
+     */
+    public static GRectangle shrinkBounds(GRectangle bounds, int pixelShrink) {
+        return new GRectangle(bounds.getX() + pixelShrink, bounds.getY() + pixelShrink, bounds.getWidth() - (pixelShrink), bounds.getHeight() - (pixelShrink));
+    }
+
+    /**
+     * Retrieves an image from the resources folder. If the image is not found, return MISSING_TEXTURE.
+     *
+     * @param path the path to the image file
+     * @return the image, or a default missing texture if the image is not found
+     */
     public static Image getImage(String path) {
         URL resource = Utils.class.getResource(path);
         if (resource != null) {
