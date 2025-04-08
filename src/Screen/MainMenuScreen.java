@@ -1,5 +1,6 @@
 package Screen;
 
+import UI.ActionButton;
 import UI.Button;
 import Utils.TickListener;
 import acm.graphics.GLabel;
@@ -7,14 +8,11 @@ import acm.graphics.GObject;
 import acm.graphics.GRect;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import static Screen.ProgramWindow.*;
-import static Utils.Utils.getCenter;
+import static Screen.ProgramWindow.HEIGHT;
+import static Screen.ProgramWindow.WIDTH;
 
 public class MainMenuScreen extends Screen implements TickListener {
     private volatile Set<TickListener> mainMenuTickListeners;
@@ -61,40 +59,27 @@ public class MainMenuScreen extends Screen implements TickListener {
         elements.add(title);
 
         // start Game button
-        startButton = new Button("Start Game") {
-            @Override
-            public void onRelease(MouseEvent e) {
-                // transition to the GardenScreen
-                ProgramWindow.getInstance().setScreen(CurrentScreen.GARDEN);
-                ProgramWindow.getInstance().add(GardenScreen.getInstance());
-                ProgramWindow.getInstance().add(RestaurantScreen.getInstance());
-                ProgramWindow.getInstance().remove(this);
-            }
-        };
+        startButton = new ActionButton("Start Game", () -> {
+            // Start the game
+            ProgramWindow.getInstance().startGame();
+        });
         startButton.setLocation((WIDTH - startButton.getWidth()) / 2, HEIGHT / 2 - 50);
         add(startButton);
         elements.add(startButton);
 
         // Options button
-        optionsButton = new Button("Options") {
-            @Override
-            public void onRelease(MouseEvent e) {
-                //
-                System.out.println("Options button clicked - functionality not implemented yet.");
-            }
-        };
+        optionsButton = new ActionButton("Options", () -> {
+            System.out.println("Options button clicked - functionality not implemented yet.");
+        });
         optionsButton.setLocation((WIDTH - optionsButton.getWidth()) / 2, HEIGHT / 2);
         add(optionsButton);
         elements.add(optionsButton);
 
         // exit button
-        exitButton = new Button("Exit") {
-            @Override
-            public void onRelease(MouseEvent e) {
-                // Exit the game
-                System.exit(0);
-            }
-        };
+        exitButton = new ActionButton("Exit", () -> {
+            // Exit the game
+            System.exit(0);
+        });
         exitButton.setLocation((WIDTH - exitButton.getWidth()) / 2, HEIGHT / 2 + 50);
         add(exitButton);
         elements.add(exitButton);

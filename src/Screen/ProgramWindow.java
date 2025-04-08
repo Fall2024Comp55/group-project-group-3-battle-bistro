@@ -70,44 +70,27 @@ public class ProgramWindow extends GraphicsProgram {
 
       
         tick.start();
+  
+        addInputListeners();
+    }
 
-    
+    public void setScreen(CurrentScreen newScreen) {
+        currentScreen = newScreen;
+    }
+
+    public void startGame() {
+        setScreen(CurrentScreen.GARDEN);
         Button screenSwitch = new ActionButton("Screen Switch", () -> {
             enterDoor();
         });
         add(screenSwitch);
         screenSwitch.setLocation(WIDTH - screenSwitch.getWidth(), HEIGHT - screenSwitch.getHeight());
 
-  
-        addInputListeners();
-    }
-
-    public void setScreen(CurrentScreen newScreen) {
-
-        currentScreen = newScreen;
-
-        
-        switch (currentScreen) {
-            case MAIN_MENU:
-                MainMenuScreen.getInstance().setLocation(0, 0);
-                GardenScreen.getInstance().setLocation(WIDTH, 0);
-                RestaurantScreen.getInstance().setLocation(WIDTH, 0);
-                break;
-            case GARDEN:
-                MainMenuScreen.getInstance().setLocation(-WIDTH, 0);
-                GardenScreen.getInstance().setLocation(0, 0);
-                RestaurantScreen.getInstance().setLocation(WIDTH, 0);
-                break;
-            case RESTAURANT:
-                MainMenuScreen.getInstance().setLocation(-WIDTH, 0);
-                GardenScreen.getInstance().setLocation(-WIDTH, 0);
-                RestaurantScreen.getInstance().setLocation(0, 0);
-                break;
-            default:
-
-                break;
-        }
-        repaint();
+        remove(MainMenuScreen.getInstance());
+        add(GardenScreen.getInstance());
+        add(RestaurantScreen.getInstance());
+        GardenScreen.getInstance().sendToBack();
+        RestaurantScreen.getInstance().sendToBack();
     }
 
     public void addInputListeners() {
