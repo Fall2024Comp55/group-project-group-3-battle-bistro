@@ -2,8 +2,6 @@ package Tower;
 
 import Enemy.Enemy;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
-import Utils.GameTick.ActionManager;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -35,6 +33,8 @@ public abstract class Projectile extends GCompound implements TickListener {
         this.damage = damage;
         this.active = true;
         this.gImage = new GImage(Utils.getImage(toPath()));
+        gImage.setLocation(Utils.getCenter(this.getBounds()));
+        add(gImage);
     }
 
     public void move() {
@@ -68,8 +68,8 @@ public abstract class Projectile extends GCompound implements TickListener {
     public Boolean checkHit() {
         AtomicBoolean hit = new AtomicBoolean(false);
 
-        ProgramWindow.getInstance().forEach(object -> {
-            if (object instanceof Enemy e) {
+        GardenScreen.getInstance().getEnemyTickListeners().spliterator().forEachRemaining(enemy -> {
+            if (enemy instanceof Enemy e) {
                 if (e.getBounds() != null && this.getBounds().intersects(e.getBounds())) {
                     hit.set(true);
                 }
@@ -88,13 +88,6 @@ public abstract class Projectile extends GCompound implements TickListener {
         active = false;
     }
 
-    protected void remove() {
-        ActionManager.addAction(1, () -> {
-            ProgramWindow.getInstance().remove(this);
-            removeAll();
-        });
-    }
-
     public String toString() {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
@@ -106,16 +99,15 @@ public abstract class Projectile extends GCompound implements TickListener {
     @Override
     public void onTick() {
         if (!active) {
-            GardenScreen.getInstance().unregisterTickListener(this);
-            remove();
+            GardenScreen.getInstance().remove(this);
             return;
         }
 
         // TODO: check if this code is needed and if so, rework it
-//        if (targetEnemy == null || !targetEnemy.isAlive()) {
-//            active = false;
-//            return;
-//        }
+        if (targetEnemy == null || !targetEnemy.isAlive()) {
+            active = false;
+            return;
+        }
 
         targetPoint = targetEnemy.getLocation();
         move();

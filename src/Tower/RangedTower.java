@@ -22,12 +22,35 @@ public class RangedTower extends Tower implements TickListener {
     @Override
     public void attack() {
         if (placed && !onCooldown) {
-            if (attackTarget != null && attackTarget.isAlive()) {
+            if (attackTarget != null && attackTarget.isAlive() && getBounds().intersects(attackTarget.getBounds())) {
 
+                // Get the start point (tower's location)
                 GPoint startPoint = this.getLocation();
+
+                // Get the target point (enemy's location)
                 GPoint targetPoint = attackTarget.getLocation();
-                Projectile p = new SpatulaProjectile(startPoint, targetPoint, attackTarget, 5, .5, state.getDamage());
+
+                // Calculate the direction vector from the tower to the enemy
+                double dx = targetPoint.getX() - startPoint.getX();
+                double dy = targetPoint.getY() - startPoint.getY();
+
+                // Normalize the direction vector
+                double length = Math.sqrt(dx * dx + dy * dy);
+                dx = dx / length;
+                dy = dy / length;
+
+                // Calculate the end point at the edge of the tower's range
+                double range = this.getRange().getWidth() / 2; // Assuming range is a circle
+                double endX = startPoint.getX() + dx * range;
+                double endY = startPoint.getY() + dy * range;
+                GPoint endPoint = new GPoint(endX, endY);
+
+                // Test visual line
+                // ProgramWindow.getInstance().add(new GLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY()));
+
+                Projectile p = new SpatulaProjectile(startPoint, endPoint, attackTarget, 20, .5, state.getDamage());
                 p.setLocation(this.getLocation());
+                p.rotate(currentTheta);
                 GardenScreen.getInstance().add(p);
                 onCooldown = true;
                 ActionManager.addAction(8, () -> {
@@ -64,7 +87,7 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void onTick() {
-        if (inRange()) {
+        if (!onCooldown && inRange()) {
             attack();
         }
     }

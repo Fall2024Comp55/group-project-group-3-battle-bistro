@@ -3,7 +3,6 @@ package Tower;
 import Character.Character;
 import Enemy.Enemy;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -30,8 +29,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected GPoint placedLocation;
     protected Projectile projectile;
     protected boolean enemyFound;
-
-    // TODO figure out what is needed
+    protected double currentTheta;
 
     public Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
@@ -42,13 +40,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.placedLocation = this.getLocation();
         gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
-        gImage.setLocation(-gImage.getWidth() / 2, -gImage.getHeight() / 2);
+        gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
         hitbox = new GOval(20, 20);
-        hitbox.setLocation(-hitbox.getWidth() / 2, -hitbox.getHeight() / 2);
+        hitbox.setLocation(Utils.getCenter(hitbox.getBounds()));
         add(hitbox);
         this.range = new GOval(range, range);
-        this.range.setLocation(-this.range.getWidth() / 2, -this.range.getHeight() / 2);
+        this.range.setLocation(Utils.getCenter(this.range.getBounds()));
         add(this.range);
     }
 
@@ -74,6 +72,34 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                     }
                 }
             });
+
+            if (enemyFound && attackTarget != null) {
+                // Calculate the angle to face the enemy
+                double dx = attackTarget.getX() - this.getX();
+                double dy = attackTarget.getY() - this.getY();
+                double angle = Math.toDegrees(Math.atan2(dx, dy));
+
+                // Rotate the tower to face the enemy
+                double rotateDistance = angle - currentTheta; // calculate the distance to rotate
+
+                // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
+                if (rotateDistance > 180) {
+                    rotateDistance -= 360;
+                } else if (rotateDistance < -180) {
+                    rotateDistance += 360;
+                }
+                // if the distance is less than the speed, rotate by the distance
+                this.rotate(rotateDistance);
+                currentTheta += rotateDistance; // track the current angle
+
+                // keep the current angle between 0 and 360 degrees
+                if (currentTheta > 360) {
+                    currentTheta -= 360;
+                } else if (currentTheta < 0) {
+                    currentTheta += 360;
+                }
+            }
+
             return enemyFound;
         } else {
             return false;
@@ -107,6 +133,10 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         return cost;
     }
 
+    public double getCurrentTheta() {
+        return currentTheta;
+    }
+
     public abstract void attack();
 
     public abstract void upgrade();
@@ -118,16 +148,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public abstract void setTarget(GObject target);
 
     public String toString() {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+        return name.substring(0, 1).toUpperCase() + name.substring(1) + "[" + this.hashCode() + "]";
     }
 
     public String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
-    }
-
-    private void remove() {
-        removeAll();
-        ProgramWindow.getInstance().remove(this);
     }
 
     @Override
@@ -144,7 +169,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onDrag(MouseEvent e) {
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
-        GardenScreen.getInstance().unregisterTickListener(this);
+//        GardenScreen.getInstance().unregisterTickListener(this);
         if (checkCollision()) {
             if (!hitbox.isFilled()) {
                 hitbox.setFilled(true);
@@ -165,7 +190,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
-                remove();
+                GardenScreen.getInstance().remove(this);
             } else {
                 placed = true;
                 this.setLocation(placedLocation);

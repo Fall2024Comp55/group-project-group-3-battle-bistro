@@ -34,10 +34,6 @@ public class Customer extends GCompound {
         return pizza;
     }
 
-//    public static Customer getInstance() {
-//        return CUSTOMER;
-//    }
-
     // Getter for the order ticket
     public OrderTicket getOrderTicket() {
         return orderTicket;

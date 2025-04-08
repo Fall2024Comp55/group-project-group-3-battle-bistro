@@ -2,13 +2,11 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
+import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
 import Utils.*;
-import acm.graphics.GCompound;
-import acm.graphics.GImage;
-import acm.graphics.GRect;
-import acm.graphics.GRectangle;
+import acm.graphics.*;
 import com.google.common.collect.Maps;
 
 import java.awt.event.KeyEvent;
@@ -43,9 +41,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private int balance;
     private boolean interactHeld;
     private Directions facing;
-    private int currentTheta;
+    private double currentTheta;
     private ScheduledExecutorService movementExecutor;
-    private GRectangle interactRect;
 
     static {
         try {
@@ -73,7 +70,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         health = 100;
         balance = 100;
         currentTheta = 0;
-        interactRect = new GRectangle(-20, -30, 40, 10);
     }
 
     /**
@@ -302,7 +298,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
         move(dx, dy); // move the character by the normalized vector
 
-        int rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
+        double rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
 
         // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
         if (rotateDistance > 180) {
@@ -325,6 +321,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         } else if (currentTheta < 0) {
             currentTheta += 360;
         }
+        if (checkCollision()) {
+            onCollision();
+        }
     }
 
 
@@ -333,6 +332,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             interactHeld = true;
             Interact interactable = checkForInteractable();
             if (interactable != null) {
+                System.out.println("interact");
                 interactable.interact();
             }
         } else {
@@ -357,7 +357,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("key released");
         actions.remove(e.getKeyCode());
         if (moving && ((actions.size() == 1 && actions.contains(KeyEvent.VK_E)) || actions.isEmpty())) {
             moving = false;
@@ -372,16 +371,34 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void onCollision() {
+        System.out.println("Collision detected");
     }
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+    }
+
+    public GLine linetrace(double length) {
+        // Get the character's current position
+        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds());
+        double startX = p.getX();
+        double startY = p.getY();
+
+        // Calculate the end position based on the direction the character is facing
+        double endX = startX - length * Math.sin(Math.toRadians(currentTheta));
+        double endY = startY - length * Math.cos(Math.toRadians(currentTheta));
+
+        // Add the line to the ProgramWindow
+        return new GLine(startX, startY, endX, endY);
     }
 
     @Override
     public GRectangle getInteractHitbox() {
-        return interactRect;
+        GPoint p = linetrace(50).getEndPoint();
+        GOval interactHitbox = new GOval(p.getX(), p.getY(), 20, 20);
+
+        return interactHitbox.getBounds();
     }
 
 }

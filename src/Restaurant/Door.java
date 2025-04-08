@@ -4,6 +4,7 @@ import Screen.ProgramWindow;
 import Screen.RestaurantScreen;
 import Utils.Interact;
 import Utils.Solid;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
@@ -15,8 +16,7 @@ public class Door extends GCompound implements Solid, Interact {
     private final GImage gImage;
 
     public Door() {
-        gImage = new GImage(Utils.Utils.getImage(PATH));
-        gImage.setLocation(0, 0);
+        gImage = new GImage(Utils.getImage(PATH));
         gImage.setSize(30, 50);
         add(gImage);
     }
@@ -27,16 +27,17 @@ public class Door extends GCompound implements Solid, Interact {
     
     @Override
     public GRectangle getHitbox() {
-        return Utils.Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     @Override
     public void interact() {
+        System.out.println("interact");
         ProgramWindow.getInstance().enterDoor();
     }
 
     @Override
     public GRectangle getInteractHitbox() {
-        return null;
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 }
