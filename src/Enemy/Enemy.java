@@ -30,9 +30,6 @@ public class Enemy extends GCompound implements TickListener {
         this.health = type.getHealth();
         this.alive = true;
         this.pathTraversed = 0;
-        if (enemyPath == null) {
-            enemyPath = GardenScreen.getEnemyPath();
-        }
         this.targetPoint = enemyPath.getPoint(1);
         gImage = new GImage(Utils.getImage(type.toPath()));
         gImage.setSize(SIZE, SIZE);
@@ -40,6 +37,14 @@ public class Enemy extends GCompound implements TickListener {
         bounds = this.getBounds();
         bounds.setLocation(Utils.getCenter(bounds));
         add();
+    }
+
+    public static EnemyPath getPath() {
+        return enemyPath;
+    }
+
+    public static void setPath(EnemyPath path) {
+        enemyPath = path;
     }
 
     public static void removePath() {
