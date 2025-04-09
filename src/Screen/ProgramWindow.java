@@ -6,6 +6,7 @@ import UI.Button;
 import Utils.GameTick;
 import Utils.MouseInteract;
 import Utils.MouseManager;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
@@ -123,7 +124,6 @@ public class ProgramWindow extends GraphicsProgram {
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-
         long startTime = System.currentTimeMillis();
 
         executor.scheduleAtFixedRate(() -> {
@@ -137,16 +137,18 @@ public class ProgramWindow extends GraphicsProgram {
 
     public boolean shiftScreen(int endX, long startTime) {
 
-        float progress = (System.currentTimeMillis() - startTime) / 1800.0f;
+        float progress = (System.currentTimeMillis() - startTime) / 800.0f;
 
-        if (progress >= .5f) {
+        if (progress >= 1.0f) {
             GardenScreen.getInstance().setLocation(endX, 0);
             RestaurantScreen.getInstance().setLocation(WIDTH + endX, 0);
+            CurrentScreen.GARDEN.setX(endX);
+            CurrentScreen.RESTAURANT.setX(WIDTH + endX);
             repaint();
             return true;
         } else {
-            GardenScreen.getInstance().setLocation(Utils.Utils.lerp(GardenScreen.getInstance().getX(), endX, easeInOutCubic(progress)), 0);
-            RestaurantScreen.getInstance().setLocation(Utils.Utils.lerp(RestaurantScreen.getInstance().getX(), WIDTH + endX, easeInOutCubic(progress)), 0);
+            GardenScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.GARDEN.getX(), endX, easeInOutCubic(progress)), 0);
+            RestaurantScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.RESTAURANT.getX(), WIDTH + endX, easeInOutCubic(progress)), 0);
             repaint();
             return false;
         }
@@ -258,10 +260,24 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public enum CurrentScreen {
-        MAIN_MENU,
-        SUMMARY,
-        GARDEN,
-        RESTAURANT,
-        SETTINGS
+        MAIN_MENU(0),
+        SUMMARY(0),
+        GARDEN(0),
+        RESTAURANT(WIDTH),
+        SETTINGS(0);
+
+        private double x;
+
+        CurrentScreen(double x) {
+            this.x = x;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public void setX(double x) {
+            this.x = x;
+        }
     }
 }
