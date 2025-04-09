@@ -1,10 +1,10 @@
 package Enemy;
 
 public enum EnemyType {
-    DOUGH(250, 20, 2),
-    MOZZARELLA(150, 1, 3),
-    PEPPERONI(200, 1, 4),
-    MUSHROOM(250, 3, 5);
+    DOUGH(30, 20, 2),
+    MOZZARELLA(50, 1, 3),
+    PEPPERONI(70, 1, 4),
+    MUSHROOM(90, 3, 5);
 
     private static final String BASE_PATH = "/resources/enemy/";
     private static final String EXTENSION = ".png";
