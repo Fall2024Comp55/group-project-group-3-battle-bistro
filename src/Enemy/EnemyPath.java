@@ -140,7 +140,7 @@ public class EnemyPath {
 
         @Override
         public GRectangle getHitbox() {
-            return Utils.getHitboxOffset(hitbox.getBounds(), GardenScreen.getInstance().getBounds());
+            return new GRectangle(GardenScreen.getInstance().getX() + hitbox.getX(), GardenScreen.getInstance().getY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
         }
 
         @Override
