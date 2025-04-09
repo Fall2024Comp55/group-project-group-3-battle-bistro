@@ -1,10 +1,10 @@
 
 package Customer;
 
-import Enemy.Path;
 import Food.Food;
 import Food.IngredientsType;
 import Screen.RestaurantScreen;
+import UI.OrderTicketUI;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;

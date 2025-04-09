@@ -2,15 +2,12 @@ package Enemy;
 
 import Screen.GardenScreen;
 import Screen.Screen;
-import Utils.MouseInteract;
 import Utils.Solid;
-import Utils.Utils;
 import acm.graphics.GLine;
 import acm.graphics.GPoint;
 import acm.graphics.GRect;
 import acm.graphics.GRectangle;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -1,12 +1,11 @@
 package Screen;
 
 import Enemy.Enemy;
+import Enemy.EnemyPath;
 import Enemy.EnemyType;
-import Enemy.Path;
 import Tower.Projectile;
 import Tower.Tower;
 import UI.GardenUI;
-import Utils.GameTick;
 import Utils.TickListener;
 
 import java.util.HashSet;

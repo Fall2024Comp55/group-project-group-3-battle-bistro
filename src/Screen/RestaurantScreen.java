@@ -2,7 +2,7 @@ package Screen;
 
 import Character.Character;
 import Customer.Customer;
-import Enemy.Path;
+import Customer.CustomerPath;
 import Food.IngredientsType;
 import Restaurant.*;
 import UI.OrderTicketUI;
