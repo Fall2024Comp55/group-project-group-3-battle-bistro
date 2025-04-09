@@ -89,19 +89,18 @@ public class RestaurantScreen extends Screen {
         elements.add(orderWindow);
         add(orderWindow);
 
-     
-        customerPath = new Path(600, 300, 500, 300, 500, 100, 600, 100);
-        customerPath.addPath(this); 
 
-     
-        pathCustomer = new Customer(customerPath);
-        elements.add(pathCustomer);
-        add(pathCustomer);
-        
-        add(OrderTicketUI.getInstance());
-        elements.add(OrderTicketUI.getInstance());
-      
-        OrderTicketUI.getInstance().updateTickets(pathCustomer);
+        customerPath = new CustomerPath(600, 300, 500, 300, 500, 100, 600, 100);
+        customerPath.addPath(this);
+        Customer.setPath(customerPath);
+
+
+        Customer testCustomer = new Customer();
+        elements.add(testCustomer);
+        add(testCustomer);
+
+//        add(OrderTicketUI.getInstance());
+//        elements.add(OrderTicketUI.getInstance());
     }
 
     @Override
