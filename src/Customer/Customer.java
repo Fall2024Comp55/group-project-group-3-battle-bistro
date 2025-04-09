@@ -29,8 +29,7 @@ public class Customer extends GCompound implements TickListener {
 
     private GPoint targetPoint;
     private int pauseCounter;
-    private double speed = 10; 
-    private int currentPointIndex;
+    private double speed = 10;
 
     private boolean hasOrdered;
     private boolean hasFood;
