@@ -122,14 +122,7 @@ public class RestaurantScreen extends Screen {
     public void onTick() {
         screenExecutor.submit(() -> {
             restaurantTickListeners.forEach(TickListener::onTick);
-         
-            OrderTicketUI.getInstance().updateTickets(pathCustomer);
         });
-    }
-
-
-    public Customer getPathCustomer() {
-        return pathCustomer;
     }
 }
 
