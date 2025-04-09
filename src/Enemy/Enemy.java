@@ -15,7 +15,7 @@ public class Enemy extends GCompound implements TickListener {
     public static final int SIZE = 20;
     public static final double MOVE_RATE = .1;
 
-    private static Path path;
+    private static EnemyPath enemyPath;
 
     private final GImage gImage;
     private final EnemyType type;
@@ -30,10 +30,10 @@ public class Enemy extends GCompound implements TickListener {
         this.health = type.getHealth();
         this.alive = true;
         this.pathTraversed = 0;
-        if (path == null) {
-            path = GardenScreen.getPath();
+        if (enemyPath == null) {
+            enemyPath = GardenScreen.getEnemyPath();
         }
-        this.targetPoint = path.getPoint(1);
+        this.targetPoint = enemyPath.getPoint(1);
         gImage = new GImage(Utils.getImage(type.toPath()));
         gImage.setSize(SIZE, SIZE);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
@@ -43,12 +43,12 @@ public class Enemy extends GCompound implements TickListener {
     }
 
     public static void removePath() {
-        path = null;
+        enemyPath = null;
     }
 
     public void add() {
         this.add(gImage);
-        this.setLocation(path.getStart());
+        this.setLocation(enemyPath.getStart());
         bounds = this.getBounds();
     }
 
@@ -74,11 +74,11 @@ public class Enemy extends GCompound implements TickListener {
 
             if (distance < type.getSpeed() * MOVE_RATE) {
                 this.setLocation(targetPoint);
-                if (targetPoint.equals(path.getEnd())) {
+                if (targetPoint.equals(enemyPath.getEnd())) {
                     pathTraversed += distance;
                     reachedEnd();
                 } else {
-                    targetPoint = path.getNext(targetPoint);
+                    targetPoint = enemyPath.getNext(targetPoint);
                 }
             } else {
                 pathTraversed += type.getSpeed() * MOVE_RATE;
