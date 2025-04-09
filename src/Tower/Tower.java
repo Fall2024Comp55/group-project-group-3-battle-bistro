@@ -59,7 +59,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         if (placed) {
             enemyFound = false;
             attackTarget = null;
-            GardenScreen.getInstance().getEnemyTickListeners().forEach(enemy -> {
+            for (TickListener enemy : GardenScreen.getInstance().getEnemyTickListeners()) {
                 if (enemy instanceof Enemy e) {
                     if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
                         enemyFound = true;
@@ -71,7 +71,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                         }
                     }
                 }
-            });
+            }
 
             if (enemyFound && attackTarget != null) {
                 // Calculate the angle to face the enemy
