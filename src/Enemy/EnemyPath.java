@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Path {
+public class EnemyPath {
     private static final int SEGMENT_WIDTH = 20;
 
     private final List<PathLine> path;
     private final LinkedList<GPoint> points;
 
-    public Path(int... points) {
+    public EnemyPath(int... points) {
         path = new ArrayList<>();
         this.points = new LinkedList<>();
         for (int i = 1; i < points.length; i += 2) {
