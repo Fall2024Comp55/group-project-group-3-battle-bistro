@@ -47,8 +47,8 @@ public class Customer extends GCompound implements TickListener {
         hasLeft = false;
         timeWaited = 0;
         pauseCounter = 0;
-        currentPointIndex = 0;
-        targetPoint = path.getPoint(1); 
+        targetPoint = path.getPoint(1);
+        // need to change image
         gImage = new GImage(Utils.getImage(KIRBY_IMAGE_PATH));
         gImage.setSize(SIZE, SIZE);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
