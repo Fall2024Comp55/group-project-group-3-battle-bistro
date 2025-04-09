@@ -1,20 +1,21 @@
 
 package UI;
 
-import Customer.Customer;
 import Customer.OrderTicket;
 
 import java.util.ArrayList;
 
 public class OrderTicketUI extends UI {
     private static final OrderTicketUI ORDER_TICKET_UI;
-    protected ArrayList<OrderTicket> tickets;
-    public static final int horizontalOffset = 50;
-    public static final int verticalOffset = 150;
+    public static final int HORIZONTAL_OFFSET = 50;
+    public static final int VERTICAL_OFFSET = 150;
+
+    private static final ArrayList<OrderTicket> tickets;
 
     static {
         try {
             ORDER_TICKET_UI = new OrderTicketUI();
+            tickets = new ArrayList<>();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating OrderTicketUI singleton instance");
         }
@@ -25,34 +26,20 @@ public class OrderTicketUI extends UI {
     }
 
     public OrderTicketUI() {
-        tickets = new ArrayList<>();
-  
     }
 
     public void addTicket(OrderTicket ticket) {
         tickets.add(ticket);
-        int count = tickets.size();
-        ticket.setLocation(horizontalOffset, verticalOffset * count);
+        ticket.setLocation(HORIZONTAL_OFFSET, VERTICAL_OFFSET * tickets.size());
         add(ticket);
     }
 
     public void clearTickets() {
-        for (OrderTicket ticket : tickets) {
-            remove(ticket);
-        }
         tickets.clear();
     }
 
     public ArrayList<OrderTicket> getTickets() {
         return tickets;
-    }
-
- 
-    public void updateTickets(Customer customer) {
-        clearTickets();
-        if (customer != null && customer.hasOrdered()) {
-            addTicket(customer.getOrderTicket());
-        }
     }
 }
 
