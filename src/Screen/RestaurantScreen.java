@@ -39,6 +39,8 @@ public class RestaurantScreen extends Screen {
     public void initializeComponents() {
         add(RestaurantUI.getInstance());
         add(OrderTicketUI.getInstance());
+        elements.add(OrderTicketUI.getInstance());
+        elements.add(OrderTicketUI.getInstance());
 
         
         Door door = new Door();
