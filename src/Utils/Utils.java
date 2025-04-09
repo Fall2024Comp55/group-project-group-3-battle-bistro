@@ -57,6 +57,7 @@ public class Utils {
             return new ImageIcon(resource).getImage();
         } else {
             System.out.println("Could not find image for path " + path);
+            Thread.dumpStack();
             return new ImageIcon(MISSING_TEXTURE).getImage();
         }
     }
