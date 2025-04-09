@@ -117,7 +117,7 @@ public class EnemyPath {
     }
 
 
-    public static class PathLine extends GLine implements Solid, MouseInteract {
+    public static class PathLine extends GLine implements Solid {
         private GRect hitbox;
 
         public PathLine(double x0, double y0, double x1, double y1) {
@@ -146,22 +146,6 @@ public class EnemyPath {
         @Override
         public Boolean checkCollision() {
             return null;
-        }
-
-        @Override
-        public void onPress(MouseEvent e) {
-            System.out.println(this);
-            System.out.println(this.getBounds());
-        }
-
-        @Override
-        public void onDrag(MouseEvent e) {
-
-        }
-
-        @Override
-        public void onRelease(MouseEvent e) {
-
         }
     }
 
