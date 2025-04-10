@@ -114,7 +114,8 @@ public class ProgramWindow extends GraphicsProgram {
 
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
-            endX.set((int) (-BASE_WIDTH));
+            endX.set((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
+            System.out.println(endX.get());
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
             endX.set(0);
@@ -129,6 +130,8 @@ public class ProgramWindow extends GraphicsProgram {
         executor.scheduleAtFixedRate(() -> {
             boolean done = shiftScreen(endX.get(), startTime);
             if (done) {
+                System.out.println(RestaurantScreen.getInstance().getLocation());
+                System.out.println(RestaurantScreen.getInstance().getBounds());
                 shifting = false;
                 executor.shutdown();
             }

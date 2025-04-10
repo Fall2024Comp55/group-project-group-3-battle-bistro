@@ -444,7 +444,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public GRectangle getHitbox() {
-        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
+        return this.getBounds();
     }
 
     public GLine linetrace(double length) {
