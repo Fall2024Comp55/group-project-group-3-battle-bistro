@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TowerSelectionPanel extends GCompound implements MouseInteract {
+public class TowerSelectionPanel extends UI implements MouseInteract {
     private static final int PANEL_WIDTH = 600; // Increased width for horizontal layout
     private static final int PANEL_HEIGHT = 100; // Reduced height since we're scrolling horizontally
     private static final int TOWER_ICON_SIZE = 40;
@@ -28,6 +28,8 @@ public class TowerSelectionPanel extends GCompound implements MouseInteract {
     private double scrollOffset;
     private double maxScrollOffset;
     private Tower draggingTower;
+
+    // dont need to implemnt MouseInteract use Button class or ActionButton class for clickable buttons.
 
     public TowerSelectionPanel() {
         towerIcons = new ArrayList<>();
@@ -136,17 +138,8 @@ public class TowerSelectionPanel extends GCompound implements MouseInteract {
         }
     }
 
-    @Override
-    public void onHover(MouseEvent e) {
-        // Optiona to add hover effects if desired
-    }
+    // Tower Icon should be changed to use NewTowerButton and put the Icons in there instead make sure to add price below tower
 
-    @Override
-    public void stopHover() {
-        // Optional to add reset hover effects if desired
-    }
-
-    // Inner class to represent a tower icon in the panel
     private class TowerIcon extends GCompound {
         private Tower towerTemplate;
         private GImage iconImage;
