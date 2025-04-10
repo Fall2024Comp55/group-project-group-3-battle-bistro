@@ -29,12 +29,12 @@ public enum IngredientsType {
         return price;
     }
 
-    public void setUnlocked(boolean locked) {
-        this.unlocked = locked;
+    public boolean isUnlocked() {
+        return unlocked;
     }
 
-    public boolean isLocked() {
-        return unlocked;
+    public void setUnlocked(boolean unlocked) {
+        this.unlocked = unlocked;
     }
 
     public String toString() {

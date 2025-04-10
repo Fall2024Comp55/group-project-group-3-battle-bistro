@@ -30,6 +30,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected Projectile projectile;
     protected boolean enemyFound;
     protected double currentTheta;
+    protected boolean unlocked;
 
     public Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
@@ -104,6 +105,14 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         } else {
             return false;
         }
+    }
+
+    public boolean isUnlocked() {
+        return unlocked;
+    }
+
+    public void setUnlocked(boolean locked) {
+        this.unlocked = locked;
     }
 
     public void getNextUpgrade() {
