@@ -396,7 +396,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public Boolean checkCollision() {
         boolean hit = false;
         if (keysHeld.contains(Directions.UP.getKey())) {
-            GPoint topPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth() / 2, this.getHitbox().getY());
+            GPoint topPoint = new GPoint(this.getBounds().getX() + this.getBounds().getWidth() / 2, this.getBounds().getY());
 
             GObject hitObject = RestaurantScreen.getInstance().getElementAt(topPoint.getX(), topPoint.getY());
 
@@ -407,7 +407,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             }
         }
         if (keysHeld.contains(Directions.DOWN.getKey())) {
-            GPoint bottomPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth() / 2, this.getHitbox().getY() + this.getHitbox().getHeight());
+            GPoint bottomPoint = new GPoint(this.getBounds().getX() + this.getBounds().getWidth() / 2, this.getBounds().getY() + this.getBounds().getHeight());
 
             GObject hitObject = RestaurantScreen.getInstance().getElementAt(bottomPoint.getX(), bottomPoint.getY());
 
@@ -418,7 +418,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             }
         }
         if (keysHeld.contains(Directions.LEFT.getKey())) {
-            GPoint leftPoint = new GPoint(this.getHitbox().getX(), this.getHitbox().getY() + this.getHitbox().getHeight() / 2);
+            GPoint leftPoint = new GPoint(this.getBounds().getX(), this.getBounds().getY() + this.getBounds().getHeight() / 2);
 
             GObject hitObject = RestaurantScreen.getInstance().getElementAt(leftPoint.getX(), leftPoint.getY());
 
@@ -429,7 +429,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             }
         }
         if (keysHeld.contains(Directions.RIGHT.getKey())) {
-            GPoint rightPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth(), this.getHitbox().getY() + this.getHitbox().getHeight() / 2);
+            GPoint rightPoint = new GPoint(this.getBounds().getX() + this.getBounds().getWidth(), this.getBounds().getY() + this.getBounds().getHeight() / 2);
 
             GObject hitObject = RestaurantScreen.getInstance().getElementAt(rightPoint.getX(), rightPoint.getY());
 
@@ -444,7 +444,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public GRectangle getHitbox() {
-        return this.getBounds();
+        return null;
     }
 
     public GLine linetrace(double length) {
