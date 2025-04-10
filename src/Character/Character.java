@@ -262,24 +262,27 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * Updates the character's facing direction and position based on the pressed keys.
      */
     public void move() {
+        if (checkCollision()) {
+            onCollision();
+        }
         if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) { // if only one movement key is pressed
-            if (actions.contains(KeyEvent.VK_W)) {
+            if (actions.contains(Directions.UP.getKey())) {
                 setFacing(Directions.UP);
-            } else if (actions.contains(KeyEvent.VK_S)) {
+            } else if (actions.contains(Directions.DOWN.getKey())) {
                 setFacing(Directions.DOWN);
-            } else if (actions.contains(KeyEvent.VK_A)) {
+            } else if (actions.contains(Directions.LEFT.getKey())) {
                 setFacing(Directions.LEFT);
-            } else if (actions.contains(KeyEvent.VK_D)) {
+            } else if (actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.RIGHT);
             }
         } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
-            if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_A)) {
+            if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.LEFT.getKey())) {
                 setFacing(Directions.UP_LEFT);
-            } else if (actions.contains(KeyEvent.VK_W) && actions.contains(KeyEvent.VK_D)) {
+            } else if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.UP_RIGHT);
-            } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_A)) {
+            } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.LEFT.getKey())) {
                 setFacing(Directions.DOWN_LEFT);
-            } else if (actions.contains(KeyEvent.VK_S) && actions.contains(KeyEvent.VK_D)) {
+            } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.DOWN_RIGHT);
             }
         }
@@ -320,9 +323,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             currentTheta -= 360;
         } else if (currentTheta < 0) {
             currentTheta += 360;
-        }
-        if (checkCollision()) {
-            onCollision();
         }
     }
 
@@ -371,6 +371,19 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void onCollision() {
+        if (actions.contains(Directions.UP.getKey())) {
+
+        }
+        if (actions.contains(Directions.DOWN.getKey())) {
+
+        }
+        if (actions.contains(Directions.LEFT.getKey())) {
+
+        }
+        if (actions.contains(Directions.RIGHT.getKey())) {
+
+        }
+
         System.out.println("Collision detected");
     }
 
