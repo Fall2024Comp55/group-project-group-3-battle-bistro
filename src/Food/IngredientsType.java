@@ -8,7 +8,7 @@ public enum IngredientsType {
     SAUCE(50);
 
     private static final String INGREDIENTS_BASE_PATH = "/resources/ingredients/";
-    private static final String STATION_BASE_PATH = "/stations/";
+    private static final String STATION_BASE_PATH = "/resources/restaurant/stations/";
     private static final String EXTENSION = ".png";
 
     private boolean unlocked;
