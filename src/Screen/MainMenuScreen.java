@@ -11,8 +11,8 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static Screen.ProgramWindow.HEIGHT;
-import static Screen.ProgramWindow.WIDTH;
+import static Screen.ProgramWindow.BASE_HEIGHT;
+import static Screen.ProgramWindow.BASE_WIDTH;
 
 public class MainMenuScreen extends Screen implements TickListener {
     private volatile Set<TickListener> mainMenuTickListeners;
@@ -44,7 +44,7 @@ public class MainMenuScreen extends Screen implements TickListener {
     @Override
     public void initializeComponents() {
         // background for the menu
-        GRect background = new GRect(WIDTH, HEIGHT);
+        GRect background = new GRect(BASE_WIDTH, BASE_HEIGHT);
         background.setFilled(true);
         background.setFillColor(Color.DARK_GRAY);
         add(background, 0, 0);
@@ -54,7 +54,7 @@ public class MainMenuScreen extends Screen implements TickListener {
         GLabel title = new GLabel("Battle Bistro");
         title.setFont("Arial-40");
         title.setColor(Color.WHITE);
-        title.setLocation((WIDTH - title.getWidth()) / 2, HEIGHT / 4);
+        title.setLocation((BASE_WIDTH - title.getWidth()) / 2, BASE_HEIGHT / 4);
         add(title);
         elements.add(title);
 
@@ -63,7 +63,7 @@ public class MainMenuScreen extends Screen implements TickListener {
             // Start the game
             ProgramWindow.getInstance().startGame();
         });
-        startButton.setLocation((WIDTH - startButton.getWidth()) / 2, HEIGHT / 2 - 50);
+        startButton.setLocation((BASE_WIDTH - startButton.getWidth()) / 2, BASE_HEIGHT / 2 - 50);
         add(startButton);
         elements.add(startButton);
 
@@ -71,7 +71,7 @@ public class MainMenuScreen extends Screen implements TickListener {
         optionsButton = new ActionButton("Options", () -> {
             System.out.println("Options button clicked - functionality not implemented yet.");
         });
-        optionsButton.setLocation((WIDTH - optionsButton.getWidth()) / 2, HEIGHT / 2);
+        optionsButton.setLocation((BASE_WIDTH - optionsButton.getWidth()) / 2, BASE_HEIGHT / 2);
         add(optionsButton);
         elements.add(optionsButton);
 
@@ -80,7 +80,7 @@ public class MainMenuScreen extends Screen implements TickListener {
             // Exit the game
             System.exit(0);
         });
-        exitButton.setLocation((WIDTH - exitButton.getWidth()) / 2, HEIGHT / 2 + 50);
+        exitButton.setLocation((BASE_WIDTH - exitButton.getWidth()) / 2, BASE_HEIGHT / 2 + 50);
         add(exitButton);
         elements.add(exitButton);
     }

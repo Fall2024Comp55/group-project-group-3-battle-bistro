@@ -22,8 +22,8 @@ import static Utils.Utils.easeInOutCubic;
 import static Utils.Utils.getObjectInCompound;
 
 public class ProgramWindow extends GraphicsProgram {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 450;
+    public static final int BASE_WIDTH = 800;
+    public static final int BASE_HEIGHT = 450;
     public static final String GLOBAL_FONT = "Arial-16";
     public static final Color GLOBAL_COLOR = Color.BLACK;
 
@@ -47,7 +47,7 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public void init() {
-        setSize(WIDTH, HEIGHT);
+        setSize(BASE_WIDTH, BASE_HEIGHT);
         this.gw.setTitle("Battle Bistro");
         this.gw.setResizable(false);
         this.gw.setLocationRelativeTo(null);
@@ -67,7 +67,7 @@ public class ProgramWindow extends GraphicsProgram {
 
       
         MainMenuScreen.getInstance().setLocation(0, 0);
-        RestaurantScreen.getInstance().setLocation(WIDTH, 0);
+        RestaurantScreen.getInstance().setLocation(BASE_WIDTH, 0);
 
       
         tick.start();
@@ -85,7 +85,7 @@ public class ProgramWindow extends GraphicsProgram {
             enterDoor();
         });
         add(screenSwitch);
-        screenSwitch.setLocation(WIDTH - screenSwitch.getWidth(), HEIGHT - screenSwitch.getHeight());
+        screenSwitch.setLocation(BASE_WIDTH - screenSwitch.getWidth(), BASE_HEIGHT - screenSwitch.getHeight());
 
         remove(MainMenuScreen.getInstance());
         add(GardenScreen.getInstance());
@@ -114,7 +114,7 @@ public class ProgramWindow extends GraphicsProgram {
 
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
-            endX.set((int) (-WIDTH + ((float) WIDTH * .25)));
+            endX.set((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
             endX.set(0);
@@ -141,14 +141,14 @@ public class ProgramWindow extends GraphicsProgram {
 
         if (progress >= 1.0f) {
             GardenScreen.getInstance().setLocation(endX, 0);
-            RestaurantScreen.getInstance().setLocation(WIDTH + endX, 0);
+            RestaurantScreen.getInstance().setLocation(BASE_WIDTH + endX, 0);
             CurrentScreen.GARDEN.setX(endX);
-            CurrentScreen.RESTAURANT.setX(WIDTH + endX);
+            CurrentScreen.RESTAURANT.setX(BASE_WIDTH + endX);
             repaint();
             return true;
         } else {
             GardenScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.GARDEN.getX(), endX, easeInOutCubic(progress)), 0);
-            RestaurantScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.RESTAURANT.getX(), WIDTH + endX, easeInOutCubic(progress)), 0);
+            RestaurantScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.RESTAURANT.getX(), BASE_WIDTH + endX, easeInOutCubic(progress)), 0);
             repaint();
             return false;
         }
@@ -263,7 +263,7 @@ public class ProgramWindow extends GraphicsProgram {
         MAIN_MENU(0),
         SUMMARY(0),
         GARDEN(0),
-        RESTAURANT(WIDTH),
+        RESTAURANT(BASE_WIDTH),
         SETTINGS(0);
 
         private double x;

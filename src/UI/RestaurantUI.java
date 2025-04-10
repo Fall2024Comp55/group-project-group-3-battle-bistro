@@ -1,14 +1,10 @@
 package UI;
 
 import Character.Character;
-import Customer.Customer;
-import Food.IngredientsType;
-import Restaurant.*;
 import Utils.Solid;
 import acm.graphics.*;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -45,8 +41,8 @@ public class RestaurantUI extends UI implements Solid {
         moneyLabel = new GLabel("Money: " + c.getBalance());
         healthLabel = new GLabel("Health: " + c.getHealth());
 
-    
-        GRect menuBar = new GRect(WIDTH, 50);
+
+        GRect menuBar = new GRect(BASE_WIDTH, 50);
         menuBar.setFilled(true);
         menuBar.setFillColor(Color.LIGHT_GRAY);
         add(menuBar, 0, 0);
@@ -89,7 +85,7 @@ public class RestaurantUI extends UI implements Solid {
             starDisplay.add(star);
         }
 
-        starDisplay.setLocation(WIDTH - starDisplay.getWidth() - 10, 15);
+        starDisplay.setLocation(BASE_WIDTH - starDisplay.getWidth() - 10, 15);
         add(starDisplay);
         elements.add(starDisplay);
     }
@@ -110,8 +106,8 @@ public class RestaurantUI extends UI implements Solid {
         notificationArea.add(notificationLabel);
 
         notificationArea.setLocation(
-            (WIDTH - notificationLabel.getWidth()) / 2,
-            HEIGHT / 2
+                (BASE_WIDTH - notificationLabel.getWidth()) / 2,
+                BASE_HEIGHT / 2
         );
         add(notificationArea);
         elements.add(notificationArea);
