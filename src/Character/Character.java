@@ -31,6 +31,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     private static final Character CHARACTER;
 
+    private final Set<Integer> keysHeld;
     private final Set<Integer> actions;
     private final Map<IngredientsType, AtomicInteger> ingredients;
     private final GRect collision;
@@ -58,6 +59,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private Character() {
         gImage = new GImage(Utils.getImage(PATH));
         ingredients = Maps.newHashMap();
+        keysHeld = new HashSet<>();
         actions = new HashSet<>();
         gImage.setSize(50, 50);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
@@ -262,9 +264,22 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * Updates the character's facing direction and position based on the pressed keys.
      */
     public void move() {
+        for (Integer i : keysHeld) {
+            if (i == Directions.UP.getKey()) {
+                actions.add(Directions.UP.getKey());
+            } else if (i == Directions.DOWN.getKey()) {
+                actions.add(Directions.DOWN.getKey());
+            } else if (i == Directions.LEFT.getKey()) {
+                actions.add(Directions.LEFT.getKey());
+            } else if (i == Directions.RIGHT.getKey()) {
+                actions.add(Directions.RIGHT.getKey());
+            }
+
+        }
         if (checkCollision()) {
             onCollision();
         }
+
         if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) { // if only one movement key is pressed
             if (actions.contains(Directions.UP.getKey())) {
                 setFacing(Directions.UP);
@@ -285,6 +300,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.DOWN_RIGHT);
             }
+        } else {
+            return;
         }
 
         // get desired direction
@@ -346,8 +363,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        keysHeld.add(e.getKeyCode());
         actions.add(e.getKeyCode());
-        if (!moving && !(actions.size() == 1 && actions.contains(KeyEvent.VK_E))) {
+        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E))) {
             moving = true;
             movementExecutor = Executors.newSingleThreadScheduledExecutor();
             movementExecutor.scheduleAtFixedRate(this::move, 0, 16, java.util.concurrent.TimeUnit.MILLISECONDS);
@@ -357,8 +375,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {
+        keysHeld.remove(e.getKeyCode());
         actions.remove(e.getKeyCode());
-        if (moving && ((actions.size() == 1 && actions.contains(KeyEvent.VK_E)) || actions.isEmpty())) {
+        if (moving && ((keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) || keysHeld.isEmpty())) {
             moving = false;
             movementExecutor.shutdown();
         }
@@ -371,20 +390,56 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void onCollision() {
-        if (actions.contains(Directions.UP.getKey())) {
+    }
 
+    @Override
+    public Boolean checkCollision() {
+        boolean hit = false;
+        if (keysHeld.contains(Directions.UP.getKey())) {
+            GPoint topPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth() / 2, this.getHitbox().getY());
+
+            GObject hitObject = RestaurantScreen.getInstance().getElementAt(topPoint.getX(), topPoint.getY());
+
+            if (hitObject != this && hitObject instanceof Solid) {
+                actions.remove(Directions.UP.getKey());
+                hit = true;
+                System.out.println(hitObject);
+            }
         }
-        if (actions.contains(Directions.DOWN.getKey())) {
+        if (keysHeld.contains(Directions.DOWN.getKey())) {
+            GPoint bottomPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth() / 2, this.getHitbox().getY() + this.getHitbox().getHeight());
 
+            GObject hitObject = RestaurantScreen.getInstance().getElementAt(bottomPoint.getX(), bottomPoint.getY());
+
+            if (hitObject != this && hitObject instanceof Solid) {
+                actions.remove(Directions.DOWN.getKey());
+                hit = true;
+                System.out.println(hitObject);
+            }
         }
-        if (actions.contains(Directions.LEFT.getKey())) {
+        if (keysHeld.contains(Directions.LEFT.getKey())) {
+            GPoint leftPoint = new GPoint(this.getHitbox().getX(), this.getHitbox().getY() + this.getHitbox().getHeight() / 2);
 
+            GObject hitObject = RestaurantScreen.getInstance().getElementAt(leftPoint.getX(), leftPoint.getY());
+
+            if (hitObject != this && hitObject instanceof Solid) {
+                actions.remove(Directions.LEFT.getKey());
+                hit = true;
+                System.out.println(hitObject);
+            }
         }
-        if (actions.contains(Directions.RIGHT.getKey())) {
+        if (keysHeld.contains(Directions.RIGHT.getKey())) {
+            GPoint rightPoint = new GPoint(this.getHitbox().getX() + this.getHitbox().getWidth(), this.getHitbox().getY() + this.getHitbox().getHeight() / 2);
 
+            GObject hitObject = RestaurantScreen.getInstance().getElementAt(rightPoint.getX(), rightPoint.getY());
+
+            if (hitObject != this && hitObject instanceof Solid) {
+                actions.remove(Directions.RIGHT.getKey());
+                hit = true;
+                System.out.println(hitObject);
+            }
         }
-
-        System.out.println("Collision detected");
+        return hit;
     }
 
     @Override

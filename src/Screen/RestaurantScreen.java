@@ -82,7 +82,7 @@ public class RestaurantScreen extends Screen {
         PrepTable prepTable = new PrepTable("Prep Table");
         prepTable.setLocation(250, 200);
         elements.add(prepTable);
-        add(prepTable);
+        remove(prepTable);
 
         // Oven for cooking pizzas
         Oven oven = new Oven();

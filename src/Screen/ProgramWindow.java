@@ -114,7 +114,7 @@ public class ProgramWindow extends GraphicsProgram {
 
         if (currentScreen.equals(CurrentScreen.GARDEN)) {
             currentScreen = CurrentScreen.RESTAURANT;
-            endX.set((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
+            endX.set((int) (-BASE_WIDTH));
         } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
             currentScreen = CurrentScreen.GARDEN;
             endX.set(0);
