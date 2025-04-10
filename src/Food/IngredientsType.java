@@ -3,15 +3,38 @@ package Food;
 public enum IngredientsType {
     DOUGH,
     MOZZARELLA,
-    PEPPERONI,
-    MUSHROOM,
-    SAUCE;
+    PEPPERONI(100),
+    MUSHROOM(200),
+    SAUCE(50);
 
     private static final String INGREDIENTS_BASE_PATH = "/resources/ingredients/";
     private static final String STATION_BASE_PATH = "/stations/";
     private static final String EXTENSION = ".png";
 
+    private boolean unlocked;
+    private int price;
+
+
+    IngredientsType(int price) {
+        this.price = price;
+        this.unlocked = false;
+    }
+
     IngredientsType() {
+        this.price = -1;
+        this.unlocked = true;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setUnlocked(boolean locked) {
+        this.unlocked = locked;
+    }
+
+    public boolean isLocked() {
+        return unlocked;
     }
 
     public String toString() {
