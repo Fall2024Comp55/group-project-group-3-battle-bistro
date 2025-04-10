@@ -53,7 +53,7 @@ public class RangedTower extends Tower implements TickListener {
                 p.rotate(currentTheta);
                 GardenScreen.getInstance().add(p);
                 onCooldown = true;
-                ActionManager.addAction(8, () -> {
+                ActionManager.addAction(1, () -> {
                     onCooldown = false;
                 });
             }

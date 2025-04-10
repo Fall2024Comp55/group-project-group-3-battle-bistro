@@ -30,7 +30,7 @@ public enum EnemyType {
 
     public String toPath() {
         return switch (this) {
-            case DOUGH -> BASE_PATH + "dough" + EXTENSION;
+            case DOUGH -> BASE_PATH + "pizza (2)" + EXTENSION;
             case MOZZARELLA -> BASE_PATH + "mozzarella" + EXTENSION;
             case PEPPERONI -> BASE_PATH + "pepperoni" + EXTENSION;
             case MUSHROOM -> BASE_PATH + "mushroom" + EXTENSION;

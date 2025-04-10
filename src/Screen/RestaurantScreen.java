@@ -8,6 +8,8 @@ import Restaurant.*;
 import UI.OrderTicketUI;
 import UI.RestaurantUI;
 import Utils.TickListener;
+import Utils.Utils;
+import acm.graphics.GImage;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +17,12 @@ import java.util.Set;
 public class RestaurantScreen extends Screen {
     private volatile Set<TickListener> restaurantTickListeners;
     private static final RestaurantScreen RESTAURANT_SCREEN;
+    private static final String FLOOR_PATH = "/resources/restaurant/floor.png";
+
     private static CustomerPath customerPath;
+
+
+    private GImage background;
 
     static {
         try {
@@ -49,7 +56,7 @@ public class RestaurantScreen extends Screen {
         add(door);
 
     
-        IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
+        IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
         doughStation.setLocation(100, 300);
         elements.add(doughStation);
         add(doughStation);
@@ -98,6 +105,12 @@ public class RestaurantScreen extends Screen {
         Customer testCustomer = new Customer();
         elements.add(testCustomer);
         add(testCustomer);
+
+        background = new GImage(Utils.getImage(FLOOR_PATH));
+        add(background);
+        background.sendToBack();
+
+
 
 //        add(OrderTicketUI.getInstance());
 //        elements.add(OrderTicketUI.getInstance());
