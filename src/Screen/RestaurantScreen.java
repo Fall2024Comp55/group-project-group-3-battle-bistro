@@ -57,36 +57,41 @@ public class RestaurantScreen extends Screen {
 
     
         IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
-        doughStation.setLocation(100, 300);
+        doughStation.setLocation(120, 300);
         elements.add(doughStation);
         add(doughStation);
 
-        /*
-        IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
-        pepperoniStation.setLocation(200, 300);
+
+        IngredientStation pepperoniStation = new IngredientStation(IngredientsType.SAUCE);
+        pepperoniStation.setLocation(180, 300);
         elements.add(pepperoniStation);
         add(pepperoniStation);
 
-        IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
-        mozzarellaStation.setLocation(300, 300);
+        IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.SAUCE);
+        mozzarellaStation.setLocation(  120, 190);
         elements.add(mozzarellaStation);
         add(mozzarellaStation);
 
-        IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
-        mushroomStation.setLocation(400, 300);
+        IngredientStation mushroomStation = new IngredientStation(IngredientsType.SAUCE);
+        mushroomStation.setLocation(180, 190);
         elements.add(mushroomStation);
         add(mushroomStation);
-        */
+
 
         // Prep table for assembling pizzas
-        PrepTable prepTable = new PrepTable("Prep Table");
-        prepTable.setLocation(250, 200);
-        elements.add(prepTable);
-        remove(prepTable);
+        PrepTable prepTable1 = new PrepTable();
+        prepTable1.setLocation(0, 200);
+        elements.add(prepTable1);
+        add(prepTable1);
+
+        PrepTable prepTable2 = new PrepTable();
+        prepTable2.setLocation(0, 250);
+        elements.add(prepTable2);
+        add(prepTable2);
 
         // Oven for cooking pizzas
         Oven oven = new Oven();
-        oven.setLocation(350, 200);
+        oven.setLocation(100, 20);
         elements.add(oven);
         add(oven);
 

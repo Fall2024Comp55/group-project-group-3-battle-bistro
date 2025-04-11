@@ -19,7 +19,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     public Oven() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        gImage.setSize(20, 50);
+        gImage.setSize(100, 100);
         //gImage.setLocation(0, 0);
         add(gImage);
         tick_speed = 100;
