@@ -44,6 +44,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private Directions facing;
     private double currentTheta;
     private ScheduledExecutorService movementExecutor;
+    private GImage food_image;
 
     static {
         try {
@@ -61,6 +62,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         ingredients = Maps.newHashMap();
         keysHeld = new HashSet<>();
         actions = new HashSet<>();
+        food_image = new GImage(Utils.getImage("/resources/enemy/pizza (2).png"));
+        food_image.setLocation(-20, -60);
+        food_image.setSize(40, 40);
         gImage.setSize(50, 50);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
         this.setLocation(200, 200);
@@ -233,6 +237,11 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      */
     public void setHolding(Food holding) {
         this.holding = holding;
+        if (this.holding != null) {
+            add(food_image);
+        } else {
+            remove(food_image);
+        }
     }
 
     /**
