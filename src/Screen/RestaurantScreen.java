@@ -55,6 +55,11 @@ public class RestaurantScreen extends Screen {
         elements.add(door);
         add(door);
 
+        OrderWindow orderWindow = new OrderWindow();
+        orderWindow.setLocation(300, 50);
+        elements.add(orderWindow);
+        add(orderWindow);
+
     
         IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
         doughStation.setLocation(120, 300);
@@ -95,11 +100,11 @@ public class RestaurantScreen extends Screen {
         elements.add(oven);
         add(oven);
 
-        // Order window for delivering pizzas
-        OrderWindow orderWindow = new OrderWindow("Order Window");
-        orderWindow.setLocation(450, 200);
-        elements.add(orderWindow);
-        add(orderWindow);
+//        // Order window for delivering pizzas
+//        OrderWindow orderWindow = new OrderWindow("Order Window");
+//        orderWindow.setLocation(450, 200);
+//        elements.add(orderWindow);
+//        add(orderWindow);
 
 
         customerPath = new CustomerPath(600, 300, 500, 300, 500, 100, 600, 100);
