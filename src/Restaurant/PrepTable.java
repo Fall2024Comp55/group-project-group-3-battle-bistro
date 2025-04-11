@@ -91,9 +91,11 @@ public class PrepTable extends GCompound implements Interact, Solid {
          of this ingredient by one. If not holding a pizza, do nothing.
          */
         if (item != null) {
-            Character.getInstance().setHolding(item);
-            item = null;
-            removeFood();
+            if (Character.getInstance().getHolding() == null) {
+                Character.getInstance().setHolding(item);
+                item = null;
+                removeFood();
+            }
         } else {
             item = Character.getInstance().getHolding();
             Character.getInstance().setHolding(null);
