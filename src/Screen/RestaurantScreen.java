@@ -61,26 +61,31 @@ public class RestaurantScreen extends Screen {
         add(orderWindow);
 
     
-        IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
-        doughStation.setLocation(120, 300);
+        IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
+        doughStation.setLocation(0, 380);
         elements.add(doughStation);
         add(doughStation);
 
 
-        IngredientStation pepperoniStation = new IngredientStation(IngredientsType.SAUCE);
+        IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
         pepperoniStation.setLocation(180, 300);
         elements.add(pepperoniStation);
         add(pepperoniStation);
 
-        IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.SAUCE);
+        IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
         mozzarellaStation.setLocation(  120, 190);
         elements.add(mozzarellaStation);
         add(mozzarellaStation);
 
-        IngredientStation mushroomStation = new IngredientStation(IngredientsType.SAUCE);
+        IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
         mushroomStation.setLocation(180, 190);
         elements.add(mushroomStation);
         add(mushroomStation);
+
+        IngredientStation sauceStation = new IngredientStation(IngredientsType.SAUCE);
+        sauceStation.setLocation(120, 300);
+        elements.add(sauceStation);
+        add(sauceStation);
 
 
         // Prep table for assembling pizzas
