@@ -60,7 +60,7 @@ public class PrepTable extends GCompound implements Interact, Solid {
 
     private final GImage gImage;
     private Food item;
-    private GImage food_image;
+    private GCompound food_image;
 
     public PrepTable() {
         GImage gImage = new GImage(Utils.getImage(PATH));
@@ -69,11 +69,11 @@ public class PrepTable extends GCompound implements Interact, Solid {
         gImage.setSize(50, 50);
         add(gImage);
         //TODO: REMOVE BELOW! BELOW LINES ARE JUST FOR TESTING
-        item = new Food();
-        food_image = new GImage(Utils.getImage("/resources/enemy/pizza (2).png"));
-        food_image.setLocation(gImage.getLocation());
-        food_image.setSize(gImage.getWidth(), gImage.getHeight());
-        addFood();
+//        item = new Food();
+//        food_image = new GImage(Utils.getImage("/resources/enemy/pizza (2).png"));
+//        food_image.setLocation(gImage.getLocation());
+//        food_image.setSize(gImage.getWidth(), gImage.getHeight());
+//        addFood();
     }
 
     public void addFood() {
@@ -98,6 +98,9 @@ public class PrepTable extends GCompound implements Interact, Solid {
             }
         } else {
             item = Character.getInstance().getHolding();
+            food_image = item.getImage();
+            food_image.setLocation(gImage.getLocation());
+            addFood();
             Character.getInstance().setHolding(null);
             addFood();
         }
