@@ -48,6 +48,10 @@ public class GardenUI extends UI implements Solid {
         add(healthLabel);
     }
 
+    public void initTowerPanel() {
+
+    }
+
     public static GardenUI getInstance() {
         return GARDEN_UI;
     }
