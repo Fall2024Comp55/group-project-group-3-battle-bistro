@@ -29,7 +29,6 @@ public interface Interact {
 
         for (GObject object : RestaurantScreen.getInstance().getElements()) {
             if (object instanceof Interact i && object != this) {
-                System.out.println(i + " " + i.getInteractHitbox() + " " + this.getInteractHitbox());
                 if (i.getInteractHitbox() != null && this.getInteractHitbox().intersects(i.getInteractHitbox())) {
 
                     return i;
