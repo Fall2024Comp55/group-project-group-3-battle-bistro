@@ -236,7 +236,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         this.holding = holding;
         if (this.holding != null) {
             food_image = this.holding.getImage();
-            food_image.setLocation(-20, -60);
+            food_image.setLocation(-20, -50);
             add(food_image);
         } else {
             remove(food_image);
