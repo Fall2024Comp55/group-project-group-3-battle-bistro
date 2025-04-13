@@ -1,6 +1,7 @@
 package UI;
 
 import Utils.MouseInteract;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -18,16 +19,23 @@ public class Button extends GCompound implements MouseInteract {
     protected GImage gImage;
     protected boolean hovering;
 
-    public Button(String text) {
+    Button() {
+
+    }
+
+    Button(String text, boolean outline) {
         label = new GLabel(text);
         label.setFont(GLOBAL_FONT);
         label.setColor(GLOBAL_COLOR);
-        box = new GRect(label.getWidth() + 20, label.getHeight() + 10); // Added padding
-        box.setColor(GLOBAL_COLOR);
-        box.setFilled(true);
-        box.setFillColor(Color.WHITE);
-        add(box, -box.getWidth() / 2, -box.getHeight() / 2); // Center the box
-        add(label, -label.getWidth() / 2, -label.getHeight() / 2); // Center the label
+        add(label, Utils.getCenter(label.getBounds())); // and and center the label
+        if (outline) {
+            box = new GRect(label.getWidth() + 20, label.getHeight() + 10); // added padding
+            box.setColor(GLOBAL_COLOR);
+            box.setFilled(true);
+            box.setFillColor(Color.WHITE);
+            add(box, Utils.getCenter(box.getBounds())); // add and center the box
+            box.sendToBack();
+        }
     }
 
     @Override

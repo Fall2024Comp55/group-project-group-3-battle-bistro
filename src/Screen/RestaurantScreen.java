@@ -5,8 +5,6 @@ import Customer.Customer;
 import Customer.CustomerPath;
 import Food.IngredientsType;
 import Restaurant.*;
-import UI.OrderTicketUI;
-import UI.RestaurantUI;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
@@ -44,71 +42,52 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void initializeComponents() {
-        add(RestaurantUI.getInstance());
-        add(OrderTicketUI.getInstance());
-        elements.add(OrderTicketUI.getInstance());
-        elements.add(OrderTicketUI.getInstance());
-
-        
         Door door = new Door();
         door.setLocation(0, 50);
-        elements.add(door);
         add(door);
 
         OrderWindow orderWindow = new OrderWindow();
         orderWindow.setLocation(300, 50);
-        elements.add(orderWindow);
         add(orderWindow);
 
-    
         IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
         doughStation.setLocation(0, 380);
-        elements.add(doughStation);
         add(doughStation);
-
 
         IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
         pepperoniStation.setLocation(180, 300);
-        elements.add(pepperoniStation);
         add(pepperoniStation);
 
         IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
         mozzarellaStation.setLocation(  120, 190);
-        elements.add(mozzarellaStation);
         add(mozzarellaStation);
 
         IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
         mushroomStation.setLocation(180, 190);
-        elements.add(mushroomStation);
         add(mushroomStation);
 
         IngredientStation sauceStation = new IngredientStation(IngredientsType.SAUCE);
         sauceStation.setLocation(120, 300);
-        elements.add(sauceStation);
         add(sauceStation);
 
 
         // Prep table for assembling pizzas
         PrepTable prepTable1 = new PrepTable();
         prepTable1.setLocation(0, 200);
-        elements.add(prepTable1);
         add(prepTable1);
 
         PrepTable prepTable2 = new PrepTable();
         prepTable2.setLocation(0, 250);
-        elements.add(prepTable2);
         add(prepTable2);
 
         // Oven for cooking pizzas
         Oven oven = new Oven();
         oven.setLocation(100, 20);
-        elements.add(oven);
         add(oven);
 
 //        // Order window for delivering pizzas
 //        OrderWindow orderWindow = new OrderWindow("Order Window");
 //        orderWindow.setLocation(450, 200);
-//        elements.add(orderWindow);
 //        add(orderWindow);
 
 
@@ -116,9 +95,7 @@ public class RestaurantScreen extends Screen {
         customerPath.addPath(this);
         Customer.setPath(customerPath);
 
-
         Customer testCustomer = new Customer();
-        elements.add(testCustomer);
         add(testCustomer);
 
         background = new GImage(Utils.getImage(FLOOR_PATH));

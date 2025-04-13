@@ -5,7 +5,6 @@ import Enemy.EnemyPath;
 import Enemy.EnemyType;
 import Tower.Projectile;
 import Tower.Tower;
-import UI.GardenUI;
 import Utils.TickListener;
 
 import java.util.HashSet;
@@ -48,7 +47,6 @@ public class GardenScreen extends Screen {
     @Override
     public void initializeComponents() {
         enemyPath = new EnemyPath(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
-        add(GardenUI.getInstance());
         Enemy.setPath(enemyPath);
         enemyPath.showPath();
         enemyPath.addPathHitbox(this);

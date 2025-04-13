@@ -75,6 +75,16 @@ public class TowerSelectionPanel extends UI implements MouseInteract {
         maxScrollOffset = Math.max(0, totalWidth - PANEL_WIDTH + 50); // Adjust for padding
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
     private void addTowerIcon(Tower tower, String labelText) {
         TowerIcon icon = new TowerIcon(tower, labelText);
         int index = towerIcons.size();

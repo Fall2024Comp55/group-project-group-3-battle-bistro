@@ -10,7 +10,7 @@ public class ActionButton extends Button implements ActionListener {
     private final Action action;
 
     public ActionButton(String text, Action action) {
-        super(text);
+        super(text, false);
         this.action = action;
     }
 

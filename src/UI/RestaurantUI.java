@@ -2,11 +2,12 @@ package UI;
 
 import Character.Character;
 import Utils.Solid;
-import acm.graphics.*;
+import acm.graphics.GCompound;
+import acm.graphics.GLabel;
+import acm.graphics.GRect;
+import acm.graphics.GRectangle;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +18,6 @@ import static Screen.ProgramWindow.*;
 public class RestaurantUI extends UI implements Solid {
     private static final RestaurantUI RESTAURANT_UI;
 
-    private final Set<GObject> elements;
     private final GLabel moneyLabel;
     private final GLabel healthLabel;
     private int starRating;
@@ -36,36 +36,30 @@ public class RestaurantUI extends UI implements Solid {
     }
 
     private RestaurantUI() {
-        elements = new HashSet<>();
-        Character c = Character.getInstance();
-        moneyLabel = new GLabel("Money: " + c.getBalance());
-        healthLabel = new GLabel("Health: " + c.getHealth());
+        moneyLabel = new GLabel("Money: " + Character.getInstance().getBalance());
+        healthLabel = new GLabel("Health: " + Character.getInstance().getHealth());
+        initializeComponents();
+    }
 
-
+    @Override
+    public void initializeComponents() {
         GRect menuBar = new GRect(BASE_WIDTH, 50);
         menuBar.setFilled(true);
         menuBar.setFillColor(Color.LIGHT_GRAY);
         add(menuBar, 0, 0);
-        elements.add(menuBar);
 
-    
         moneyLabel.setFont(GLOBAL_FONT);
         moneyLabel.setColor(GLOBAL_COLOR);
         moneyLabel.setLocation(20, 35);
         add(moneyLabel);
-        elements.add(moneyLabel);
 
-    
         healthLabel.setFont(GLOBAL_FONT);
         healthLabel.setColor(GLOBAL_COLOR);
         healthLabel.setLocation(20, 15);
         add(healthLabel);
-        elements.add(healthLabel);
 
-      
         initStarRating();
 
-     
         initNotificationArea();
     }
 
@@ -138,6 +132,7 @@ public class RestaurantUI extends UI implements Solid {
         }, durationMs, 50, TimeUnit.MILLISECONDS);
     }
 
+    @Override
     public void update() {
         updateMoneyLabel();
         updateHealthLabel();
@@ -168,9 +163,5 @@ public class RestaurantUI extends UI implements Solid {
     @Override
     public GRectangle getHitbox() {
         return getBounds();
-    }
-
-    public Set<GObject> getElements() {
-        return elements;
     }
 }

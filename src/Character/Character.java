@@ -2,6 +2,7 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
+import Screen.ProgramWindow;
 import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
@@ -66,10 +67,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         gImage.setSize(50, 50);
         collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
         this.setLocation(200, 200);
-        System.out.println(this.getBounds() + " " + gImage.getBounds() + getCenter(gImage.getBounds()) + " " + getCenter(this.getBounds()));
         add(gImage);
         gImage.setLocation(getCenter(gImage.getBounds()));
-        System.out.println(this.getBounds() + " " + gImage.getBounds() + getCenter(gImage.getBounds()) + " " + getCenter(this.getBounds()));
         moving = false;
         health = 100;
         balance = 100;
@@ -298,6 +297,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
                 setFacing(Directions.LEFT);
             } else if (actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.RIGHT);
+            } else {
+                return;
             }
         } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
             if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.LEFT.getKey())) {
@@ -308,6 +309,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
                 setFacing(Directions.DOWN_LEFT);
             } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.DOWN_RIGHT);
+            } else {
+                return;
             }
         } else {
             return;
@@ -358,7 +361,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             interactHeld = true;
             Interact interactable = checkForInteractable();
             if (interactable != null) {
-                System.out.println("interact");
                 interactable.interact();
             }
         } else {
@@ -374,10 +376,14 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void keyPressed(KeyEvent e) {
         keysHeld.add(e.getKeyCode());
         actions.add(e.getKeyCode());
-        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E))) {
+        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) && ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT)) {
             moving = true;
             movementExecutor = Executors.newSingleThreadScheduledExecutor();
             movementExecutor.scheduleAtFixedRate(this::move, 0, 16, java.util.concurrent.TimeUnit.MILLISECONDS);
+        }
+        if (!ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT) && movementExecutor != null && !movementExecutor.isShutdown()) {
+            movementExecutor.shutdown();
+            moving = false;
         }
         interact();
     }
@@ -459,7 +465,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             if (hitObject != this && hitObject instanceof Solid) {
                 actions.remove(Directions.UP.getKey());
                 hit = true;
-                System.out.println(hitObject);
             }
         }
         if (keysHeld.contains(Directions.DOWN.getKey())) {
@@ -470,7 +475,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             if (hitObject != this && hitObject instanceof Solid) {
                 actions.remove(Directions.DOWN.getKey());
                 hit = true;
-                System.out.println(hitObject);
             }
         }
         if (keysHeld.contains(Directions.LEFT.getKey())) {
@@ -481,7 +485,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             if (hitObject != this && hitObject instanceof Solid) {
                 actions.remove(Directions.LEFT.getKey());
                 hit = true;
-                System.out.println(hitObject);
             }
         }
         if (keysHeld.contains(Directions.RIGHT.getKey())) {
@@ -492,7 +495,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             if (hitObject != this && hitObject instanceof Solid) {
                 actions.remove(Directions.RIGHT.getKey());
                 hit = true;
-                System.out.println(hitObject);
             }
         }
         return hit;

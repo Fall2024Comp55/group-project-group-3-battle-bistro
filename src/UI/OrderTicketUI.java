@@ -28,6 +28,16 @@ public class OrderTicketUI extends UI {
     public OrderTicketUI() {
     }
 
+    @Override
+    public void initializeComponents() {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
     public void addTicket(OrderTicket ticket) {
         tickets.add(ticket);
         ticket.setLocation(HORIZONTAL_OFFSET, VERTICAL_OFFSET * tickets.size());
