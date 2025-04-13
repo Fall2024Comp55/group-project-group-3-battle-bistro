@@ -50,11 +50,9 @@ public class RestaurantScreen extends Screen {
         orderWindow.setLocation(300, 50);
         add(orderWindow);
 
-
         IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
         doughStation.setLocation(0, 380);
         add(doughStation);
-
 
         IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
         pepperoniStation.setLocation(180, 300);
@@ -96,7 +94,6 @@ public class RestaurantScreen extends Screen {
         customerPath = new CustomerPath(600, 300, 500, 300, 500, 100, 600, 100);
         customerPath.addPath(this);
         Customer.setPath(customerPath);
-
 
         Customer testCustomer = new Customer();
         add(testCustomer);
