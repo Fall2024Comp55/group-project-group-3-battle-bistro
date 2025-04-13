@@ -3,9 +3,10 @@ package Screen;
 import UI.ActionButton;
 import UI.Button;
 import Utils.TickListener;
+import Utils.Utils;
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GRect;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -17,11 +18,12 @@ import static Screen.ProgramWindow.BASE_WIDTH;
 public class MainMenuScreen extends Screen implements TickListener {
     private volatile Set<TickListener> mainMenuTickListeners;
     private static final MainMenuScreen MAIN_MENU_SCREEN;
+    private static final String BACKGROUND_IMAGE = "/resources/mainmenu/background.png";
 
-    private final Set<GObject> elements;
     private Button startButton;
     private Button optionsButton;
     private Button exitButton;
+
 
     static {
         try {
@@ -32,7 +34,6 @@ public class MainMenuScreen extends Screen implements TickListener {
     }
 
     private MainMenuScreen() {
-        elements = new HashSet<>();
         mainMenuTickListeners = new HashSet<>();
         initializeComponents();
     }
@@ -44,11 +45,9 @@ public class MainMenuScreen extends Screen implements TickListener {
     @Override
     public void initializeComponents() {
         // background for the menu
-        GRect background = new GRect(BASE_WIDTH, BASE_HEIGHT);
-        background.setFilled(true);
-        background.setFillColor(Color.DARK_GRAY);
-        add(background, 0, 0);
-        elements.add(background);
+        GImage background = new GImage(Utils.getImage(BACKGROUND_IMAGE));
+        background.setSize(BASE_WIDTH, BASE_HEIGHT);
+        add(background);
 
         //  title label
         GLabel title = new GLabel("Battle Bistro");
@@ -56,33 +55,32 @@ public class MainMenuScreen extends Screen implements TickListener {
         title.setColor(Color.WHITE);
         title.setLocation((BASE_WIDTH - title.getWidth()) / 2, BASE_HEIGHT / 4);
         add(title);
-        elements.add(title);
 
         // start Game button
         startButton = new ActionButton("Start Game", () -> {
             // Start the game
             ProgramWindow.getInstance().startGame();
         });
-        startButton.setLocation((BASE_WIDTH - startButton.getWidth()) / 2, BASE_HEIGHT / 2 - 50);
+        System.out.println("Main" + Utils.getCenter(this.getBounds()) + " " + startButton.getLocation());
+        startButton.setLocation(Utils.getCenterPoint(this.getBounds()));
+        startButton.move(0, -50);
         add(startButton);
-        elements.add(startButton);
 
         // Options button
         optionsButton = new ActionButton("Options", () -> {
             System.out.println("Options button clicked - functionality not implemented yet.");
         });
-        optionsButton.setLocation((BASE_WIDTH - optionsButton.getWidth()) / 2, BASE_HEIGHT / 2);
+        optionsButton.setLocation(Utils.getCenterPoint(this.getBounds()));
         add(optionsButton);
-        elements.add(optionsButton);
 
         // exit button
         exitButton = new ActionButton("Exit", () -> {
             // Exit the game
             System.exit(0);
         });
-        exitButton.setLocation((BASE_WIDTH - exitButton.getWidth()) / 2, BASE_HEIGHT / 2 + 50);
+        exitButton.setLocation(Utils.getCenterPoint(this.getBounds()));
+        exitButton.move(0, 50);
         add(exitButton);
-        elements.add(exitButton);
     }
 
     @Override
