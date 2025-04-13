@@ -16,9 +16,10 @@ public class OrderWindow extends GCompound implements Solid, Interact {
     private final GImage gImage;
     protected Food item;
 
-    public OrderWindow(String name) {
+    public OrderWindow() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
+        gImage.setSize(32, 425);
         //gImage.setLocation(0, 0);
         add(gImage);
     }

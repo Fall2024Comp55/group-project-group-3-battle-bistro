@@ -46,42 +46,51 @@ public class RestaurantScreen extends Screen {
         door.setLocation(0, 50);
         add(door);
 
-    
-        IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
-        doughStation.setLocation(100, 300);
+        OrderWindow orderWindow = new OrderWindow();
+        orderWindow.setLocation(300, 50);
+        add(orderWindow);
+
+
+        IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
+        doughStation.setLocation(0, 380);
         add(doughStation);
 
-        /*
+
         IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
-        pepperoniStation.setLocation(200, 300);
-        elements.add(pepperoniStation);
+        pepperoniStation.setLocation(180, 300);
         add(pepperoniStation);
 
         IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
-        mozzarellaStation.setLocation(300, 300);
-        elements.add(mozzarellaStation);
+        mozzarellaStation.setLocation(  120, 190);
         add(mozzarellaStation);
 
         IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
-        mushroomStation.setLocation(400, 300);
-        elements.add(mushroomStation);
+        mushroomStation.setLocation(180, 190);
         add(mushroomStation);
-        */
+
+        IngredientStation sauceStation = new IngredientStation(IngredientsType.SAUCE);
+        sauceStation.setLocation(120, 300);
+        add(sauceStation);
+
 
         // Prep table for assembling pizzas
-        PrepTable prepTable = new PrepTable("Prep Table");
-        prepTable.setLocation(250, 200);
-        remove(prepTable);
+        PrepTable prepTable1 = new PrepTable();
+        prepTable1.setLocation(0, 200);
+        add(prepTable1);
+
+        PrepTable prepTable2 = new PrepTable();
+        prepTable2.setLocation(0, 250);
+        add(prepTable2);
 
         // Oven for cooking pizzas
         Oven oven = new Oven();
-        oven.setLocation(350, 200);
+        oven.setLocation(100, 20);
         add(oven);
 
-        // Order window for delivering pizzas
-        OrderWindow orderWindow = new OrderWindow("Order Window");
-        orderWindow.setLocation(450, 200);
-        add(orderWindow);
+//        // Order window for delivering pizzas
+//        OrderWindow orderWindow = new OrderWindow("Order Window");
+//        orderWindow.setLocation(450, 200);
+//        add(orderWindow);
 
 
         customerPath = new CustomerPath(600, 300, 500, 300, 500, 100, 600, 100);
