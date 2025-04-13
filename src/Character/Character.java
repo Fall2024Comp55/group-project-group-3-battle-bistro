@@ -2,6 +2,7 @@ package Character;
 
 import Food.Food;
 import Food.IngredientsType;
+import Screen.ProgramWindow;
 import Screen.RestaurantScreen;
 import UI.GardenUI;
 import UI.RestaurantUI;
@@ -289,6 +290,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
                 setFacing(Directions.LEFT);
             } else if (actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.RIGHT);
+            } else {
+                return;
             }
         } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
             if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.LEFT.getKey())) {
@@ -299,6 +302,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
                 setFacing(Directions.DOWN_LEFT);
             } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.DOWN_RIGHT);
+            } else {
+                return;
             }
         } else {
             return;
@@ -365,10 +370,14 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void keyPressed(KeyEvent e) {
         keysHeld.add(e.getKeyCode());
         actions.add(e.getKeyCode());
-        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E))) {
+        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) && ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT)) {
             moving = true;
             movementExecutor = Executors.newSingleThreadScheduledExecutor();
             movementExecutor.scheduleAtFixedRate(this::move, 0, 16, java.util.concurrent.TimeUnit.MILLISECONDS);
+        }
+        if (!ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT) && !movementExecutor.isShutdown()) {
+            movementExecutor.shutdown();
+            moving = false;
         }
         interact();
     }

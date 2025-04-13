@@ -5,8 +5,6 @@ import Customer.Customer;
 import Customer.CustomerPath;
 import Food.IngredientsType;
 import Restaurant.*;
-import UI.OrderTicketUI;
-import UI.RestaurantUI;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
@@ -44,21 +42,13 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void initializeComponents() {
-        add(RestaurantUI.getInstance());
-        add(OrderTicketUI.getInstance());
-        elements.add(OrderTicketUI.getInstance());
-        elements.add(OrderTicketUI.getInstance());
-
-        
         Door door = new Door();
         door.setLocation(0, 50);
-        elements.add(door);
         add(door);
 
     
         IngredientStation doughStation = new IngredientStation(IngredientsType.SAUCE);
         doughStation.setLocation(100, 300);
-        elements.add(doughStation);
         add(doughStation);
 
         /*
@@ -81,19 +71,16 @@ public class RestaurantScreen extends Screen {
         // Prep table for assembling pizzas
         PrepTable prepTable = new PrepTable("Prep Table");
         prepTable.setLocation(250, 200);
-        elements.add(prepTable);
         remove(prepTable);
 
         // Oven for cooking pizzas
         Oven oven = new Oven();
         oven.setLocation(350, 200);
-        elements.add(oven);
         add(oven);
 
         // Order window for delivering pizzas
         OrderWindow orderWindow = new OrderWindow("Order Window");
         orderWindow.setLocation(450, 200);
-        elements.add(orderWindow);
         add(orderWindow);
 
 
@@ -103,7 +90,6 @@ public class RestaurantScreen extends Screen {
 
 
         Customer testCustomer = new Customer();
-        elements.add(testCustomer);
         add(testCustomer);
 
         background = new GImage(Utils.getImage(FLOOR_PATH));

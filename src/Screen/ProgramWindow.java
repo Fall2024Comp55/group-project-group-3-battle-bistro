@@ -1,12 +1,10 @@
 package Screen;
 
 import Character.Character;
-import UI.ActionButton;
-import UI.Button;
-import Utils.GameTick;
-import Utils.MouseInteract;
-import Utils.MouseManager;
-import Utils.Utils;
+import UI.GardenUI;
+import UI.OrderTicketUI;
+import UI.RestaurantUI;
+import Utils.*;
 import acm.graphics.GCompound;
 import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
@@ -16,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static Utils.Utils.easeInOutCubic;
 import static Utils.Utils.getObjectInCompound;
@@ -57,21 +54,25 @@ public class ProgramWindow extends GraphicsProgram {
         this.shifting = false;
     }
 
+    public static CurrentScreen getCurrentScreen() {
+        return currentScreen;
+    }
+
     @Override
     public void run() {
-        
+
         currentScreen = CurrentScreen.MAIN_MENU;
 
 
         add(MainMenuScreen.getInstance());
 
-      
-        MainMenuScreen.getInstance().setLocation(0, 0);
-        RestaurantScreen.getInstance().setLocation(BASE_WIDTH, 0);
 
-      
+        GardenScreen.getInstance().setLocation(-BASE_WIDTH, 0);
+        RestaurantScreen.getInstance().setLocation(BASE_WIDTH * .25, 0);
+
+
         tick.start();
-  
+
         addInputListeners();
     }
 
@@ -80,18 +81,89 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public void startGame() {
-        setScreen(CurrentScreen.GARDEN);
-        Button screenSwitch = new ActionButton("Screen Switch", () -> {
-            enterDoor();
-        });
-        add(screenSwitch);
-        screenSwitch.setLocation(BASE_WIDTH - screenSwitch.getWidth(), BASE_HEIGHT - screenSwitch.getHeight());
+        setScreen(CurrentScreen.RESTAURANT);
 
+        // remove the main menu screen from the window
         remove(MainMenuScreen.getInstance());
+
+        // add the garden screen to the window
         add(GardenScreen.getInstance());
+
+        // add the restaurant screen to the window
         add(RestaurantScreen.getInstance());
+
+        // start in the restaurant screen by adding order ticket UI and restaurant UI
+        add(RestaurantUI.getInstance());
+        GardenUI.getInstance().setLocation(0, -GardenUI.getInstance().getHeight());
+        add(OrderTicketUI.getInstance());
+        add(GardenUI.getInstance());
+
+        // send game screens to back to make UI is in front
         GardenScreen.getInstance().sendToBack();
         RestaurantScreen.getInstance().sendToBack();
+    }
+
+    public void endDay() {
+        setScreen(CurrentScreen.SUMMARY);
+        remove(GardenScreen.getInstance());
+        add(RestaurantScreen.getInstance());
+        RestaurantScreen.getInstance().sendToBack();
+    }
+
+    public void endGameOver() {
+        setScreen(CurrentScreen.SUMMARY);
+        remove(GardenScreen.getInstance());
+        remove(RestaurantScreen.getInstance());
+//        add(SummaryScreen.getInstance());
+//        SummaryScreen.getInstance().setLocation(0, 0);
+    }
+
+    public void enterDoor() {
+        int screenShift = 0;
+        int UIShift = ((int) (GardenUI.getInstance().getHeight()));
+        if (!shifting) {
+            if (currentScreen.equals(CurrentScreen.GARDEN)) {
+                currentScreen = CurrentScreen.RESTAURANT;
+                screenShift = ((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
+                animateObject(GardenUI.getInstance(), 0, -GardenUI.getInstance().getHeight(), 800, null);
+//                animateObject(RestaurantUI.getInstance(), 0, 0, 800, null);
+            } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
+                currentScreen = CurrentScreen.GARDEN;
+                animateObject(GardenUI.getInstance(), 0, 0, 800, null);
+//                animateObject(RestaurantUI.getInstance(), 0, -RestaurantUI.getInstance().getHeight(), 800, null);
+                // keep endX 0
+            }
+
+            shifting = true;
+
+            animateObject(RestaurantScreen.getInstance(), BASE_WIDTH + screenShift, 0, 800, null);
+            animateObject(GardenScreen.getInstance(), screenShift, 0, 800, () -> {
+                shifting = false;
+            });
+        }
+    }
+
+    public void animateObject(GObject object, final double endX, final double endY, long duration, Action action) {
+        long startTime = System.currentTimeMillis();
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        final double startX = object.getX();
+        final double startY = object.getY();
+
+        executor.scheduleAtFixedRate(() -> {
+            float progress = (System.currentTimeMillis() - startTime) / (float) duration;
+
+            if (progress >= 1.0f) {
+                object.setLocation(endX, endY);
+                repaint();
+                if (action != null) {
+                    action.performAction();
+                }
+                executor.shutdown();
+            } else {
+                object.setLocation(Utils.lerp(startX, endX, easeInOutCubic(progress)), Utils.lerp(startY, endY, easeInOutCubic(progress)));
+                repaint();
+            }
+        }, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     public void addInputListeners() {
@@ -104,57 +176,6 @@ public class ProgramWindow extends GraphicsProgram {
         gw.getGCanvas().removeKeyListener(Character.getInstance());
         gw.getGCanvas().removeMouseListener(this);
         gw.getGCanvas().removeMouseMotionListener(this);
-    }
-
-    public void enterDoor() {
-        AtomicInteger endX = new AtomicInteger();
-        if (shifting) {
-            return;
-        }
-
-        if (currentScreen.equals(CurrentScreen.GARDEN)) {
-            currentScreen = CurrentScreen.RESTAURANT;
-            endX.set((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
-            System.out.println(endX.get());
-        } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
-            currentScreen = CurrentScreen.GARDEN;
-            endX.set(0);
-        }
-
-        shifting = true;
-
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
-        long startTime = System.currentTimeMillis();
-
-        executor.scheduleAtFixedRate(() -> {
-            boolean done = shiftScreen(endX.get(), startTime);
-            if (done) {
-                System.out.println(RestaurantScreen.getInstance().getLocation());
-                System.out.println(RestaurantScreen.getInstance().getBounds());
-                shifting = false;
-                executor.shutdown();
-            }
-        }, 0, 10, TimeUnit.MILLISECONDS);
-    }
-
-    public boolean shiftScreen(int endX, long startTime) {
-
-        float progress = (System.currentTimeMillis() - startTime) / 800.0f;
-
-        if (progress >= 1.0f) {
-            GardenScreen.getInstance().setLocation(endX, 0);
-            RestaurantScreen.getInstance().setLocation(BASE_WIDTH + endX, 0);
-            CurrentScreen.GARDEN.setX(endX);
-            CurrentScreen.RESTAURANT.setX(BASE_WIDTH + endX);
-            repaint();
-            return true;
-        } else {
-            GardenScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.GARDEN.getX(), endX, easeInOutCubic(progress)), 0);
-            RestaurantScreen.getInstance().setLocation(Utils.lerp(CurrentScreen.RESTAURANT.getX(), BASE_WIDTH + endX, easeInOutCubic(progress)), 0);
-            repaint();
-            return false;
-        }
     }
 
     private void pressed(MouseEvent e) {
@@ -265,8 +286,8 @@ public class ProgramWindow extends GraphicsProgram {
     public enum CurrentScreen {
         MAIN_MENU(0),
         SUMMARY(0),
-        GARDEN(0),
-        RESTAURANT(BASE_WIDTH),
+        GARDEN(BASE_WIDTH),
+        RESTAURANT(0),
         SETTINGS(0);
 
         private double x;
