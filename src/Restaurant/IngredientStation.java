@@ -1,6 +1,7 @@
 package Restaurant;
 
 import Character.Character;
+import Food.Food;
 import Food.IngredientsType;
 import Screen.RestaurantScreen;
 import Utils.Interact;
@@ -32,9 +33,15 @@ public class IngredientStation extends GCompound implements Interact, Solid {
         TODO: Upon pressing "e", the player will add one ingredient to the pizza. Decrement amount
          of this ingredient by one. If not holding a pizza, do nothing.
          */
-        if (Character.getInstance().removeIngredient(ingredient, 1)) {
+        if (ingredient == IngredientsType.DOUGH && Character.getInstance().getHolding() == null) {
+            Food pizza = new Food();
+            Character.getInstance().setHolding(pizza);
+        } else if (Character.getInstance().getHolding() != null) {
             Character.getInstance().getHolding().addIngredient(ingredient);
         }
+//        if (Character.getInstance().removeIngredient(ingredient, 1)) {
+//            Character.getInstance().getHolding().addIngredient(ingredient);
+//        }
         //REMEMBER TO REMOVE RESOURCE/INGREDIENT FROM TOTLA
     }
 

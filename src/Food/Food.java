@@ -1,7 +1,9 @@
 package Food;
 
 import Customer.OrderTicket;
+import Utils.Utils;
 import acm.graphics.GCompound;
+import acm.graphics.GImage;
 
 import java.util.EnumSet;
 
@@ -14,6 +16,7 @@ public class Food extends GCompound {
     private boolean mushroom;
     private boolean cooked;
     private boolean boxed;
+    private final GCompound image;
 
     public EnumSet<IngredientsType> getIngredients() {
         return ingredients;
@@ -21,6 +24,7 @@ public class Food extends GCompound {
 
     public Food() {
         ingredients = EnumSet.noneOf(IngredientsType.class);
+        image = new GCompound();
         ingredients.add(IngredientsType.DOUGH);
         sauce = false;
         cheese = false;
@@ -30,14 +34,21 @@ public class Food extends GCompound {
         boxed = false;
     }
 
-    public Food(IngredientsType dough) {
-        this();
-        addIngredient(dough);
+    public GCompound getImage() {
+        return image;
     }
+
+//    public Food(IngredientsType dough) {
+//        this();
+//        addIngredient(dough);
+//    }
 
 
     public void addIngredient(IngredientsType ingredient) {
         ingredients.add(ingredient);
+        GImage ingred = new GImage(Utils.getImage(ingredient.toIngredientPath()));
+        ingred.setSize(40, 40);
+        image.add(ingred);
     }
 
     public boolean hasIngredient(IngredientsType ingredient) {
