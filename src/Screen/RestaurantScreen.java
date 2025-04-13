@@ -46,6 +46,10 @@ public class RestaurantScreen extends Screen {
         door.setLocation(0, 50);
         add(door);
 
+        TrashCan trashCan = new TrashCan();
+        trashCan.setLocation(50, 50);
+        add(trashCan);
+
         OrderWindow orderWindow = new OrderWindow();
         orderWindow.setLocation(300, 50);
         add(orderWindow);
