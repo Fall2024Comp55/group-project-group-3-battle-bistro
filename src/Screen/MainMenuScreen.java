@@ -61,7 +61,6 @@ public class MainMenuScreen extends Screen implements TickListener {
             // Start the game
             ProgramWindow.getInstance().startGame();
         });
-        System.out.println("Main" + Utils.getCenter(this.getBounds()) + " " + startButton.getLocation());
         startButton.setLocation(Utils.getCenterPoint(this.getBounds()));
         startButton.move(0, -50);
         add(startButton);
