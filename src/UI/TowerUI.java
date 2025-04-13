@@ -1,14 +1,19 @@
 package UI;
 
 
-import acm.graphics.GObject;
-
-import java.util.Set;
-
 public class TowerUI extends UI {
-    private Set<GObject> elements;
 
     TowerUI() {
+    }
+
+    @Override
+    public void initializeComponents() {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 
     // TODO find needed variables and methods
