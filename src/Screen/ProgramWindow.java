@@ -67,7 +67,7 @@ public class ProgramWindow extends GraphicsProgram {
         add(MainMenuScreen.getInstance());
 
 
-        GardenScreen.getInstance().setLocation(-BASE_WIDTH, 0);
+        GardenScreen.getInstance().setLocation(-BASE_WIDTH * .75, 0);
         RestaurantScreen.getInstance().setLocation(BASE_WIDTH * .25, 0);
 
 
