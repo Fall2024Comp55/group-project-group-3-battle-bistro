@@ -6,6 +6,8 @@ import Enemy.EnemyType;
 import Tower.Projectile;
 import Tower.Tower;
 import Utils.TickListener;
+import Utils.Utils;
+import acm.graphics.GImage;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +17,9 @@ public class GardenScreen extends Screen {
     private volatile Set<TickListener> enemyTickListeners;
     private volatile Set<TickListener> towerTickListeners;
     private volatile Set<TickListener> projectileTickListeners;
+    private static final String FLOOR_PATH = "/resources/grass.jpg";
 
+    private GImage background;
     private static final GardenScreen GARDEN_SCREEN;
 
     private static EnemyPath enemyPath;
@@ -52,6 +56,10 @@ public class GardenScreen extends Screen {
         enemyPath.addPathHitbox(this);
         enemyPath.showPathHitbox();
         enemyPath.addPath(this);
+
+        background = new GImage(Utils.getImage(FLOOR_PATH));
+        add(background);
+        background.sendToBack();
     }
 
     public void addEnemy() {

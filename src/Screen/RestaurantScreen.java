@@ -51,43 +51,75 @@ public class RestaurantScreen extends Screen {
         add(trashCan);
 
         OrderWindow orderWindow = new OrderWindow();
-        orderWindow.setLocation(300, 50);
+        orderWindow.setLocation(450, 50);
         add(orderWindow);
 
         IngredientStation doughStation = new IngredientStation(IngredientsType.DOUGH);
-        doughStation.setLocation(0, 380);
+        doughStation.setLocation(225, 200);
         add(doughStation);
 
         IngredientStation pepperoniStation = new IngredientStation(IngredientsType.PEPPERONI);
-        pepperoniStation.setLocation(180, 300);
+        pepperoniStation.setLocation(315, 275);
         add(pepperoniStation);
 
         IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
-        mozzarellaStation.setLocation(  120, 190);
+        mozzarellaStation.setLocation(  135, 275);
         add(mozzarellaStation);
 
         IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
-        mushroomStation.setLocation(180, 190);
+        mushroomStation.setLocation(285, 200);
         add(mushroomStation);
 
         IngredientStation sauceStation = new IngredientStation(IngredientsType.SAUCE);
-        sauceStation.setLocation(120, 300);
+        sauceStation.setLocation(165, 200);
         add(sauceStation);
 
+        PrepTable prepTable5 = new PrepTable();
+        prepTable5.setLocation(0, 250);
+        prepTable5.rotate(90);
+        prepTable5.sendToFront();
+        add(prepTable5);
 
         // Prep table for assembling pizzas
         PrepTable prepTable1 = new PrepTable();
-        prepTable1.setLocation(0, 200);
+        prepTable1.setLocation(0, 300);
+        prepTable1.rotate(90);
+        prepTable1.sendToFront();
         add(prepTable1);
 
         PrepTable prepTable2 = new PrepTable();
-        prepTable2.setLocation(0, 250);
+        prepTable2.setLocation(0, 350);
+        prepTable2.rotate(90);
+        prepTable2.sendToFront();
         add(prepTable2);
+
+        PrepTable prepTable3 = new PrepTable();
+        prepTable3.setLocation(0, 400);
+        prepTable3.rotate(90);
+        prepTable3.sendToFront();
+        add(prepTable3);
+
+        PrepTable prepTable4 = new PrepTable();
+        prepTable4.setLocation(0, 450);
+        prepTable4.rotate(90);
+        prepTable4.sendToFront();
+        add(prepTable4);
+
+
 
         // Oven for cooking pizzas
         Oven oven = new Oven();
-        oven.setLocation(100, 20);
+        oven.setLocation(200, 20);
         add(oven);
+
+        GImage prep_table_image  = new GImage(Utils.getImage("/resources/restaurant/prep_table.png"));
+        prep_table_image.setLocation(0, 450);
+        prep_table_image.setSize(250, 50);
+        prep_table_image.rotate(90);
+        add(prep_table_image);
+        prep_table_image.sendToBack();
+        prep_table_image.sendForward();
+
 
 //        // Order window for delivering pizzas
 //        OrderWindow orderWindow = new OrderWindow("Order Window");

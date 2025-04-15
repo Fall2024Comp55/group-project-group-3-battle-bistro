@@ -65,9 +65,10 @@ public class PrepTable extends GCompound implements Interact, Solid {
     public PrepTable() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        //gImage.setLocation(0, 0);
+        gImage.setLocation(0, 0);
         gImage.setSize(50, 50);
         add(gImage);
+        gImage.setVisible(false);
         //TODO: REMOVE BELOW! BELOW LINES ARE JUST FOR TESTING
 //        item = new Food();
 //        food_image = new GImage(Utils.getImage("/resources/enemy/pizza (2).png"));
@@ -129,4 +130,7 @@ public class PrepTable extends GCompound implements Interact, Solid {
         return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
+    public GImage getgImage() {
+        return gImage;
+    }
 }

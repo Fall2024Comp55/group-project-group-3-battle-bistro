@@ -24,6 +24,7 @@ public class IngredientStation extends GCompound implements Interact, Solid {
         GImage gImage = new GImage(Utils.getImage(ingredient.toStationPath()));
         this.gImage = gImage;
         //gImage.setLocation(0, 0);
+        gImage.setSize(60, 60);
         add(gImage);
     }
 
