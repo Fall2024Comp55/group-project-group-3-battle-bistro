@@ -15,7 +15,7 @@ import java.util.Set;
 public class RestaurantScreen extends Screen {
     private volatile Set<TickListener> restaurantTickListeners;
     private static final RestaurantScreen RESTAURANT_SCREEN;
-    private static final String FLOOR_PATH = "/resources/restaurant/floor.png";
+    private static final String FLOOR_PATH = "/resources/restaurant/floor.jpg";
 
     private static CustomerPath customerPath;
 
