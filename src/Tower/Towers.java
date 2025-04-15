@@ -20,7 +20,7 @@ public enum Towers {
 
     public GImage getgImage() {
         try {
-            return (GImage) towerClass.getMethod("getgImage").invoke(null);
+            return (GImage) towerClass.getMethod("getgImage").invoke(createTower());
         } catch (Exception e) {
             throw new RuntimeException("Error getting gImage for " + towerClass.getSimpleName(), e);
         }
@@ -28,7 +28,7 @@ public enum Towers {
 
     public Integer getCost() {
         try {
-            return (Integer) towerClass.getMethod("getCost").invoke(null);
+            return (Integer) towerClass.getMethod("getCost").invoke(createTower());
         } catch (Exception e) {
             throw new RuntimeException("Error getting cost for " + towerClass.getSimpleName(), e);
         }

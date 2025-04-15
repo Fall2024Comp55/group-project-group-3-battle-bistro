@@ -53,7 +53,6 @@ public class GardenUI extends UI implements Solid {
 
     public void initTowerPanel() {
         for (Towers tower : Towers.values()) {
-            tower.createTower();
             NewTowerButton towerButton = new NewTowerButton(tower);
             add(towerButton);
             towerButton.setLocation(healthLabel.getX() + healthLabel.getWidth() + 20 + (towerButton.getWidth() + 10) * (tower.ordinal() + 1), this.getHeight() / 2 - towerButton.getHeight() / 2);

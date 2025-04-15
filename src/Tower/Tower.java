@@ -8,6 +8,7 @@ import Utils.*;
 import acm.graphics.*;
 import com.sun.source.tree.Tree;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
@@ -15,11 +16,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     private static final String EXTENSION = ".png";
     private static final double SELL_MODIFIER = 0.8;
 
-    protected static String name;
-    protected static GImage gImage;
-    protected static int cost;
-    protected static int level;
-    protected static int damage;
+    protected String name;
+    protected GImage gImage;
+    protected int cost;
+    protected int level;
+    protected int damage;
     protected Enemy target;
     protected Tree upgradeTree;
     protected GOval range;
@@ -33,22 +34,25 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected Enemy attackTarget;
 
     Tower(String name, int cost, int level, int damage, int range) {
-        Tower.name = name;
-        Tower.cost = cost;
-        Tower.level = level;
-        Tower.damage = damage;
+        this.name = name;
+        this.cost = cost;
+        this.level = level;
+        this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-        Tower.gImage = new GImage(Utils.getImage(toPath()));
+        this.gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
         hitbox = new GOval(20, 20);
         hitbox.setLocation(Utils.getCenter(hitbox.getBounds()));
         add(hitbox);
+        hitbox.setVisible(false);
         this.range = new GOval(range, range);
         this.range.setLocation(Utils.getCenter(this.range.getBounds()));
         add(this.range);
+        this.range.setVisible(false);
+        this.range.setFillColor(new Color(220, 20, 60, 150));
     }
 
     public Tower(String name, int cost, int level, int damage, Projectile projectile, int range) {
@@ -126,19 +130,19 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         return range;
     }
 
-    public static double getDamage() {
+    public double getDamage() {
         return damage;
     }
 
-    public static int getSellCost() {
+    public int getSellCost() {
         return Math.round((float) (cost * SELL_MODIFIER));
     }
 
-    public static int getUpgradeCost() {
+    public int getUpgradeCost() {
         return 0;
     }
 
-    public static int getCost() {
+    public int getCost() {
         return cost;
     }
 
@@ -160,11 +164,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         return name.substring(0, 1).toUpperCase() + name.substring(1) + "[" + this.hashCode() + "]";
     }
 
-    public static String toPath() {
+    public String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
     }
 
-    public static GImage getgImage() {
+    public GImage getgImage() {
         return gImage;
     }
 
@@ -182,14 +186,16 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onDrag(MouseEvent e) {
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
-//        GardenScreen.getInstance().unregisterTickListener(this);
+        if (!range.isVisible()) {
+            range.setVisible(true);
+        }
         if (checkCollision()) {
-            if (!hitbox.isFilled()) {
-                hitbox.setFilled(true);
+            if (!range.isFilled()) {
+                range.setFilled(true);
             }
         } else {
-            if (hitbox.isFilled()) {
-                hitbox.setFilled(false);
+            if (range.isFilled()) {
+                range.setFilled(false);
             }
         }
     }
@@ -212,8 +218,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                 });
             }
         }
-        if (hitbox.isFilled()) {
-            hitbox.setFilled(false);
+        this.sendToBack();
+        this.sendForward();
+        if (range.isVisible()) {
+            range.setVisible(false);
+        }
+        if (range.isFilled()) {
+            range.setFilled(false);
         }
     }
 }

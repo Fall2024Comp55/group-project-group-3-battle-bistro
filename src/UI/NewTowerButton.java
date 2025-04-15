@@ -7,6 +7,7 @@ import Tower.Towers;
 import Utils.MouseManager;
 import acm.graphics.GLabel;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 import static Screen.ProgramWindow.GLOBAL_COLOR;
@@ -29,6 +30,14 @@ public class NewTowerButton extends Button {
         add(cost);
     }
 
+    public void update() {
+        if (tower.getCost() > Character.getInstance().getBalance()) {
+            cost.setColor(Color.RED);
+        } else {
+            cost.setColor(GLOBAL_COLOR);
+        }
+    }
+
 
     @Override
     public void onPress(MouseEvent e) {
@@ -39,6 +48,14 @@ public class NewTowerButton extends Button {
             GardenScreen.getInstance().add(newTower);
             MouseManager.setSelectedObject(newTower);
             newTower.onPress(e);
+        }
+    }
+
+    @Override
+    public void onHover(MouseEvent e) {
+        update();
+        if (tower.getCost() <= Character.getInstance().getBalance()) {
+            super.onHover(e);
         }
     }
 }

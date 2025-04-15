@@ -133,6 +133,8 @@ public class Enemy extends GCompound implements TickListener {
     @Override
     public void onTick() {
         move();
+        this.sendToBack();
+        this.sendForward();
         if (!alive) {
             GardenScreen.getInstance().remove(this);
         }
