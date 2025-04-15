@@ -52,9 +52,9 @@ public class GardenScreen extends Screen {
     public void initializeComponents() {
         enemyPath = new EnemyPath(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
         Enemy.setPath(enemyPath);
-        enemyPath.showPath();
+//        enemyPath.showPath();
         enemyPath.addPathHitbox(this);
-        enemyPath.showPathHitbox();
+//        enemyPath.showPathHitbox();
         enemyPath.addPath(this);
 
         background = new GImage(Utils.getImage(FLOOR_PATH));

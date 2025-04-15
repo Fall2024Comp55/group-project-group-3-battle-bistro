@@ -35,6 +35,7 @@ public class EnemyPath {
             path.add(segment);
         }
         hidePath();
+        hidePathHitbox();
     }
 
     public List<PathLine> getPath() {
