@@ -1,6 +1,7 @@
 package UI;
 
 import Character.Character;
+import Tower.Towers;
 import Utils.Solid;
 import acm.graphics.GLabel;
 import acm.graphics.GRect;
@@ -46,10 +47,17 @@ public class GardenUI extends UI implements Solid {
         healthLabel.setColor(GLOBAL_COLOR);
         healthLabel.setLocation(20, 15);
         add(healthLabel);
+
+        initTowerPanel();
     }
 
     public void initTowerPanel() {
-
+        for (Towers tower : Towers.values()) {
+            tower.createTower();
+            Button towerButton = new NewTowerButton(tower);
+            add(towerButton);
+            towerButton.setLocation(20 + (towerButton.getWidth() + 10) * (tower.ordinal() + 1), 5);
+        }
     }
 
     public static GardenUI getInstance() {

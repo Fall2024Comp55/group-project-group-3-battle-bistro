@@ -91,13 +91,11 @@ public class PrepTable extends GCompound implements Interact, Solid {
         TODO: Upon pressing "e", the player will add one ingredient to the pizza. Decrement amount
          of this ingredient by one. If not holding a pizza, do nothing.
          */
-        if (item != null) {
-            if (Character.getInstance().getHolding() == null) {
-                Character.getInstance().setHolding(item);
-                item = null;
-                removeFood();
-            }
-        } else {
+        if (item != null && Character.getInstance().getHolding() == null) {
+            Character.getInstance().setHolding(item);
+            item = null;
+            removeFood();
+        } else if (item == null && Character.getInstance().getHolding() != null) {
             item = Character.getInstance().getHolding();
             food_image = item.getImage();
             food_image.setLocation(gImage.getLocation());

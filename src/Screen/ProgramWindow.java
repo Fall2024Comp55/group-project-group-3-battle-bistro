@@ -143,6 +143,10 @@ public class ProgramWindow extends GraphicsProgram {
         }
     }
 
+    public void animateObject(GObject object, final double endX, final double endY, long duration) {
+        animateObject(object, endX, endY, duration, null);
+    }
+
     public void animateObject(GObject object, final double endX, final double endY, long duration, Action action) {
         long startTime = System.currentTimeMillis();
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();

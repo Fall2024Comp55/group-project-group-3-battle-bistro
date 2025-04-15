@@ -15,12 +15,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     private static final String EXTENSION = ".png";
     private static final double SELL_MODIFIER = 0.8;
 
-    protected Enemy attackTarget;
-    protected String name;
-    protected GImage gImage;
-    protected int cost;
-    protected int level;
-    protected int damage;
+    protected static String name;
+    protected static GImage gImage;
+    protected static int cost;
+    protected static int level;
+    protected static int damage;
     protected Enemy target;
     protected Tree upgradeTree;
     protected GOval range;
@@ -31,15 +30,16 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected boolean enemyFound;
     protected double currentTheta;
     protected boolean unlocked;
+    protected Enemy attackTarget;
 
-    public Tower(String name, int cost, int level, int damage, int range) {
-        this.name = name;
-        this.cost = cost;
-        this.level = level;
-        this.damage = damage;
+    Tower(String name, int cost, int level, int damage, int range) {
+        Tower.name = name;
+        Tower.cost = cost;
+        Tower.level = level;
+        Tower.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-        gImage = new GImage(Utils.getImage(toPath()));
+        Tower.gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
@@ -126,19 +126,19 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         return range;
     }
 
-    public double getDamage() {
+    public static double getDamage() {
         return damage;
     }
 
-    public int getSellCost() {
+    public static int getSellCost() {
         return Math.round((float) (cost * SELL_MODIFIER));
     }
 
-    public int getUpgradeCost() {
+    public static int getUpgradeCost() {
         return 0;
     }
 
-    public int getCost() {
+    public static int getCost() {
         return cost;
     }
 
@@ -160,8 +160,12 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         return name.substring(0, 1).toUpperCase() + name.substring(1) + "[" + this.hashCode() + "]";
     }
 
-    public String toPath() {
+    public static String toPath() {
         return BASE_PATH + name.toLowerCase() + EXTENSION;
+    }
+
+    public static GImage getgImage() {
+        return gImage;
     }
 
     @Override

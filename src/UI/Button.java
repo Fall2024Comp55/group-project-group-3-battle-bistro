@@ -1,5 +1,6 @@
 package UI;
 
+import Tower.Towers;
 import Utils.MouseInteract;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -27,15 +28,29 @@ public class Button extends GCompound implements MouseInteract {
         label = new GLabel(text);
         label.setFont(GLOBAL_FONT);
         label.setColor(GLOBAL_COLOR);
-        add(label, Utils.getCenter(label.getBounds())); // and and center the label
+        add(label, Utils.getCenter(label.getBounds()));
         if (outline) {
-            box = new GRect(label.getWidth() + 20, label.getHeight() + 10); // added padding
+            box = new GRect(label.getWidth() + 20, label.getHeight() + 10);
             box.setColor(GLOBAL_COLOR);
             box.setFilled(true);
             box.setFillColor(Color.WHITE);
-            add(box, Utils.getCenter(box.getBounds())); // add and center the box
+            add(box, Utils.getCenter(box.getBounds()));
             box.sendToBack();
         }
+    }
+
+    Button(Towers tower, int size) {
+        Image image = tower.getgImage().getImage();
+        gImage = new GImage(image);
+        gImage.setSize(size, size);
+        gImage.setLocation(Utils.getCenter(gImage.getBounds()));
+        add(gImage);
+        box = new GRect(gImage.getWidth(), gImage.getHeight());
+        box.setColor(GLOBAL_COLOR);
+        box.setFilled(true);
+        box.setFillColor(Color.WHITE);
+        add(box, Utils.getCenter(box.getBounds())); // add and center the box
+        box.sendToBack();
     }
 
     @Override

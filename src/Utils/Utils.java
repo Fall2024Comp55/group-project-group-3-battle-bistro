@@ -83,6 +83,10 @@ public class Utils {
         return object;
     }
 
+    public static GObject getObjectInCompound(GCompound c, int x, int y) {
+        return getObjectInCompound(c, new Point(x, y));
+    }
+
     /**
      * Calculates the offset of a hitbox within a parent hitbox.
      *

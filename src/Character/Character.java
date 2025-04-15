@@ -359,9 +359,12 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void interact() {
         if (actions.contains(KeyEvent.VK_E)) {
             interactHeld = true;
-            Interact interactable = checkForInteractable();
-            if (interactable != null) {
-                interactable.interact();
+            GPoint p = linetrace(50).getEndPoint();
+            RestaurantScreen.getInstance().add(new GOval(p.getX(), p.getY(), 20, 20));
+            GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
+            System.out.println(interactable);
+            if (interactable instanceof Interact i && interactable != this) {
+                i.interact();
             }
         } else {
             interactHeld = false;
@@ -385,18 +388,17 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             movementExecutor.shutdown();
             moving = false;
         }
-        interact();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        interact();
         keysHeld.remove(e.getKeyCode());
         actions.remove(e.getKeyCode());
         if (moving && ((keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) || keysHeld.isEmpty())) {
             moving = false;
             movementExecutor.shutdown();
         }
-        interact();
     }
 
     @Override
@@ -507,7 +509,8 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     public GLine linetrace(double length) {
         // Get the character's current position
-        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds());
+//        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds()); // ProgramWindow Relative
+        GPoint p = getLocation(); // RestaurantScreen Relative
         double startX = p.getX();
         double startY = p.getY();
 

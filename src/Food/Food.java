@@ -30,7 +30,7 @@ public class Food extends GCompound {
         ingredients = EnumSet.noneOf(IngredientsType.class);
         image = new GCompound();
         images = new HashMap<>();
-        ingredients.add(IngredientsType.DOUGH);
+        addIngredient(IngredientsType.DOUGH);
         sauce = false;
         cheese = false;
         pepperoni = false;
