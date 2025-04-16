@@ -42,6 +42,12 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void initializeComponents() {
+
+        GImage wall_image  = new GImage(Utils.getImage("/resources/restaurant/wall.png"));
+        wall_image.setLocation(0, 0);
+        wall_image.setSize(800, 100);
+        add(wall_image);
+
         Door door = new Door();
         door.setLocation(0, 50);
         add(door);
