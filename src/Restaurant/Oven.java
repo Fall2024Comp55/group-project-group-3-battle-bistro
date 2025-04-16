@@ -44,7 +44,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
                     add(gImage);
                 });
             }
-        } else if (item.isCooked()) {
+        } else if (item.isCooked() && pizza == null) {
             Character.getInstance().setHolding(item);
             item = null;
         }
