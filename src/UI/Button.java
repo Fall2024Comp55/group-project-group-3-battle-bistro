@@ -1,6 +1,5 @@
 package UI;
 
-import Tower.Towers;
 import Utils.MouseInteract;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -39,8 +38,7 @@ public class Button extends GCompound implements MouseInteract {
         }
     }
 
-    Button(Towers tower, int size) {
-        Image image = tower.getgImage().getImage();
+    Button(Image image, int size) {
         gImage = new GImage(image);
         gImage.setSize(size, size);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));

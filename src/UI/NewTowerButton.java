@@ -17,7 +17,7 @@ public class NewTowerButton extends Button {
     private GLabel cost;
 
     public NewTowerButton(Towers tower) {
-        super(tower, 25);
+        super(tower.getgImage().getImage(), 25);
         this.tower = tower;
         cost = new GLabel(String.valueOf(tower.getCost()) + "$");
         cost.setFont("Arial-12");
