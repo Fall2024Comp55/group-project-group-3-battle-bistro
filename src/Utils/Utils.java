@@ -22,6 +22,10 @@ public class Utils {
         return new GPoint(-bounds.getWidth() / 2, -bounds.getHeight() / 2);
     }
 
+    public static GPoint getCenterCenter(GRectangle bounds) {
+        return new GPoint(bounds.getX() + (bounds.getWidth() / 2), bounds.getY() + (bounds.getHeight() / 2));
+    }
+
     public static GPoint getCenterPoint(GRectangle bounds) {
         return new GPoint(bounds.getWidth() / 2, bounds.getHeight() / 2);
     }

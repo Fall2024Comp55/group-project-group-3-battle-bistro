@@ -2,7 +2,9 @@ package Tower;
 
 import Character.Character;
 import Enemy.Enemy;
+import Enemy.EnemyPath;
 import Screen.GardenScreen;
+import Screen.ProgramWindow;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -10,6 +12,7 @@ import com.sun.source.tree.Tree;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 
 public abstract class Tower extends GCompound implements TickListener, MouseInteract, Solid {
     private static final String BASE_PATH = "/resources/tower/";
@@ -32,6 +35,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected double currentTheta;
     protected boolean unlocked;
     protected Enemy attackTarget;
+    protected LinkedList<GLine> attackLines;
+    protected LinkedList<GOval> attackHitboxes;
 
     Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
@@ -40,6 +45,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
+        this.attackLines = new LinkedList<>();
         this.gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
@@ -108,6 +114,28 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
             return enemyFound;
         } else {
             return false;
+        }
+    }
+
+    public void initAttackLines() {
+        attackLines.clear();
+        for (int i = 0; i < 360; i++) {
+            GLine line = linetrace(range.getWidth() / 2, i);
+            for (EnemyPath.PathLine pathLine : GardenScreen.getEnemyPath().getPath()) {
+                if (line.getBounds().intersects(pathLine.getBounds())) {
+                    ProgramWindow.getInstance().add(line);
+                    line.setColor(new Color(50, 50, 50, 100));
+                    GRectangle pathpoint = line.getBounds().intersection(pathLine.getHitbox());
+//                    GRectangle pathpoint = pathLine.getHitbox().intersection(line.getBounds());
+                    GPoint p = Utils.getCenterCenter(pathpoint);
+                    if (i % 10 == 0) {
+                        ProgramWindow.getInstance().add(new GOval(pathpoint.getX(), pathpoint.getY(), pathpoint.getWidth(), pathpoint.getHeight()));
+                    }
+                    attackLines.add(line);
+                }
+            }
+
+
         }
     }
 
@@ -204,8 +232,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onRelease(MouseEvent e) {
         if (!checkCollision()) {
             placed = true;
+            initAttackLines();
             placedLocation = this.getLocation();
-            GardenScreen.getInstance().registerTickListener(this);
+            ActionManager.addAction(1, () -> {
+                GardenScreen.getInstance().registerTickListener(this);
+            });
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
@@ -227,4 +258,23 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
             range.setFilled(false);
         }
     }
+
+    public GLine linetrace(double length, int degree) {
+        // Get the character's current position
+//        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds()); // ProgramWindow Relative
+        GPoint p = getLocation();
+        double startX = p.getX();
+        double startY = p.getY();
+
+        // Calculate the end position based on the direction the character is facing
+        double endX = startX - length * Math.sin(Math.toRadians(degree));
+        double endY = startY - length * Math.cos(Math.toRadians(degree));
+
+        // TODO figure out issues when moving out side of screens
+//        ProgramWindow.getInstance().add(new GLine(startX, startY, endX, endY));
+
+        // Add the line to the ProgramWindow
+        return new GLine(startX, startY, endX, endY);
+    }
+
 }
