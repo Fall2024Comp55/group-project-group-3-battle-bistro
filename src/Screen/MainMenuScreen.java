@@ -9,6 +9,7 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class MainMenuScreen extends Screen implements TickListener {
     }
 
     private MainMenuScreen() {
-        mainMenuTickListeners = new HashSet<>();
+        mainMenuTickListeners = Collections.synchronizedSet(new HashSet<>());
         initializeComponents();
     }
 
@@ -83,12 +84,12 @@ public class MainMenuScreen extends Screen implements TickListener {
     }
 
     @Override
-    public void registerTickListener(TickListener listener) {
+    public synchronized void registerTickListener(TickListener listener) {
         mainMenuTickListeners.add(listener);
     }
 
     @Override
-    public void unregisterTickListener(TickListener listener) {
+    public synchronized void unregisterTickListener(TickListener listener) {
         mainMenuTickListeners.remove(listener);
     }
 

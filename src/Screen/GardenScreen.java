@@ -9,14 +9,15 @@ import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
 public class GardenScreen extends Screen {
-    private volatile Set<TickListener> enemyTickListeners;
-    private volatile Set<TickListener> towerTickListeners;
-    private volatile Set<TickListener> projectileTickListeners;
+    private final Set<TickListener> enemyTickListeners;
+    private final Set<TickListener> towerTickListeners;
+    private final Set<TickListener> projectileTickListeners;
     private static final String FLOOR_PATH = "/resources/grass.jpg";
 
     private GImage background;
@@ -34,9 +35,9 @@ public class GardenScreen extends Screen {
 
     private GardenScreen() {
         // Initialize the garden screen components here
-        enemyTickListeners = new HashSet<>();
-        towerTickListeners = new HashSet<>();
-        projectileTickListeners = new HashSet<>();
+        enemyTickListeners = Collections.synchronizedSet(new HashSet<>());
+        towerTickListeners = Collections.synchronizedSet(new HashSet<>());
+        projectileTickListeners = Collections.synchronizedSet(new HashSet<>());
         initializeComponents();
     }
 
@@ -98,7 +99,7 @@ public class GardenScreen extends Screen {
     }
 
     @Override
-    public void unregisterTickListener(TickListener listener) {
+    public synchronized void unregisterTickListener(TickListener listener) {
         if (listener instanceof Enemy) {
             enemyTickListeners.remove(listener);
         } else if (listener instanceof Tower) {

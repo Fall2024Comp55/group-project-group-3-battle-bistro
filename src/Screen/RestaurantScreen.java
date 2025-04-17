@@ -9,6 +9,7 @@ import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class RestaurantScreen extends Screen {
     }
 
     private RestaurantScreen() {
-        restaurantTickListeners = new HashSet<>();
+        restaurantTickListeners = Collections.synchronizedSet(new HashSet<>());
         add(Character.getInstance());
         initializeComponents();
     }
@@ -151,12 +152,12 @@ public class RestaurantScreen extends Screen {
     }
 
     @Override
-    public void registerTickListener(TickListener listener) {
+    public synchronized void registerTickListener(TickListener listener) {
         restaurantTickListeners.add(listener);
     }
 
     @Override
-    public void unregisterTickListener(TickListener listener) {
+    public synchronized void unregisterTickListener(TickListener listener) {
         restaurantTickListeners.remove(listener);
     }
 
