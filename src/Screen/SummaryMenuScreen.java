@@ -2,10 +2,12 @@ package Screen;
 
 import Utils.TickListener;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class SummaryMenuScreen extends Screen {
-    private volatile Set<TickListener> summaryTickListeners;
+    private final Set<TickListener> summaryTickListeners;
 
     private static final SummaryMenuScreen SUMMARY_MENU_SCREEN;
 
@@ -18,6 +20,7 @@ public class SummaryMenuScreen extends Screen {
     }
 
     private SummaryMenuScreen() {
+        summaryTickListeners = Collections.synchronizedSet(new HashSet<>());
         // Initialize the summary menu screen components here
     }
 
@@ -31,18 +34,18 @@ public class SummaryMenuScreen extends Screen {
     }
 
     @Override
-    public void registerTickListener(TickListener listener) {
-
+    public synchronized void registerTickListener(TickListener listener) {
+        summaryTickListeners.add(listener);
     }
 
     @Override
-    public void unregisterTickListener(TickListener listener) {
-
+    public synchronized void unregisterTickListener(TickListener listener) {
+        summaryTickListeners.remove(listener);
     }
 
     @Override
     public void unregisterAllTickListener() {
-
+        summaryTickListeners.clear();
     }
 
     @Override
