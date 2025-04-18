@@ -12,6 +12,9 @@ import acm.graphics.GImage;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class RestaurantScreen extends Screen {
     private volatile Set<TickListener> restaurantTickListeners;
@@ -22,6 +25,7 @@ public class RestaurantScreen extends Screen {
 
 
     private GImage background;
+    private ScheduledExecutorService dayTimer; // Timer for day end
 
     static {
         try {
@@ -144,13 +148,33 @@ public class RestaurantScreen extends Screen {
         background = new GImage(Utils.getImage(FLOOR_PATH));
         add(background);
         background.sendToBack();
+        
+        
+     // Start 20-second timer for day end
+     // dayTimer = Executors.newSingleThreadScheduledExecutor();
+     // dayTimer.schedule(this::endDay, 20, TimeUnit.SECONDS);
+        
 
 
 
 //        add(OrderTicketUI.getInstance());
 //        elements.add(OrderTicketUI.getInstance());
+        
+        
+        
+        
     }
-
+//    private void endDay() {
+//        // Stop the timer
+//        dayTimer.shutdown();
+//        // Transition to SummaryMenuScreen
+//        ProgramWindow.getInstance().endDay();
+//    }
+    
+    
+    
+    
+    
     @Override
     public synchronized void registerTickListener(TickListener listener) {
         restaurantTickListeners.add(listener);

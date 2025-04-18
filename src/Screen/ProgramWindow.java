@@ -104,10 +104,15 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public void endDay() {
-        setScreen(CurrentScreen.SUMMARY);
+    	setScreen(CurrentScreen.SUMMARY);
+        // Remove game screens and UI
         remove(GardenScreen.getInstance());
-        add(RestaurantScreen.getInstance());
-        RestaurantScreen.getInstance().sendToBack();
+        remove(RestaurantScreen.getInstance());
+        remove(RestaurantUI.getInstance());
+        remove(GardenUI.getInstance());
+        remove(OrderTicketUI.getInstance());
+        // Add SummaryMenuScreen
+        add(SummaryMenuScreen.getInstance());
     }
 
     public void endGameOver() {
