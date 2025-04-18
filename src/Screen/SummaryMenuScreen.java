@@ -3,6 +3,7 @@ package Screen;
 import Character.Character;
 import UI.ActionButton;
 import Utils.TickListener;
+import Utils.Utils;
 import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -36,7 +37,7 @@ public class SummaryMenuScreen extends Screen {
     @Override
     public void initializeComponents() {
         // Background
-        GImage background = new GImage("/resources/mainmenu/background.png");
+        GImage background = new GImage(Utils.getImage(BACKGROUND_IMAGE));
         background.setSize(BASE_WIDTH, BASE_HEIGHT);
         add(background);
 
