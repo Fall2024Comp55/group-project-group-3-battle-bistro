@@ -20,11 +20,12 @@ public class RestaurantScreen extends Screen {
     private volatile Set<TickListener> restaurantTickListeners;
     private static final RestaurantScreen RESTAURANT_SCREEN;
     private static final String FLOOR_PATH = "/resources/restaurant/floor.jpg";
+    private static final int dayLength = 120; // in ticks
 
     private static CustomerPath customerPath;
 
     private GImage background;
-    private ScheduledExecutorService dayTimer; // Timer for day end
+    private long dayTick;
 
     static {
         try {
