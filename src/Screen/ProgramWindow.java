@@ -81,8 +81,6 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public void startGame() {
-        setScreen(CurrentScreen.RESTAURANT);
-
         // remove the main menu screen from the window
         remove(MainMenuScreen.getInstance());
 
@@ -97,6 +95,8 @@ public class ProgramWindow extends GraphicsProgram {
         GardenUI.getInstance().setLocation(0, -GardenUI.getInstance().getHeight());
         add(OrderTicketUI.getInstance());
         add(GardenUI.getInstance());
+        setScreen(CurrentScreen.RESTAURANT);
+        RestaurantScreen.getInstance().resetDay();
 
         // send game screens to back to make UI is in front
         GardenScreen.getInstance().sendToBack();
@@ -104,7 +104,9 @@ public class ProgramWindow extends GraphicsProgram {
     }
 
     public void endDay() {
-    	setScreen(CurrentScreen.SUMMARY);
+        if (currentScreen.equals(CurrentScreen.GARDEN)) {
+            enterDoor();
+        }
         // Remove game screens and UI
         remove(GardenScreen.getInstance());
         remove(RestaurantScreen.getInstance());
@@ -112,15 +114,54 @@ public class ProgramWindow extends GraphicsProgram {
         remove(GardenUI.getInstance());
         remove(OrderTicketUI.getInstance());
         // Add SummaryMenuScreen
+        setScreen(CurrentScreen.SUMMARY);
         add(SummaryMenuScreen.getInstance());
     }
 
+    public void startDay() {
+        // remove the main menu screen from the window
+        remove(SummaryMenuScreen.getInstance());
+
+        // add the garden screen to the window
+        add(GardenScreen.getInstance());
+
+        // add the restaurant screen to the window
+        add(RestaurantScreen.getInstance());
+
+        // start in the restaurant screen by adding order ticket UI and restaurant UI
+        add(RestaurantUI.getInstance());
+        add(OrderTicketUI.getInstance());
+        add(GardenUI.getInstance());
+        setScreen(CurrentScreen.RESTAURANT);
+        RestaurantScreen.getInstance().resetDay();
+
+        // send game screens to back to make UI is in front
+        GardenScreen.getInstance().sendToBack();
+        RestaurantScreen.getInstance().sendToBack();
+    }
+
+    public void exitToMainMenu() {
+        // Remove game screens and UI
+        if (currentScreen.equals(CurrentScreen.SUMMARY)) {
+            remove(SummaryMenuScreen.getInstance());
+        } else {
+            remove(GardenScreen.getInstance());
+            remove(RestaurantScreen.getInstance());
+            remove(RestaurantUI.getInstance());
+            remove(GardenUI.getInstance());
+            remove(OrderTicketUI.getInstance());
+        }
+
+        // Add MainMenuScreen
+        add(MainMenuScreen.getInstance());
+        setScreen(CurrentScreen.MAIN_MENU);
+    }
+
     public void endGameOver() {
-        setScreen(CurrentScreen.SUMMARY);
         remove(GardenScreen.getInstance());
         remove(RestaurantScreen.getInstance());
-//        add(SummaryScreen.getInstance());
-//        SummaryScreen.getInstance().setLocation(0, 0);
+        add(SummaryMenuScreen.getInstance());
+        setScreen(CurrentScreen.SUMMARY);
     }
 
     public void enterDoor() {

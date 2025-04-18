@@ -12,9 +12,6 @@ import acm.graphics.GImage;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class RestaurantScreen extends Screen {
     private volatile Set<TickListener> restaurantTickListeners;
@@ -25,7 +22,8 @@ public class RestaurantScreen extends Screen {
     private static CustomerPath customerPath;
 
     private GImage background;
-    private long dayTick;
+    private static long dayTick;
+    private static boolean dayStarted;
 
     static {
         try {
@@ -47,7 +45,7 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void initializeComponents() {
-        GImage wall_image  = new GImage(Utils.getImage("/resources/restaurant/wall.png"));
+        GImage wall_image = new GImage(Utils.getImage("/resources/restaurant/wall.png"));
         wall_image.setLocation(0, 0);
         wall_image.setSize(800, 100);
         add(wall_image);
@@ -73,7 +71,7 @@ public class RestaurantScreen extends Screen {
         add(pepperoniStation);
 
         IngredientStation mozzarellaStation = new IngredientStation(IngredientsType.MOZZARELLA);
-        mozzarellaStation.setLocation(  135, 275);
+        mozzarellaStation.setLocation(135, 275);
         add(mozzarellaStation);
 
         IngredientStation mushroomStation = new IngredientStation(IngredientsType.MUSHROOM);
@@ -120,7 +118,7 @@ public class RestaurantScreen extends Screen {
         oven.setLocation(200, 20);
         add(oven);
 
-        GImage prep_table_image  = new GImage(Utils.getImage("/resources/restaurant/prep_table.png"));
+        GImage prep_table_image = new GImage(Utils.getImage("/resources/restaurant/prep_table.png"));
         prep_table_image.setLocation(0, 450);
         prep_table_image.setSize(250, 50);
         prep_table_image.rotate(90);
@@ -146,22 +144,28 @@ public class RestaurantScreen extends Screen {
 
 //        add(OrderTicketUI.getInstance());
 //        elements.add(OrderTicketUI.getInstance());
-        
+
     }
 
-    public void resetDayTick() {
+    public static void resetDay() {
+        dayStarted = true;
         dayTick = 0;
     }
 
-    public void incrementDayTick() {
+    public static void incrementDayTick() {
         dayTick++;
         if (dayTick >= dayLength) {
             dayTick = 0;
+            dayStarted = false;
             ProgramWindow.getInstance().endDay();
         }
     }
 
-    
+    public static Boolean isDayStarted() {
+        return dayStarted;
+    }
+
+
     @Override
     public synchronized void registerTickListener(TickListener listener) {
         restaurantTickListeners.add(listener);
@@ -179,9 +183,11 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void onTick() {
-        screenExecutor.submit(() -> {
-            restaurantTickListeners.forEach(TickListener::onTick);
-        });
-        incrementDayTick();
+        if (dayStarted) {
+            screenExecutor.submit(() -> {
+                restaurantTickListeners.forEach(TickListener::onTick);
+            });
+            incrementDayTick();
+        }
     }
 }

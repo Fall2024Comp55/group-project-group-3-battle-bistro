@@ -58,19 +58,14 @@ public class SummaryMenuScreen extends Screen {
 
         // Main Menu Button
         ActionButton mainMenuButton = new ActionButton("Main Menu", () -> {
-            ProgramWindow.getInstance().setScreen(CurrentScreen.MAIN_MENU);
-            ProgramWindow.getInstance().remove(RestaurantScreen.getInstance());
-            ProgramWindow.getInstance().remove(GardenScreen.getInstance());
-            ProgramWindow.getInstance().add(MainMenuScreen.getInstance());
+            ProgramWindow.getInstance().exitToMainMenu();
         });
         mainMenuButton.setLocation((BASE_WIDTH - mainMenuButton.getWidth()) / 2, BASE_HEIGHT / 2 + 50);
         add(mainMenuButton);
 
         // Next Day Button
         ActionButton nextDayButton = new ActionButton("Next Day", () -> {
-            // Reset necessary game stats 
-            Character.getInstance().getBalance(); // Reset balance or adjust as needed
-            ProgramWindow.getInstance().startGame(); // Restart the game
+            ProgramWindow.getInstance().startDay(); // Restart the game
         });
         nextDayButton.setLocation((BASE_WIDTH - nextDayButton.getWidth()) / 2, BASE_HEIGHT / 2 + 100);
         add(nextDayButton);

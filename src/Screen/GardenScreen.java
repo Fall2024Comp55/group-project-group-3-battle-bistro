@@ -120,17 +120,19 @@ public class GardenScreen extends Screen {
 
     @Override
     public void onTick() {
-        screenExecutor.submit(() -> {
-            // remove later
-            addEnemy();
-            enemyTickListeners.spliterator().forEachRemaining(TickListener::onTick);
-        });
-        screenExecutor.submit(() -> {
-            towerTickListeners.spliterator().forEachRemaining(TickListener::onTick);
-        });
-        screenExecutor.submit(() -> {
-            projectileTickListeners.spliterator().forEachRemaining(TickListener::onTick);
-        });
+        if (RestaurantScreen.isDayStarted()) {
+            screenExecutor.submit(() -> {
+                // remove later
+                addEnemy();
+                enemyTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+            });
+            screenExecutor.submit(() -> {
+                towerTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+            });
+            screenExecutor.submit(() -> {
+                projectileTickListeners.spliterator().forEachRemaining(TickListener::onTick);
+            });
+        }
     }
 
 }
