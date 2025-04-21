@@ -50,7 +50,6 @@ public abstract class Projectile extends GCompound implements TickListener {
 
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-
         if (distance < speed * moveRate) {
             this.setLocation(Utils.getCenterOffset(targetPoint, this.getBounds()));
             if (checkHit()) {
@@ -110,7 +109,7 @@ public abstract class Projectile extends GCompound implements TickListener {
             targetPoint = targetEnemy.getLocation();
             move();
         } else {
-            GardenScreen.getInstance().remove(this);
+            GardenScreen.getEnemyLayer().remove(this);
         }
     }
 }

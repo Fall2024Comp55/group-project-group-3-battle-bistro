@@ -4,7 +4,6 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyPath;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -35,8 +34,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected double currentTheta;
     protected boolean unlocked;
     protected Enemy attackTarget;
-    protected LinkedList<GLine> attackLines;
-    protected LinkedList<GOval> attackHitboxes;
+    protected LinkedList<Zone> attackZones;
+    protected boolean inRange;
 
     Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
@@ -45,7 +44,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.damage = damage;
         this.placed = true;
         this.placedLocation = this.getLocation();
-        this.attackLines = new LinkedList<>();
+        this.attackZones = new LinkedList<>();
         this.gImage = new GImage(Utils.getImage(toPath()));
         gImage.setSize(20, 20);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
@@ -67,12 +66,43 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public boolean inRange() {
-        if (placed) {
-            enemyFound = false;
-            attackTarget = null;
-            for (TickListener enemy : GardenScreen.getInstance().getEnemyTickListeners()) {
+        if (!attackZones.isEmpty()) {
+            for (GPoint p : attackZones.getFirst().getSidePoints()) {
+                Object enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
                 if (enemy instanceof Enemy e) {
-                    if (e.isAlive() && this.getBounds().intersects(e.getBounds())) {
+                    if (e.isAlive()) {
+                        return true;
+                    }
+                }
+            }
+            for (GPoint p : attackZones.get(attackZones.size() / 2).getSidePoints()) {
+                Object enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
+                if (enemy instanceof Enemy e) {
+                    if (e.isAlive()) {
+                        return true;
+                    }
+                }
+            }
+            for (GPoint p : attackZones.getLast().getSidePoints()) {
+                Object enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
+                if (enemy instanceof Enemy e) {
+                    if (e.isAlive()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean findTarget() {
+        enemyFound = false;
+        attackTarget = null;
+        for (Zone zone : attackZones) {
+            for (GPoint p : zone.getSidePoints()) {
+                GObject enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
+                if (enemy instanceof Enemy e) {
+                    if (e.isAlive()) {
                         enemyFound = true;
                         if (attackTarget == null) {
                             attackTarget = e;
@@ -82,61 +112,74 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                         }
                     }
                 }
-            }
-
-            if (enemyFound && attackTarget != null) {
-                // Calculate the angle to face the enemy
-                double dx = attackTarget.getX() - this.getX();
-                double dy = attackTarget.getY() - this.getY();
-                double angle = Math.toDegrees(Math.atan2(dx, dy));
-
-                // Rotate the tower to face the enemy
-                double rotateDistance = angle - currentTheta; // calculate the distance to rotate
-
-                // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
-                if (rotateDistance > 180) {
-                    rotateDistance -= 360;
-                } else if (rotateDistance < -180) {
-                    rotateDistance += 360;
-                }
-                // if the distance is less than the speed, rotate by the distance
-                this.rotate(rotateDistance);
-                currentTheta += rotateDistance; // track the current angle
-
-                // keep the current angle between 0 and 360 degrees
-                if (currentTheta > 360) {
-                    currentTheta -= 360;
-                } else if (currentTheta < 0) {
-                    currentTheta += 360;
+                if (enemyFound) {
+                    break;
                 }
             }
-
-            return enemyFound;
-        } else {
-            return false;
         }
+        if (enemyFound && attackTarget != null) {
+            // Calculate the angle to face the enemy
+            double dx = attackTarget.getX() - this.getX();
+            double dy = attackTarget.getY() - this.getY();
+            double angle = Math.toDegrees(Math.atan2(dx, dy));
+
+            // Rotate the tower to face the enemy
+            double rotateDistance = angle - currentTheta; // calculate the distance to rotate
+
+            // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
+            if (rotateDistance > 180) {
+                rotateDistance -= 360;
+            } else if (rotateDistance < -180) {
+                rotateDistance += 360;
+            }
+            // if the distance is less than the speed, rotate by the distance
+            this.rotate(rotateDistance);
+            currentTheta += rotateDistance; // track the current angle
+
+            // keep the current angle between 0 and 360 degrees
+            if (currentTheta > 360) {
+                currentTheta -= 360;
+            } else if (currentTheta < 0) {
+                currentTheta += 360;
+            }
+        }
+
+        return enemyFound;
     }
 
     public void initAttackLines() {
-        attackLines.clear();
+        attackZones.clear();
         for (int i = 0; i < 360; i++) {
             GLine line = linetrace(range.getWidth() / 2, i);
             for (EnemyPath.PathLine pathLine : GardenScreen.getEnemyPath().getPath()) {
                 if (line.getBounds().intersects(pathLine.getBounds())) {
-                    ProgramWindow.getInstance().add(line);
                     line.setColor(new Color(50, 50, 50, 100));
-                    GRectangle pathpoint = line.getBounds().intersection(pathLine.getHitbox());
-//                    GRectangle pathpoint = pathLine.getHitbox().intersection(line.getBounds());
-                    GPoint p = Utils.getCenterCenter(pathpoint);
-                    if (i % 10 == 0) {
-                        ProgramWindow.getInstance().add(new GOval(pathpoint.getX(), pathpoint.getY(), pathpoint.getWidth(), pathpoint.getHeight()));
-                    }
-                    attackLines.add(line);
+                    GRectangle bounds = line.getBounds().intersection(pathLine.getHitbox());
+                    Zone zone = new Zone(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), pathLine.getIndex());
+                    attackZones.add(zone);
                 }
             }
-
-
         }
+        attackZones.sort((o1, o2) -> {
+            if (o1.getPathIndex() != o2.getPathIndex()) {
+                return Integer.compare(o2.getPathIndex(), o1.getPathIndex());
+            } else {
+                double distance1 = Math.hypot(o1.getX() - GardenScreen.getEnemyPath().getPoint(o1.getPathIndex()).getX(),
+                        o1.getY() - GardenScreen.getEnemyPath().getPoint(o1.getPathIndex()).getY());
+                double distance2 = Math.hypot(o2.getX() - GardenScreen.getEnemyPath().getPoint(o2.getPathIndex()).getX(),
+                        o2.getY() - GardenScreen.getEnemyPath().getPoint(o2.getPathIndex()).getY());
+                return Double.compare(distance2, distance1);
+            }
+        });
+        LinkedList<Zone> filteredZones = new LinkedList<>();
+        for (int i = 0; i < attackZones.size(); i++) {
+            if (i == 0 || i == attackZones.size() / 2 || i == attackZones.size() - 1 || i % 10 == 0) {
+                filteredZones.add(attackZones.get(i));
+                attackZones.get(i).addZone();
+                attackZones.get(i).addPoints();
+            }
+        }
+        attackZones = filteredZones;
     }
 
     public boolean isUnlocked() {
@@ -207,6 +250,10 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onPress(MouseEvent e) {
+        if (!range.isVisible()) {
+            add(range);
+            range.setVisible(true);
+        }
         this.sendToFront();
     }
 
@@ -215,6 +262,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         placed = false;
         this.move(e.getX() - MouseManager.getLastMousePoint().getX(), e.getY() - MouseManager.getLastMousePoint().getY());
         if (!range.isVisible()) {
+            add(range);
             range.setVisible(true);
         }
         if (checkCollision()) {
@@ -253,6 +301,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.sendForward();
         if (range.isVisible()) {
             range.setVisible(false);
+            remove(range);
         }
         if (range.isFilled()) {
             range.setFilled(false);

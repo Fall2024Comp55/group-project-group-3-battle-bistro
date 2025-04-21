@@ -31,7 +31,7 @@ public class EnemyPath {
         for (int i = 1; i <= points.size() - 1; i++) {
             GPoint p1 = points.get(i - 1);
             GPoint p2 = points.get(i);
-            PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+            PathLine segment = new PathLine(p1.getX(), p1.getY(), p2.getX(), p2.getY(), i);
             path.add(segment);
         }
         hidePath();
@@ -117,8 +117,9 @@ public class EnemyPath {
 
     public static class PathLine extends GLine implements Solid {
         private GRect hitbox;
+        private int index;
 
-        public PathLine(double x0, double y0, double x1, double y1) {
+        public PathLine(double x0, double y0, double x1, double y1, int index) {
             super(x0, y0, x1, y1);
             if (getWidth() == 0) {
                 hitbox = new GRect(getBounds().getX() - SEGMENT_WIDTH / 2, getBounds().getY() - SEGMENT_WIDTH / 2, SEGMENT_WIDTH, getBounds().getHeight() + SEGMENT_WIDTH);
@@ -129,6 +130,10 @@ public class EnemyPath {
 
         public GRect getVisualHitbox() {
             return hitbox;
+        }
+
+        public int getIndex() {
+            return index;
         }
 
         @Override

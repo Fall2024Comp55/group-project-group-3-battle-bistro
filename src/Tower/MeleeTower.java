@@ -2,6 +2,7 @@ package Tower;
 
 import Enemy.Enemy;
 import Utils.Action;
+import Utils.GameTick;
 import Utils.TickListener;
 import acm.graphics.GObject;
 
@@ -16,13 +17,9 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void attack() {
-        if (placed) {
-            // preform attack code
-            state.attack(attackTarget);
-            if (!attackTarget.isAlive()) {
-                attackTarget = null;
-            }
-        }
+        findTarget();
+        // preform attack code
+        state.attack(attackTarget);
     }
 
     @Override
@@ -54,8 +51,13 @@ public class MeleeTower extends Tower implements TickListener {
 
     @Override
     public void onTick() {
-        if (inRange()) {
-            attack();
+        if (placed) {
+            if (GameTick.TickManager.getCurrentTickValue() % 10 == 0) {
+                inRange = inRange();
+            }
+            if (inRange) {
+                attack();
+            }
         }
     }
 

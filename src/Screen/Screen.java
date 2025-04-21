@@ -43,8 +43,8 @@ public abstract class Screen extends GCompound implements TickListener {
 
     @Override
     public void removeAll() {
-        elements.clear();
         unregisterAllTickListener();
+        elements.clear();
         super.removeAll();
     }
 

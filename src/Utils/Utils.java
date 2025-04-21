@@ -83,8 +83,14 @@ public class Utils {
             object = getObjectInCompound(ui, p);
         } else if (object instanceof Screen screen) {
             object = getObjectInCompound(screen, p);
+        } else if (object instanceof LayerCompound layer) {
+            object = getObjectInCompound(layer, p);
         }
         return object;
+    }
+
+    public static GObject getObjectInCompound(GCompound c, GPoint p) {
+        return getObjectInCompound(c, new Point((int) p.getX(), (int) p.getY()));
     }
 
     public static GObject getObjectInCompound(GCompound c, int x, int y) {

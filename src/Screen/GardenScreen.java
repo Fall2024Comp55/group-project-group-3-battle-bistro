@@ -5,6 +5,7 @@ import Enemy.EnemyPath;
 import Enemy.EnemyType;
 import Tower.Projectile;
 import Tower.Tower;
+import Utils.LayerCompound;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
@@ -20,10 +21,11 @@ public class GardenScreen extends Screen {
     private final Set<TickListener> projectileTickListeners;
     private static final String FLOOR_PATH = "/resources/grass.jpg";
 
-    private GImage background;
     private static final GardenScreen GARDEN_SCREEN;
 
     private static EnemyPath enemyPath;
+    private static GImage background;
+    private static LayerCompound enemyLayer;
 
     static {
         try {
@@ -38,6 +40,8 @@ public class GardenScreen extends Screen {
         enemyTickListeners = Collections.synchronizedSet(new HashSet<>());
         towerTickListeners = Collections.synchronizedSet(new HashSet<>());
         projectileTickListeners = Collections.synchronizedSet(new HashSet<>());
+        enemyLayer = new LayerCompound(this);
+
         initializeComponents();
     }
 
@@ -49,8 +53,15 @@ public class GardenScreen extends Screen {
         return enemyPath;
     }
 
+    public static LayerCompound getEnemyLayer() {
+        return enemyLayer;
+    }
+
     @Override
     public void initializeComponents() {
+        background = new GImage(Utils.getImage(FLOOR_PATH));
+        add(background);
+
         enemyPath = new EnemyPath(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
         Enemy.setPath(enemyPath);
         enemyPath.showPath();
@@ -58,9 +69,7 @@ public class GardenScreen extends Screen {
         enemyPath.showPathHitbox();
         enemyPath.addPath(this);
 
-        background = new GImage(Utils.getImage(FLOOR_PATH));
-        add(background);
-        background.sendToBack();
+        add(enemyLayer);
     }
 
     public void addEnemy() {
@@ -68,7 +77,7 @@ public class GardenScreen extends Screen {
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(0, 3); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
-            add(enemy);
+            enemyLayer.add(enemy);
         }
     }
 
