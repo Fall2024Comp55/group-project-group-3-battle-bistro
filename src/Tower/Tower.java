@@ -46,7 +46,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         this.placedLocation = this.getLocation();
         this.attackZones = new LinkedList<>();
         this.gImage = new GImage(Utils.getImage(toPath()));
-        gImage.setSize(20, 20);
+        gImage.setSize(30, 20); //og 20 20
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
         hitbox = new GOval(20, 20);
