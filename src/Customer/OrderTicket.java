@@ -20,17 +20,14 @@ public class OrderTicket extends GCompound {
 
     public OrderTicket(Food pizza) {
         order = pizza.getIngredients();
-        System.out.printf("OrderTicket: %s\n", order);
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
         background.setLocation(Utils.getCenter(background.getBounds()));
         int count = 2;
         for (IngredientsType ingredient: getOrder()) {
-            System.out.println(ingredient.toString() + "HERE");
-            GLabel ingred_name = new GLabel(ingredient.toString());
-            ingred_name.setLocation(background.getX() + horizontalOffset, background.getY() + verticalOffset * count);
-            add(ingred_name);
-            System.out.println(ingred_name.isVisible());
+            GLabel ingredientName = new GLabel(ingredient.toString());
+            ingredientName.setLocation(background.getX() + horizontalOffset, background.getY() + verticalOffset * count);
+            add(ingredientName);
             count++;
         }
     }

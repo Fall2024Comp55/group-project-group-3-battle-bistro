@@ -50,7 +50,6 @@ public class RangedTower extends Tower implements TickListener {
             Projectile p = new SpatulaProjectile(endPoint, attackTarget, 20, .5, state.getDamage());
             p.setLocation(this.getLocation());
             p.rotate(currentTheta);
-            System.out.println(getLocation());
             GardenScreen.getEnemyLayer().add(p);
             onCooldown = true;
             ActionManager.addAction(1, () -> {

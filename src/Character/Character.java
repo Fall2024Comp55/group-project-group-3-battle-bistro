@@ -338,7 +338,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             GPoint p = linetrace(50).getEndPoint();
             RestaurantScreen.getInstance().add(new GOval(p.getX(), p.getY(), 20, 20));
             GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
-            System.out.println(interactable);
             if (interactable instanceof Interact i && interactable != this) {
                 i.interact();
             }
