@@ -1,6 +1,5 @@
 package Restaurant;
 
-import Food.Food;
 import Utils.Interact;
 import Utils.Solid;
 import Utils.Utils;
@@ -11,15 +10,12 @@ import acm.graphics.GRectangle;
 public class Register extends GCompound implements Solid, Interact {
     private static final String PATH = "/resources/restaurant/register.png";
 
-    private final String name;
     private final GImage gImage;
-    private Food item;
 
-    public Register(String name) {
-        this.name = name;
+    public Register() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        //gImage.setLocation(0, 0);
+        gImage.setSize(35, 35);
         add(gImage);
     }
 
