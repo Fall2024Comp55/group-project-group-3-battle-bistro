@@ -36,7 +36,7 @@ public class OrderTicketUI extends UI {
     public void shiftUI() {
         if (hidden) {
             hidden = false;
-            ProgramWindow.getInstance().animateObject(this, this.getX() + -64, this.getY(), 500);
+            ProgramWindow.getInstance().animateObject(this, this.getX() - 64, this.getY(), 500);
         } else{
             hidden = true;
             ProgramWindow.getInstance().animateObject(this, this.getX() + 64, this.getY(), 500);
