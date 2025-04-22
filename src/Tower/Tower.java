@@ -4,6 +4,8 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyPath;
 import Screen.GardenScreen;
+import Screen.ProgramWindow;
+import UI.TowerUI;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -36,13 +38,15 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected Enemy attackTarget;
     protected LinkedList<Zone> attackZones;
     protected boolean inRange;
+    private boolean visible_ui;
 
     Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
         this.cost = cost;
         this.level = level;
         this.damage = damage;
-        this.placed = true;
+        this.placed = false;
+        visible_ui = false;
         this.placedLocation = this.getLocation();
         this.attackZones = new LinkedList<>();
         this.gImage = new GImage(Utils.getImage(toPath()));
@@ -250,6 +254,15 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onPress(MouseEvent e) {
+        if (placed) {
+            if (visible_ui) {
+                ProgramWindow.getInstance().remove(TowerUI.getInstance());
+            } else {
+                ProgramWindow.getInstance().add(TowerUI.getInstance());
+            }
+            visible_ui = !visible_ui;
+        }
+
         if (!range.isVisible()) {
             add(range);
             range.setVisible(true);
@@ -307,6 +320,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
             range.setFilled(false);
         }
     }
+
 
     public GLine linetrace(double length, int degree) {
         // Get the character's current position
