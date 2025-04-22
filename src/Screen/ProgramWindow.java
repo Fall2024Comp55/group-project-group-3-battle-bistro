@@ -94,6 +94,7 @@ public class ProgramWindow extends GraphicsProgram {
         add(RestaurantUI.getInstance());
         GardenUI.getInstance().setLocation(0, -GardenUI.getInstance().getHeight());
         add(OrderTicketUI.getInstance());
+        OrderTicketUI.getInstance().setLocation(BASE_WIDTH- 25, 0);
         add(GardenUI.getInstance());
         setScreen(CurrentScreen.RESTAURANT);
         RestaurantScreen.getInstance().resetDay();
@@ -101,6 +102,7 @@ public class ProgramWindow extends GraphicsProgram {
         // send game screens to back to make UI is in front
         GardenScreen.getInstance().sendToBack();
         RestaurantScreen.getInstance().sendToBack();
+        OrderTicketUI.getInstance().sendToFront();
     }
 
     public void endDay() {
@@ -138,6 +140,7 @@ public class ProgramWindow extends GraphicsProgram {
         // send game screens to back to make UI is in front
         GardenScreen.getInstance().sendToBack();
         RestaurantScreen.getInstance().sendToBack();
+        OrderTicketUI.getInstance().sendForward();
     }
 
     public void exitToMainMenu() {

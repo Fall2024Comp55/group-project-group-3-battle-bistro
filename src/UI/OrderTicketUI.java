@@ -2,13 +2,19 @@
 package UI;
 
 import Customer.OrderTicket;
+import Screen.ProgramWindow;
+import acm.graphics.GRect;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class OrderTicketUI extends UI {
     private static final OrderTicketUI ORDER_TICKET_UI;
-    public static final int HORIZONTAL_OFFSET = 50;
-    public static final int VERTICAL_OFFSET = 150;
+    public static final int HORIZONTAL_OFFSET = 30; //50
+    public static final int VERTICAL_OFFSET = 50; //150
+    public static final int POS_X = 736;
+    public static final int POS_Y = 50;
+    private boolean hidden = true;
 
     private static final ArrayList<OrderTicket> tickets;
 
@@ -26,11 +32,46 @@ public class OrderTicketUI extends UI {
     }
 
     public OrderTicketUI() {
+//        this.setLocation(POS_X, POS_Y);
+        GRect background = new GRect(64, 400);
+        background.setFilled(true);
+        background.setFillColor(Color.WHITE);
+//        background.setLocation(POS_X, POS_Y);
+        add(background);
+//        GRect tab = new GRect(25, 50);
+//        tab.setFilled(true);
+//        tab.setFillColor(Color.RED);
+//        tab.setLocation(-25,  200);
+//        add(tab);
+        ActionButton arrow = new ActionButton("<<", this::shiftUI);
+        arrow.setLocation(-12, 240);
+        arrow.sendToFront();
+//        ProgramWindow.getInstance().add(arrow);
+        add(arrow);
+//        initializeComponents();
+    }
+
+    public void shiftUI() {
+        if (hidden) {
+            hidden = false;
+            ProgramWindow.getInstance().animateObject(this, this.getX() + -64, 0, 500);
+        } else{
+            hidden = true;
+            ProgramWindow.getInstance().animateObject(this, this.getX() + 64, 0, 500);
+        }
     }
 
     @Override
     public void initializeComponents() {
-
+//        GRect tab = new GRect(15, 50);
+//        tab.setFilled(true);
+//        tab.setFillColor(Color.BLUE);
+//        tab.setLocation(HORIZONTAL_OFFSET, VERTICAL_OFFSET * tickets.size());
+//        add(tab);
+//        Food pizza = new Food();
+//        pizza.addIngredient(IngredientsType.MOZZARELLA);
+//        pizza.addIngredient(IngredientsType.PEPPERONI);
+//        addTicket(new OrderTicket(pizza));
     }
 
     @Override

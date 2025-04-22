@@ -13,7 +13,7 @@ public abstract class Screen extends GCompound implements TickListener {
     protected Set<GObject> elements;
     protected ExecutorService screenExecutor;
 
-    Screen() {
+    public Screen() {
         // Initialize the elements set
         elements = new HashSet<GObject>();
         screenExecutor = Executors.newFixedThreadPool(10);
@@ -56,6 +56,8 @@ public abstract class Screen extends GCompound implements TickListener {
             registerTickListener(listener);
         }
     }
+
+    public abstract void update();
 
     // Other common methods for screens can be added here
 }

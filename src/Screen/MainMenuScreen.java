@@ -109,4 +109,9 @@ public class MainMenuScreen extends Screen implements TickListener {
     public Set<GObject> getElements() {
         return elements;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

@@ -182,6 +182,11 @@ public class RestaurantScreen extends Screen {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void onTick() {
         if (dayStarted) {
             screenExecutor.submit(() -> {

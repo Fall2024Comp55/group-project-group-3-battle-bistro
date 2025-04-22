@@ -128,6 +128,11 @@ public class GardenScreen extends Screen {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void onTick() {
         if (RestaurantScreen.isDayStarted()) {
             screenExecutor.submit(() -> {

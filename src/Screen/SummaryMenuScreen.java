@@ -4,12 +4,13 @@ import Character.Character;
 import UI.ActionButton;
 import Utils.TickListener;
 import Utils.Utils;
-import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import static Screen.ProgramWindow.*;
 
 public class SummaryMenuScreen extends Screen {
@@ -84,6 +85,11 @@ public class SummaryMenuScreen extends Screen {
     @Override
     public void unregisterAllTickListener() {
         summaryTickListeners.clear();
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
