@@ -38,11 +38,11 @@ public class OrderTicketUI extends UI {
         background.setFillColor(Color.WHITE);
 //        background.setLocation(POS_X, POS_Y);
         add(background);
-//        GRect tab = new GRect(25, 50);
-//        tab.setFilled(true);
-//        tab.setFillColor(Color.RED);
-//        tab.setLocation(-25,  200);
-//        add(tab);
+        GRect tab = new GRect(25, 50);
+        tab.setFilled(true);
+        tab.setFillColor(Color.RED);
+        tab.setLocation(-25,  200);
+        add(tab);
         ActionButton arrow = new ActionButton("<<", this::shiftUI);
         arrow.setLocation(-12, 240);
         arrow.sendToFront();
@@ -54,10 +54,10 @@ public class OrderTicketUI extends UI {
     public void shiftUI() {
         if (hidden) {
             hidden = false;
-            ProgramWindow.getInstance().animateObject(this, this.getX() + -64, 0, 500);
+            ProgramWindow.getInstance().animateObject(this, this.getX() + -64, this.getY(), 500);
         } else{
             hidden = true;
-            ProgramWindow.getInstance().animateObject(this, this.getX() + 64, 0, 500);
+            ProgramWindow.getInstance().animateObject(this, this.getX() + 64, this.getY(), 500);
         }
     }
 

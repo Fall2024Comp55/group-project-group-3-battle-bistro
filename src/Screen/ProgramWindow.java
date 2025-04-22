@@ -94,7 +94,7 @@ public class ProgramWindow extends GraphicsProgram {
         add(RestaurantUI.getInstance());
         GardenUI.getInstance().setLocation(0, -GardenUI.getInstance().getHeight());
         add(OrderTicketUI.getInstance());
-        OrderTicketUI.getInstance().setLocation(BASE_WIDTH- 25, 0);
+        OrderTicketUI.getInstance().setLocation(BASE_WIDTH, RestaurantUI.getInstance().getHeight());
         add(GardenUI.getInstance());
         setScreen(CurrentScreen.RESTAURANT);
         RestaurantScreen.getInstance().resetDay();
