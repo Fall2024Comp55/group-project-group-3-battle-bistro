@@ -6,12 +6,12 @@ import acm.graphics.GRect;
 import java.awt.*;
 
 public class TowerUI extends UI {
-    private static final TowerUI TowerUI;
+    private static final TowerUI TOWER_UI;
 
 
     static {
         try {
-            TowerUI = new TowerUI();
+            TOWER_UI = new TowerUI();
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred in creating TowerUI singleton instance");
         }
@@ -26,7 +26,7 @@ public class TowerUI extends UI {
     }
 
     public static TowerUI getInstance() {
-        return TowerUI;
+        return TOWER_UI;
     }
 
     @Override
