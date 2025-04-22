@@ -35,13 +35,11 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     private final Set<Integer> keysHeld;
     private final Set<Integer> actions;
     private final Map<IngredientsType, AtomicInteger> ingredients;
-    private final GRect collision;
     private GImage gImage;
     private Food holding;
     private boolean moving;
     private int health;
     private int balance;
-    private boolean interactHeld;
     private Directions facing;
     private double currentTheta;
     private ScheduledExecutorService movementExecutor;
@@ -65,7 +63,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         actions = new HashSet<>();
         food_image = new GCompound();
         gImage.setSize(50, 50);
-        collision = new GRect(0, 0, gImage.getWidth(), gImage.getHeight());
         this.setLocation(200, 200);
         add(gImage);
         gImage.setLocation(getCenter(gImage.getBounds()));
@@ -273,13 +270,13 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      */
     public void move() {
         for (Integer i : keysHeld) {
-            if (i == Directions.UP.getKey()) {
+            if (Directions.UP.getKey().equals(i)) {
                 actions.add(Directions.UP.getKey());
-            } else if (i == Directions.DOWN.getKey()) {
+            } else if (Directions.DOWN.getKey().equals(i)) {
                 actions.add(Directions.DOWN.getKey());
-            } else if (i == Directions.LEFT.getKey()) {
+            } else if (Directions.LEFT.getKey().equals(i)) {
                 actions.add(Directions.LEFT.getKey());
-            } else if (i == Directions.RIGHT.getKey()) {
+            } else if (Directions.RIGHT.getKey().equals(i)) {
                 actions.add(Directions.RIGHT.getKey());
             }
 
@@ -298,6 +295,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             } else if (actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.RIGHT);
             } else {
+                rotateToFacing();
                 return;
             }
         } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
@@ -310,9 +308,11 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
             } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
                 setFacing(Directions.DOWN_RIGHT);
             } else {
+                rotateToFacing();
                 return;
             }
         } else {
+            rotateToFacing();
             return;
         }
 
@@ -329,7 +329,10 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         }
 
         move(dx, dy); // move the character by the normalized vector
+        rotateToFacing();
+    }
 
+    public void rotateToFacing() {
         double rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
 
         // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
@@ -358,7 +361,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     public void interact() {
         if (actions.contains(KeyEvent.VK_E)) {
-            interactHeld = true;
             GPoint p = linetrace(50).getEndPoint();
             RestaurantScreen.getInstance().add(new GOval(p.getX(), p.getY(), 20, 20));
             GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
@@ -367,7 +369,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
                 i.interact();
             }
         } else {
-            interactHeld = false;
         }
     }
 
@@ -411,53 +412,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public Boolean checkCollision() {
-        if (actions.size() == 1 || (actions.size() == 2 && actions.contains(KeyEvent.VK_E))) { // if only one movement key is pressed
-            if (actions.contains(Directions.UP.getKey())) {
-                setFacing(Directions.UP);
-            } else if (actions.contains(Directions.DOWN.getKey())) {
-                setFacing(Directions.DOWN);
-            } else if (actions.contains(Directions.LEFT.getKey())) {
-                setFacing(Directions.LEFT);
-            } else if (actions.contains(Directions.RIGHT.getKey())) {
-                setFacing(Directions.RIGHT);
-            }
-        } else if (actions.size() == 2 || (actions.size() == 3 && actions.contains(KeyEvent.VK_E))) { // if two movement keys are pressed
-            if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.LEFT.getKey())) {
-                setFacing(Directions.UP_LEFT);
-            } else if (actions.contains(Directions.UP.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
-                setFacing(Directions.UP_RIGHT);
-            } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.LEFT.getKey())) {
-                setFacing(Directions.DOWN_LEFT);
-            } else if (actions.contains(Directions.DOWN.getKey()) && actions.contains(Directions.RIGHT.getKey())) {
-                setFacing(Directions.DOWN_RIGHT);
-            }
-        }
-
-        // get desired direction
-
-        double rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
-
-        // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
-        if (rotateDistance > 180) {
-            rotateDistance -= 360;
-        } else if (rotateDistance < -180) {
-            rotateDistance += 360;
-        }
-
-        if (ROTATE_SPEED < Math.abs(rotateDistance)) { // if the distance is greater than the speed, rotate by the speed
-            this.rotate(ROTATE_SPEED * Math.signum(rotateDistance)); // rotate by the speed times the sign of the distance
-            currentTheta += ROTATE_SPEED * (int) Math.signum(rotateDistance); // track the current angle
-        } else { // if the distance is less than the speed, rotate by the distance
-            this.rotate(rotateDistance);
-            currentTheta += rotateDistance; // track the current angle
-        }
-
-        // keep the current angle between 0 and 360 degrees
-        if (currentTheta > 360) {
-            currentTheta -= 360;
-        } else if (currentTheta < 0) {
-            currentTheta += 360;
-        }
         boolean hit = false;
         if (keysHeld.contains(Directions.UP.getKey())) {
             GPoint topPoint = new GPoint(this.getBounds().getX() + this.getBounds().getWidth() / 2, this.getBounds().getY());
