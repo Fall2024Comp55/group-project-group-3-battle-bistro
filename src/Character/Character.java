@@ -329,30 +329,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         }
 
         move(dx, dy); // move the character by the normalized vector
-
-        double rotateDistance = facing.getTheta() - currentTheta; // calculate the distance to rotate
-
-        // if the distance is greater than 180 or -180 degrees, rotate in the opposite direction
-        if (rotateDistance > 180) {
-            rotateDistance -= 360;
-        } else if (rotateDistance < -180) {
-            rotateDistance += 360;
-        }
-
-        if (ROTATE_SPEED < Math.abs(rotateDistance)) { // if the distance is greater than the speed, rotate by the speed
-            this.rotate(ROTATE_SPEED * Math.signum(rotateDistance)); // rotate by the speed times the sign of the distance
-            currentTheta += ROTATE_SPEED * (int) Math.signum(rotateDistance); // track the current angle
-        } else { // if the distance is less than the speed, rotate by the distance
-            this.rotate(rotateDistance);
-            currentTheta += rotateDistance; // track the current angle
-        }
-
-        // keep the current angle between 0 and 360 degrees
-        if (currentTheta > 360) {
-            currentTheta -= 360;
-        } else if (currentTheta < 0) {
-            currentTheta += 360;
-        }
     }
 
 
