@@ -227,7 +227,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     /**
      * Sets the food item the character is holding.
      *
-     * @param holding The food item to set.
+     * @param food The food item to set.
      */
     public void setHolding(Food food) {
         if (food != null) {
