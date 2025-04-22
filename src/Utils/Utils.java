@@ -78,16 +78,15 @@ public class Utils {
      * @return the object at the specified point, or null if no object is found
      */
     public static GObject getObjectInCompound(GCompound c, Point p) {
-        GObject object = c.getElementAt(p.getX(), p.getY());
-//        System.out.println(object);
+        GObject object;
+        object = c.getElementAt(c.getLocalPoint(p.getX(), p.getY()));
+
         if (object instanceof UI ui) {
             object = getObjectInCompound(ui, p);
         } else if (object instanceof Screen screen) {
             object = getObjectInCompound(screen, p);
         } else if (object instanceof LayerCompound layer) {
             object = getObjectInCompound(layer, p);
-        } else if (object == null) {
-            return c.getElementAt(c.getLocalPoint(p.getX(), p.getY()));
         }
         return object;
     }
