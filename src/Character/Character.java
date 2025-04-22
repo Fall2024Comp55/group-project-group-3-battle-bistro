@@ -336,7 +336,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         if (actions.contains(KeyEvent.VK_E)) {
             interactHeld = true;
             GPoint p = linetrace(50).getEndPoint();
-            RestaurantScreen.getInstance().add(new GOval(p.getX(), p.getY(), 20, 20));
             GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
             if (interactable instanceof Interact i && interactable != this) {
                 i.interact();
@@ -484,7 +483,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     public GLine linetrace(double length) {
         // Get the character's current position
-//        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds()); // ProgramWindow Relative
         GPoint p = getLocation(); // RestaurantScreen Relative
         double startX = p.getX();
         double startY = p.getY();
@@ -493,10 +491,6 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
         double endX = startX - length * Math.sin(Math.toRadians(currentTheta));
         double endY = startY - length * Math.cos(Math.toRadians(currentTheta));
 
-        // TODO figure out issues when moving out side of screens
-//        ProgramWindow.getInstance().add(new GLine(startX, startY, endX, endY));
-
-        // Add the line to the ProgramWindow
         return new GLine(startX, startY, endX, endY);
     }
 

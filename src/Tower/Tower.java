@@ -323,20 +323,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
 
     public GLine linetrace(double length, int degree) {
-        // Get the character's current position
-//        GPoint p = Utils.getPointOffset(getLocation(), RestaurantScreen.getInstance().getBounds()); // ProgramWindow Relative
         GPoint p = getLocation();
         double startX = p.getX();
         double startY = p.getY();
 
-        // Calculate the end position based on the direction the character is facing
         double endX = startX - length * Math.sin(Math.toRadians(degree));
         double endY = startY - length * Math.cos(Math.toRadians(degree));
 
-        // TODO figure out issues when moving out side of screens
-//        ProgramWindow.getInstance().add(new GLine(startX, startY, endX, endY));
-
-        // Add the line to the ProgramWindow
         return new GLine(startX, startY, endX, endY);
     }
 
