@@ -232,14 +232,14 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      *
      * @param holding The food item to set.
      */
-    public void setHolding(Food holding) {
-        this.holding = holding;
-        if (this.holding != null) {
-            food_image = this.holding.getImage();
-            food_image.setLocation(-20, -50);
-            add(food_image);
+    public void setHolding(Food food) {
+        if (food != null) {
+            holding = food;
+            holding.setLocation(-20, -50);
+            add(holding);
         } else {
-            remove(food_image);
+            remove(holding);
+            holding = null;
         }
     }
 
