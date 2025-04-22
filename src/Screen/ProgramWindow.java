@@ -175,8 +175,10 @@ public class ProgramWindow extends GraphicsProgram {
                 currentScreen = CurrentScreen.RESTAURANT;
                 screenShift = ((int) (-BASE_WIDTH + ((float) BASE_WIDTH * .25)));
                 animateObject(GardenUI.getInstance(), 0, -GardenUI.getInstance().getHeight(), 800, null);
+                add(OrderTicketUI.getInstance());
             } else if (currentScreen.equals(CurrentScreen.RESTAURANT)) {
                 currentScreen = CurrentScreen.GARDEN;
+                remove(OrderTicketUI.getInstance());
                 animateObject(GardenUI.getInstance(), 0, 0, 800, null);
                 // keep endX 0
             }
