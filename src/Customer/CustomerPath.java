@@ -7,6 +7,7 @@ import acm.graphics.GPoint;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class CustomerPath {
     private static final int SEGMENT_WIDTH = 20;
@@ -43,6 +44,14 @@ public class CustomerPath {
 
     public GPoint getPoint(int index) {
         return points.get(index);
+    }
+
+    public PathLine getLineFromPoint(GPoint point) {
+        return path.get(points.indexOf(point));
+    }
+
+    public int getOffset(GPoint point) {
+        return getLineFromPoint(point).getCustomerOffset();
     }
 
     public GPoint getNext(GPoint point) {
@@ -86,8 +95,32 @@ public class CustomerPath {
     }
 
     public static class PathLine extends GLine {
+        public static final int CUSTOMER_LIMIT = 5;
+        private Queue<Customer> customers;
+
         public PathLine(double x0, double y0, double x1, double y1) {
             super(x0, y0, x1, y1);
+            customers = new LinkedList<>();
+        }
+
+        public void queueCustomer(Customer customer) {
+            customers.add(customer);
+        }
+
+        public Customer dequeueCustomer() {
+            return customers.poll();
+        }
+
+        public Customer peekQueue() {
+            return customers.peek();
+        }
+
+        public int getQueueSize() {
+            return customers.size();
+        }
+
+        public int getCustomerOffset() {
+            return (int) (new Customer().getHeight() + 20) * getQueueSize();
         }
     }
 
