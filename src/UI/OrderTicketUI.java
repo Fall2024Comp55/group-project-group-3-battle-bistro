@@ -32,23 +32,7 @@ public class OrderTicketUI extends UI {
     }
 
     public OrderTicketUI() {
-//        this.setLocation(POS_X, POS_Y);
-        GRect background = new GRect(64, 400);
-        background.setFilled(true);
-        background.setFillColor(Color.WHITE);
-//        background.setLocation(POS_X, POS_Y);
-        add(background);
-        GRect tab = new GRect(25, 50);
-        tab.setFilled(true);
-        tab.setFillColor(Color.RED);
-        tab.setLocation(-25,  200);
-        add(tab);
-        ActionButton arrow = new ActionButton("<<", this::shiftUI);
-        arrow.setLocation(-12, 240);
-        arrow.sendToFront();
-//        ProgramWindow.getInstance().add(arrow);
-        add(arrow);
-//        initializeComponents();
+        initializeComponents();
     }
 
     public void shiftUI() {
@@ -63,15 +47,19 @@ public class OrderTicketUI extends UI {
 
     @Override
     public void initializeComponents() {
-//        GRect tab = new GRect(15, 50);
-//        tab.setFilled(true);
-//        tab.setFillColor(Color.BLUE);
-//        tab.setLocation(HORIZONTAL_OFFSET, VERTICAL_OFFSET * tickets.size());
-//        add(tab);
-//        Food pizza = new Food();
-//        pizza.addIngredient(IngredientsType.MOZZARELLA);
-//        pizza.addIngredient(IngredientsType.PEPPERONI);
-//        addTicket(new OrderTicket(pizza));
+        GRect background = new GRect(64, 400);
+        background.setFilled(true);
+        background.setFillColor(Color.WHITE);
+        add(background);
+        GRect tab = new GRect(25, 50);
+        tab.setFilled(true);
+        tab.setFillColor(Color.RED);
+        tab.setLocation(-25, 200);
+        add(tab);
+        ActionButton arrow = new ActionButton("<<", this::shiftUI);
+        arrow.setLocation(-12, 240);
+        arrow.sendToFront();
+        add(arrow);
     }
 
     @Override

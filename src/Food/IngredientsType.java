@@ -1,26 +1,34 @@
 package Food;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 public enum IngredientsType {
-    DOUGH,
-    MOZZARELLA,
-    PEPPERONI(100),
-    MUSHROOM(200),
-    SAUCE(50);
+    DOUGH(IngredientType.DOUGH),
+    SAUCE(IngredientType.SAUCE),
+    MOZZARELLA(IngredientType.CHEESE, 50),
+    MUSHROOM(IngredientType.TOPPING, 100),
+    PEPPERONI(IngredientType.TOPPING, 200);
 
     private static final String INGREDIENTS_BASE_PATH = "/resources/ingredients/";
     private static final String STATION_BASE_PATH = "/resources/restaurant/stations/";
     private static final String EXTENSION = ".png";
 
+    private IngredientType type;
     private boolean unlocked;
     private int price;
 
 
-    IngredientsType(int price) {
+    IngredientsType(IngredientType type, int price) {
+        this.type = type;
         this.price = price;
         this.unlocked = false;
     }
 
-    IngredientsType() {
+    IngredientsType(IngredientType type) {
+        this.type = type;
         this.price = -1;
         this.unlocked = true;
     }
@@ -37,6 +45,18 @@ public enum IngredientsType {
         this.unlocked = unlocked;
     }
 
+    public static IngredientsType getRandomIngredient() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(getUnlockedIngredients().size());
+        return getUnlockedIngredients().get(randomIndex);
+    }
+
+    public static List<IngredientsType> getUnlockedIngredients() {
+        return Arrays.stream(IngredientsType.values())
+                .filter(i -> i.isUnlocked() && i.isTopping())
+                .collect(Collectors.toList());
+    }
+
     public String toString() {
         return switch (this) {
             case DOUGH -> "Dough";
@@ -45,6 +65,10 @@ public enum IngredientsType {
             case MUSHROOM -> "Mushroom";
             case SAUCE -> "Sauce";
         };
+    }
+
+    public boolean isTopping() {
+        return type == IngredientType.TOPPING ? true : false;
     }
 
     public String toStationPath() {
@@ -65,5 +89,12 @@ public enum IngredientsType {
             case MUSHROOM -> INGREDIENTS_BASE_PATH + "mushroom" + EXTENSION;
             case SAUCE -> INGREDIENTS_BASE_PATH + "sauce" + EXTENSION;
         };
+    }
+
+    public enum IngredientType {
+        DOUGH,
+        SAUCE,
+        CHEESE,
+        TOPPING;
     }
 }
