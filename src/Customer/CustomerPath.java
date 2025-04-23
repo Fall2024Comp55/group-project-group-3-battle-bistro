@@ -47,11 +47,23 @@ public class CustomerPath {
     }
 
     public PathLine getLineFromPoint(GPoint point) {
-        return path.get(points.indexOf(point));
+        return path.get(points.indexOf(point) - 1);
     }
 
     public int getOffset(GPoint point) {
         return getLineFromPoint(point).getCustomerOffset();
+    }
+
+    public Customer dequeueCustomer(int index) {
+        return path.get(index).dequeueCustomer();
+    }
+
+    public Customer peekQueue(int index) {
+        return path.get(index).peekQueue();
+    }
+
+    public List<Customer> getCustomersFromLine(int index) {
+        return path.get(index).customers.stream().toList();
     }
 
     public GPoint getNext(GPoint point) {
@@ -60,6 +72,14 @@ public class CustomerPath {
             return null;
         }
         return points.get(index + 1);
+    }
+
+    public GPoint getPrevious(GPoint point) {
+        int index = points.indexOf(point);
+        if (index == -1) {
+            return null;
+        }
+        return points.get(index - 1);
     }
 
     public GPoint getStart() {
@@ -117,6 +137,22 @@ public class CustomerPath {
 
         public int getQueueSize() {
             return customers.size();
+        }
+
+        public boolean isFull() {
+            return customers.size() >= CUSTOMER_LIMIT;
+        }
+
+        public boolean queueContains(Customer customer) {
+            return customers.contains(customer);
+        }
+
+        public void removeCustomer(Customer customer) {
+            customers.remove(customer);
+        }
+
+        public boolean isEmpty() {
+            return customers.isEmpty();
         }
 
         public int getCustomerOffset() {
