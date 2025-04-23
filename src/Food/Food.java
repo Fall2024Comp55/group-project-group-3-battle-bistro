@@ -55,6 +55,10 @@ public class Food extends GCompound {
         this.orderTicket = orderTicket;
     }
 
+    public OrderTicket getOrderTicket() {
+        return orderTicket;
+    }
+
     public void setCooked(boolean cooked) {
         this.cooked = cooked;
     }

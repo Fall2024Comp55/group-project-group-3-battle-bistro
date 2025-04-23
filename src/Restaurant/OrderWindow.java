@@ -1,5 +1,7 @@
 package Restaurant;
 
+import Character.Character;
+import Customer.Customer;
 import Food.Food;
 import Utils.Interact;
 import Utils.Solid;
@@ -25,11 +27,14 @@ public class OrderWindow extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-//        Food pizza = Character.getInstance().getHolding();
-//        if (pizza.isCooked() && pizza.isBoxed()) {
-//            item = pizza;
-//            Character.getInstance().setHolding(null);
-//        }
+        Food food = Character.getInstance().getHolding();
+        if (food != null) {
+            Customer customer = Customer.getCustomerFromTicket(food.getOrderTicket());
+            if (customer != null) {
+                customer.deliverFood(food);
+                Character.getInstance().setHolding(null);
+            }
+        }
     }
 
     @Override
