@@ -17,7 +17,7 @@ public class Register extends GCompound implements Solid, Interact {
     public Register() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        gImage.setSize(35, 35);
+        gImage.setSize(45, 64);
         add(gImage);
     }
 

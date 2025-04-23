@@ -12,7 +12,7 @@ import acm.graphics.GRectangle;
 
 public class OrderWindow extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
-    private static final String PATH = "/resources/restaurant/order_window.png";
+    private static final String PATH = "/resources/restaurant/prep_table.png";
 
     private final GImage gImage;
     protected Food item;
@@ -20,7 +20,10 @@ public class OrderWindow extends GCompound implements Solid, Interact {
     public OrderWindow() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        gImage.setSize(32, 425);
+//        gImage.setSize(32, 425);
+        //        order_image.setLocation(490, 50);
+        gImage.setSize(350, 50);
+        gImage.rotate(270);
         //gImage.setLocation(0, 0);
         add(gImage);
     }

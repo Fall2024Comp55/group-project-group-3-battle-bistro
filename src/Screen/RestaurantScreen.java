@@ -76,11 +76,17 @@ public class RestaurantScreen extends Screen {
 
         // Order window for taking orders
         OrderWindow orderWindow = new OrderWindow();
-        orderWindow.setLocation(450, 50);
+        orderWindow.setLocation(490, 100);
         add(orderWindow);
 
+//        GImage order_image = new GImage(Utils.getImage(PREP_TABLE_PATH));
+//        order_image.setLocation(490, 50);
+//        order_image.setSize(250, 50);
+//        order_image.rotate(270);
+//        add(order_image);
+
         Register register = new Register();
-        register.setLocation(450, 300);
+        register.setLocation(445, 265);
         add(register);
 
         // Oven for cooking pizzas
