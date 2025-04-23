@@ -5,7 +5,6 @@ import Food.Food;
 import Food.IngredientsType;
 import Screen.RestaurantScreen;
 import UI.OrderTicketUI;
-import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GCompound;
@@ -16,40 +15,35 @@ import java.util.Random;
 
 public class Customer extends GCompound implements TickListener {
     private static final int SIZE = 20; 
-    private static final double MOVE_RATE = 0.1; 
-    private static final int PAUSE_TICKS = 5000 / GameTick.TICK_DELAY;
-    private static final String KIRBY_IMAGE_PATH = "/resources/character/character.png";
+    private static final double MOVE_RATE = 0.1;
+    private static final String CUSTOMER_PATH = "/resources/character/character.png";
 
     private static CustomerPath path;
 
     private final OrderTicket orderTicket;
     private final GImage gImage;
-    private final double waitTime;
-    private double timeWaited;
+    private final double maxWaitTick;
+    private double ticksWaited;
 
     private GPoint targetPoint;
-    private int pauseCounter;
     private double speed = 10;
 
     private boolean hasOrdered;
     private boolean hasFood;
     private boolean isSatisfied;
     private boolean hasLeft;
+    private boolean isMoving;
 
     public Customer() {
         orderTicket = new OrderTicket(generateOrder());
-        // test take order call
-        takeOrder();
-        waitTime = 30000;
+        maxWaitTick = 400; // 20 seconds
         isSatisfied = false;
         hasOrdered = false;
         hasFood = false;
         hasLeft = false;
-        timeWaited = 0;
-        pauseCounter = 0;
+        isMoving = true;
         targetPoint = path.getPoint(1);
-        // need to change image
-        gImage = new GImage(Utils.getImage(KIRBY_IMAGE_PATH));
+        gImage = new GImage(Utils.getImage(CUSTOMER_PATH));
         gImage.setSize(SIZE, SIZE);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
@@ -75,14 +69,12 @@ public class Customer extends GCompound implements TickListener {
         boolean wantsCheese = random.nextBoolean();
         boolean wantsSauce = random.nextBoolean();
 
-        System.out.println("Customer wants cheese: " + wantsCheese + ", sauce: " + wantsSauce);
         boolean reallyWantsSauce;
         if (random.nextInt(0, 9) == 0) {
             reallyWantsSauce = true;
         } else {
             reallyWantsSauce = false;
         }
-        System.out.println("Customer really wants sauce: " + reallyWantsSauce);
 
         if (wantsSauce == false && wantsCheese == false) {
             if (reallyWantsSauce) {
@@ -110,7 +102,7 @@ public class Customer extends GCompound implements TickListener {
             }
         }
 
-        if (IngredientsType.getUnlockedIngredients().size() > 0) {
+        if (!IngredientsType.getUnlockedIngredients().isEmpty()) {
             for (int i = 0; i < random.nextInt(0, IngredientsType.getUnlockedIngredients().size()); i++) {
                 IngredientsType ingredient = IngredientsType.getRandomIngredient();
                 if (!order.getIngredients().contains(ingredient)) {
@@ -120,7 +112,6 @@ public class Customer extends GCompound implements TickListener {
                 }
             }
         }
-        System.out.println(order);
         return order;
     }
 
@@ -130,13 +121,19 @@ public class Customer extends GCompound implements TickListener {
     }
 
     public void deliverFood(Food food) {
-        if (food != null && matchesOrder(food)) {
+        if (food != null) {
             hasFood = true;
-            isSatisfied = true;
-            System.out.println("Customer is satisfied with their pizza!");
+            if (matchesOrder(food)) {
+                isSatisfied = true;
+                System.out.println("Customer is satisfied with their pizza!");
+            } else {
+                isSatisfied = false;
+                System.out.println("Customer is not satisfied with the pizza.");
+            }
         } else {
             isSatisfied = false;
-            System.out.println("Customer is not satisfied with the pizza.");
+            hasFood = false;
+            System.out.println("Customer did not receive pizza and is not satisfied.");
         }
     }
 
@@ -147,22 +144,19 @@ public class Customer extends GCompound implements TickListener {
 
 
     public void update() {
-        if (!isSatisfied && hasOrdered) {
-            timeWaited += GameTick.TICK_DELAY;
-            if (timeWaited >= waitTime) {
-
-                leave();
+        if (!hasLeft) {
+            if (hasOrdered) {
+                ticksWaited++;
+                if (ticksWaited >= maxWaitTick) {
+                    isMoving = true;
+                    isSatisfied = false;
+                }
             }
         }
     }
 
 
     public void move() {
-        if (pauseCounter > 0) {
-            pauseCounter--;
-            return; 
-        }
-
         double targetX = targetPoint.getX();
         double targetY = targetPoint.getY();
         GPoint currentPos = this.getLocation();
@@ -171,13 +165,11 @@ public class Customer extends GCompound implements TickListener {
         double distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < speed * MOVE_RATE) {
-
             this.setLocation(targetPoint);
+            isMoving = false;
             if (targetPoint.equals(path.getEnd())) {
-
+                leave();
             } else {
-
-                pauseCounter = PAUSE_TICKS;
                 targetPoint = path.getNext(targetPoint);
             }
         } else {
@@ -190,30 +182,39 @@ public class Customer extends GCompound implements TickListener {
 
 
     public void receivePizza(Food pizza) {
-        if (pizza != null && matchesOrder(pizza)) {
-            isSatisfied = true;
-            System.out.println("Customer is satisfied with their pizza!");
-        } else {
-            System.out.println("Customer is not satisfied with the pizza.");
+        if (pizza != null) {
+            hasFood = true;
+            if (matchesOrder(pizza)) {
+                isSatisfied = true;
+                System.out.println("Customer is satisfied with their pizza!");
+            } else {
+                isSatisfied = false;
+                System.out.println("Customer is not satisfied with the pizza.");
+            }
         }
     }
 
 
     private boolean matchesOrder(Food pizza) {
-        for (IngredientsType ingredient : orderTicket.getOrder()) {
-            if (!pizza.hasIngredient(ingredient)) {
-                return false;
-            }
+        if (!orderTicket.getOrder().equals(pizza.getIngredients())) {
+            return false;
         }
+//        for (IngredientsType ingredient : orderTicket.getOrder()) {
+//            if (!pizza.hasIngredient(ingredient)) {
+//                return false;
+//            }
+//        }
         return pizza.isCooked() && pizza.isBoxed();
     }
 
 
     private void leave() {
-        if (isSatisfied) {
+        if (isSatisfied && hasFood) {
             System.out.println("Customer left satisfied!");
+        } else if (!isSatisfied && hasFood) {
+            System.out.println("Customer left unsatisfied with a pizza!");
         } else {
-            System.out.println("Customer left unsatisfied!");
+            System.out.println("Customer left unsatisfied without a pizza!");
         }
         hasLeft = true;
     }
@@ -228,7 +229,9 @@ public class Customer extends GCompound implements TickListener {
 
     @Override
     public void onTick() {
-        move();
+        if (isMoving) {
+            move();
+        }
         update();
         if (hasLeft) {
             RestaurantScreen.getInstance().remove(this);
