@@ -36,7 +36,7 @@ public class Customer extends GCompound implements TickListener {
 
     public Customer() {
         orderTicket = new OrderTicket(generateOrder());
-        maxWaitTick = 400; // 20 seconds
+        maxWaitTick = 1200; // 60 seconds
         isSatisfied = false;
         hasOrdered = false;
         hasFood = false;
@@ -115,26 +115,19 @@ public class Customer extends GCompound implements TickListener {
         return order;
     }
 
-    public void takeOrder() {
-        hasOrdered = true;
-        OrderTicketUI.getInstance().addTicket(orderTicket);
+    public static Customer dequeueRegister() {
+        return path.dequeueCustomer(0);
     }
 
-    public void deliverFood(Food food) {
-        if (food != null) {
-            hasFood = true;
-            if (matchesOrder(food)) {
-                isSatisfied = true;
-                System.out.println("Customer is satisfied with their pizza!");
-            } else {
-                isSatisfied = false;
-                System.out.println("Customer is not satisfied with the pizza.");
+    public static Customer getCustomerFromTicket(OrderTicket ticket) {
+        if (ticket != null) {
+            for (Customer customer : path.getCustomersFromLine(2)) {
+                if (customer.getOrderTicket().equals(ticket)) {
+                    return customer;
+                }
             }
-        } else {
-            isSatisfied = false;
-            hasFood = false;
-            System.out.println("Customer did not receive pizza and is not satisfied.");
         }
+        return null;
     }
 
   
@@ -155,29 +148,10 @@ public class Customer extends GCompound implements TickListener {
         }
     }
 
-
-    public void move() {
-        double targetX = targetPoint.getX();
-        double targetY = targetPoint.getY();
-        GPoint currentPos = this.getLocation();
-        double dx = targetX - currentPos.getX();
-        double dy = targetY - currentPos.getY();
-        double distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < speed * MOVE_RATE) {
-            this.setLocation(targetPoint);
-            isMoving = false;
-            if (targetPoint.equals(path.getEnd())) {
-                leave();
-            } else {
-                targetPoint = path.getNext(targetPoint);
-            }
-        } else {
-
-            double moveX = (dx / distance) * speed * MOVE_RATE;
-            double moveY = (dy / distance) * speed * MOVE_RATE;
-            this.move(moveX, moveY);
-        }
+    public void takeOrder() {
+        hasOrdered = true;
+        isMoving = true;
+        OrderTicketUI.getInstance().addTicket(orderTicket);
     }
 
 
@@ -226,6 +200,63 @@ public class Customer extends GCompound implements TickListener {
     public boolean hasOrdered() {
         return hasOrdered;
     }
+
+    public void deliverFood(Food food) {
+        if (food != null) {
+            hasFood = true;
+            if (matchesOrder(food)) {
+                isSatisfied = true;
+                System.out.println("Customer is satisfied with their pizza!");
+            } else {
+                isSatisfied = false;
+                System.out.println("Customer is not satisfied with the pizza.");
+            }
+        } else {
+            isSatisfied = false;
+            hasFood = false;
+            System.out.println("Customer did not receive pizza and is not satisfied.");
+        }
+        isMoving = true;
+    }
+
+    public void move() {
+        CustomerPath.PathLine line = path.getLineFromPoint(targetPoint);
+        double targetX = targetPoint.getX();
+        double targetY = targetPoint.getY();
+        GPoint currentPos = this.getLocation();
+        if (!line.isEmpty()) {
+            if (targetPoint.getX() == path.getPrevious(targetPoint).getX()) {
+                targetY -= line.getCustomerOffset();
+            } else {
+                targetX -= line.getCustomerOffset();
+            }
+        }
+        double dx = targetX - currentPos.getX();
+        double dy = targetY - currentPos.getY();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < speed * MOVE_RATE) {
+            this.setLocation(targetPoint);
+            isMoving = false;
+            if (targetPoint.equals(path.getEnd())) {
+                leave();
+            } else {
+                System.out.println(line);
+                line.queueCustomer(this);
+                for (CustomerPath.PathLine pline : path.getPath()) {
+                    System.out.println(pline);
+                    System.out.println(pline.getQueueSize());
+                }
+                targetPoint = path.getNext(targetPoint);
+            }
+        } else {
+
+            double moveX = (dx / distance) * speed * MOVE_RATE;
+            double moveY = (dy / distance) * speed * MOVE_RATE;
+            this.move(moveX, moveY);
+        }
+    }
+
 
     @Override
     public void onTick() {
