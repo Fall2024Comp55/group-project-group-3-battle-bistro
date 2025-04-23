@@ -5,6 +5,7 @@ import Customer.Customer;
 import Customer.CustomerPath;
 import Food.IngredientsType;
 import Restaurant.*;
+import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
@@ -151,6 +152,11 @@ public class RestaurantScreen extends Screen {
         // Add a test customer
         Customer testCustomer = new Customer();
         add(testCustomer);
+
+        GameTick.ActionManager.addAction(100, () -> {
+            Customer test2Customer = new Customer();
+            add(test2Customer);
+        });
     }
 
     public static void resetDay() {

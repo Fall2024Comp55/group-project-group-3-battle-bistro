@@ -225,10 +225,10 @@ public class Customer extends GCompound implements TickListener {
         double targetY = targetPoint.getY();
         GPoint currentPos = this.getLocation();
         if (!line.isEmpty()) {
-            if (targetPoint.getX() == path.getPrevious(targetPoint).getX()) {
-                targetY -= line.getCustomerOffset();
+            if (targetX == currentPos.getX()) {
+                targetY += line.getCustomerOffset();
             } else {
-                targetX -= line.getCustomerOffset();
+                targetX += line.getCustomerOffset();
             }
         }
         double dx = targetX - currentPos.getX();
@@ -236,7 +236,6 @@ public class Customer extends GCompound implements TickListener {
         double distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < speed * MOVE_RATE) {
-            this.setLocation(targetPoint);
             isMoving = false;
             if (targetPoint.equals(path.getEnd())) {
                 leave();
