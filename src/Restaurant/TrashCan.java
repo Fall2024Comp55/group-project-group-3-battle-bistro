@@ -31,7 +31,9 @@ public class TrashCan extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-        Character.getInstance().setHolding(null);
+        if (Character.getInstance().getHolding() != null) {
+            Character.getInstance().setHolding(null);
+        }
     }
 
     @Override
