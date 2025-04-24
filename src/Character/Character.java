@@ -235,7 +235,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
     public void setHolding(Food food) {
         if (food != null) {
             holding = food;
-            holding.setLocation(-20, -50);
+            holding.setLocation(-20, -47);
             add(holding);
         } else {
             remove(holding);

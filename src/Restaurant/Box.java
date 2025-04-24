@@ -17,7 +17,7 @@ public class Box extends GCompound implements Solid, Interact {
     public Box() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
-        gImage.setSize(45, 64);
+        gImage.setSize(45, 45);
         add(gImage);
     }
 
@@ -25,8 +25,8 @@ public class Box extends GCompound implements Solid, Interact {
     public void interact() {
         System.out.println("Boxing");
         Food pizza = Character.getInstance().getHolding();
-        if (pizza != null && pizza.isCooked()) {
-            pizza.setBoxed(true);
+        if (pizza != null) {
+            pizza.box();
         }
     }
 

@@ -63,7 +63,11 @@ public class Food extends GCompound {
         this.cooked = cooked;
     }
 
-    public void setBoxed(boolean boxed) {
-        this.boxed = boxed;
+    public void box() {
+        removeAll();
+        GImage boxedImage = new GImage(Utils.getImage("/resources/restaurant/Pizza_Box1.png"));
+        boxedImage.setSize(40, 40);
+        add(boxedImage);
+        this.boxed = true;
     }
 }
