@@ -38,7 +38,9 @@ public class IngredientStation extends GCompound implements Interact, Solid {
             Food pizza = new Food();
             Character.getInstance().setHolding(pizza);
         } else if (Character.getInstance().getHolding() != null) {
-            Character.getInstance().getHolding().addIngredient(ingredient);
+            if (!Character.getInstance().getHolding().isBoxed()) {
+                Character.getInstance().getHolding().addIngredient(ingredient);
+            }
         }
 //        if (Character.getInstance().removeIngredient(ingredient, 1)) {
 //            Character.getInstance().getHolding().addIngredient(ingredient);

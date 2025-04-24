@@ -33,7 +33,7 @@ public class Oven extends GCompound implements Action, Solid, Interact {
     public void interact() {
         Food pizza = Character.getInstance().getHolding();
         if (item == null) {
-            if (pizza != null && !pizza.isCooked()) {
+            if (pizza != null && !pizza.isCooked() && !pizza.isBoxed()) {
                 remove(gImage);
                 add(gImage2);
                 item = pizza;
