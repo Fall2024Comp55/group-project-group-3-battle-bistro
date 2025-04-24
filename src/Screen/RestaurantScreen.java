@@ -89,6 +89,10 @@ public class RestaurantScreen extends Screen {
         register.setLocation(445, 265);
         add(register);
 
+        Box box = new Box();
+        box.setLocation(445, 350);
+        add(box);
+
         // Oven for cooking pizzas
         Oven oven = new Oven();
         oven.setLocation(200, 20);
