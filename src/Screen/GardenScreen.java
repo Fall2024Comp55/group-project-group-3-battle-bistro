@@ -9,6 +9,7 @@ import Utils.LayerCompound;
 import Utils.TickListener;
 import Utils.Utils;
 import acm.graphics.GImage;
+import acm.graphics.GObject;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ public class GardenScreen extends Screen {
     private static EnemyPath enemyPath;
     private static GImage background;
     private static LayerCompound enemyLayer;
+    private static LayerCompound towerLayer;
+    private static LayerCompound projectileLayer;
 
     static {
         try {
@@ -41,6 +44,8 @@ public class GardenScreen extends Screen {
         towerTickListeners = Collections.synchronizedSet(new HashSet<>());
         projectileTickListeners = Collections.synchronizedSet(new HashSet<>());
         enemyLayer = new LayerCompound(this);
+        towerLayer = new LayerCompound(this);
+        projectileLayer = new LayerCompound(this);
 
         initializeComponents();
     }
@@ -69,7 +74,9 @@ public class GardenScreen extends Screen {
         enemyPath.showPathHitbox();
         enemyPath.addPath(this);
 
+        add(towerLayer);
         add(enemyLayer);
+        add(projectileLayer);
     }
 
     public void addEnemy() {
@@ -130,6 +137,20 @@ public class GardenScreen extends Screen {
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void add(GObject gobj) {
+        if (gobj instanceof Enemy) {
+            enemyLayer.add(gobj);
+        } else if (gobj instanceof Tower) {
+            towerLayer.add(gobj);
+        } else if (gobj instanceof Projectile) {
+            projectileLayer.add(gobj);
+        } else {
+            super.add(gobj);
+            return;
+        }
     }
 
     @Override
