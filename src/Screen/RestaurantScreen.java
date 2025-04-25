@@ -89,7 +89,7 @@ public class RestaurantScreen extends Screen {
         register.setLocation(445, 265);
         add(register);
 
-        Box box = new Box();
+        BoxingTable box = new BoxingTable();
         box.setLocation(445, 350);
         add(box);
 
