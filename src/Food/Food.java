@@ -8,6 +8,7 @@ import acm.graphics.GImage;
 import java.util.EnumSet;
 
 public class Food extends GCompound {
+    public static final String PIZZA_BOX_PATH = "/resources/restaurant/Pizza_Box1.png";
     private final EnumSet<IngredientsType> ingredients;
     private OrderTicket orderTicket;
     private boolean cooked;
@@ -65,7 +66,7 @@ public class Food extends GCompound {
 
     public void box() {
         removeAll();
-        GImage boxedImage = new GImage(Utils.getImage("/resources/restaurant/Pizza_Box1.png"));
+        GImage boxedImage = new GImage(Utils.getImage(PIZZA_BOX_PATH));
         boxedImage.setSize(40, 40);
         add(boxedImage);
         this.boxed = true;

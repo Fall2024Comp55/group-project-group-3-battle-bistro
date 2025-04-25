@@ -10,8 +10,8 @@ import acm.graphics.GRectangle;
 
 public class Oven extends GCompound implements Action, Solid, Interact {
     // TODO find needed variables and methods
-    private static final String PATH = "/resources/restaurant/oven.png";
-    private static final String PATH2 = "/resources/restaurant/cooking.png";
+    private static final String PATH = "/resources/restaurant/oven_off.png";
+    private static final String PATH2 = "/resources/restaurant/oven_cooking.png";
 
     private GImage gImage;
     private GImage gImage2;

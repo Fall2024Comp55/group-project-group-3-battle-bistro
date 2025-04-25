@@ -20,7 +20,7 @@ public class GardenScreen extends Screen {
     private final Set<TickListener> enemyTickListeners;
     private final Set<TickListener> towerTickListeners;
     private final Set<TickListener> projectileTickListeners;
-    private static final String FLOOR_PATH = "/resources/grass.jpg";
+    private static final String FLOOR_PATH = "/resources/garden/grass.jpg";
 
     private static final GardenScreen GARDEN_SCREEN;
 

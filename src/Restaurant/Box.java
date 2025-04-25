@@ -10,12 +10,12 @@ import acm.graphics.GImage;
 import acm.graphics.GRectangle;
 
 public class Box extends GCompound implements Solid, Interact {
-    private static final String PATH = "/resources/restaurant/Pizza_Box.png";
+    private static final String BOX_PATH = "/resources/restaurant/pizza_box_left.png";
 
     private final GImage gImage;
 
     public Box() {
-        GImage gImage = new GImage(Utils.getImage(PATH));
+        GImage gImage = new GImage(Utils.getImage(BOX_PATH));
         this.gImage = gImage;
         gImage.setSize(45, 45);
         add(gImage);
