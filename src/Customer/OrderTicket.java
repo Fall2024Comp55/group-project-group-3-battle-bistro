@@ -2,16 +2,18 @@ package Customer;
 
 import Food.Food;
 import Food.IngredientsType;
+import UI.Button;
+import UI.OrderTicketUI;
 import Utils.Utils;
-import acm.graphics.GCompound;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
 
+import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class OrderTicket extends GCompound {
+public class OrderTicket extends Button {
     private final EnumSet<IngredientsType> order;
     private Set<GObject> elements;
     public static final int horizontalOffset = 5;
@@ -19,6 +21,7 @@ public class OrderTicket extends GCompound {
 
 
     public OrderTicket(Food pizza) {
+        super();
         order = pizza.getIngredients();
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
@@ -37,5 +40,9 @@ public class OrderTicket extends GCompound {
         return order;
     }
 
-
+    @Override
+    public void onPress(MouseEvent e) {
+//        super.onPress(e);
+        OrderTicketUI.getInstance().removeTicket(this);
+    }
 }
