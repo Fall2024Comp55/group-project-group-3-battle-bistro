@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class OrderTicketUI extends UI {
     private static final OrderTicketUI ORDER_TICKET_UI;
     public static final int HORIZONTAL_OFFSET = 30; //50
-    public static final int VERTICAL_OFFSET = 50; //150
+    public static final int VERTICAL_OFFSET = 10; //150
     private boolean hidden = true;
 
     private static final ArrayList<OrderTicket> tickets;
@@ -67,7 +67,7 @@ public class OrderTicketUI extends UI {
 
     public void addTicket(OrderTicket ticket) {
         tickets.add(ticket);
-        ticket.setLocation(HORIZONTAL_OFFSET, VERTICAL_OFFSET * tickets.size());
+        ticket.setLocation(HORIZONTAL_OFFSET, (VERTICAL_OFFSET * tickets.size() + (tickets.size() - 1) * 80) + 40);
         add(ticket);
     }
 

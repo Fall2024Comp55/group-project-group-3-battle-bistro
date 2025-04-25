@@ -14,7 +14,7 @@ import acm.graphics.GPoint;
 import java.util.Random;
 
 public class Customer extends GCompound implements TickListener {
-    private static final int SIZE = 20; 
+    private static final int SIZE = 40;
     private static final double MOVE_RATE = 0.1;
     private static final String CUSTOMER_PATH = "/resources/character/character.png";
 

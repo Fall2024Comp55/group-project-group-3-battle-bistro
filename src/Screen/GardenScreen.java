@@ -39,7 +39,6 @@ public class GardenScreen extends Screen {
     }
 
     private GardenScreen() {
-        // Initialize the garden screen components here
         enemyTickListeners = Collections.synchronizedSet(new HashSet<>());
         towerTickListeners = Collections.synchronizedSet(new HashSet<>());
         projectileTickListeners = Collections.synchronizedSet(new HashSet<>());
@@ -66,8 +65,23 @@ public class GardenScreen extends Screen {
     public void initializeComponents() {
         background = new GImage(Utils.getImage(FLOOR_PATH));
         add(background);
-
-        enemyPath = new EnemyPath(-10, 100, 100, 100, 100, 200, 200, 200, 200, 150, 300, 150, 300, 300, 150, 300);
+        enemyPath = new EnemyPath(
+                -10, 400,   
+                200, 400,   
+                200, 300,   
+                100, 300,   
+                100, 100,   
+                300, 100,   
+                300, 350,   
+                500, 350,   
+                500, 200,   
+                400, 200,   
+                400, 50,    
+                600, 50,    
+                600, 150,   
+                800, 150,   
+                800, 100    
+        );
         Enemy.setPath(enemyPath);
         enemyPath.showPath();
         enemyPath.addPathHitbox(this);
@@ -80,7 +94,6 @@ public class GardenScreen extends Screen {
     }
 
     public void addEnemy() {
-        // add 2-5 new enemies and register to tick manager
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(0, 3); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
@@ -111,7 +124,6 @@ public class GardenScreen extends Screen {
         } else {
             throw new IllegalArgumentException("Invalid listener type");
         }
-
     }
 
     @Override
@@ -136,7 +148,6 @@ public class GardenScreen extends Screen {
 
     @Override
     public void update() {
-
     }
 
     @Override
@@ -157,7 +168,6 @@ public class GardenScreen extends Screen {
     public void onTick() {
         if (RestaurantScreen.isDayStarted()) {
             screenExecutor.submit(() -> {
-                // remove later
                 addEnemy();
                 enemyTickListeners.spliterator().forEachRemaining(TickListener::onTick);
             });
@@ -169,5 +179,4 @@ public class GardenScreen extends Screen {
             });
         }
     }
-
 }
