@@ -39,6 +39,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     protected LinkedList<Zone> attackZones;
     protected boolean inRange;
     private boolean visible_ui;
+    private static Tower selectedTower; // Track the currently selected tower
 
     Tower(String name, int cost, int level, int damage, int range) {
         this.name = name;
@@ -214,7 +215,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     }
 
     public int getUpgradeCost() {
-        return 0;
+        return 0; // Default, overridden by subclasses
     }
 
     public int getCost() {
@@ -223,6 +224,14 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     public double getCurrentTheta() {
         return currentTheta;
+    }
+
+    public static Tower getSelectedTower() {
+        return selectedTower;
+    }
+
+    public static void setSelectedTower(Tower tower) {
+        selectedTower = tower;
     }
 
     public abstract void attack();
@@ -255,9 +264,11 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     @Override
     public void onPress(MouseEvent e) {
         if (placed) {
+            setSelectedTower(this); // Set this tower as selected
             if (visible_ui) {
                 ProgramWindow.getInstance().remove(TowerUI.getInstance());
             } else {
+                TowerUI.getInstance().setLocation(e.getX(), e.getY()); // Position UI near click
                 ProgramWindow.getInstance().add(TowerUI.getInstance());
             }
             visible_ui = !visible_ui;
@@ -321,7 +332,6 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         }
     }
 
-
     public GLine linetrace(double length, int degree) {
         GPoint p = getLocation();
         double startX = p.getX();
@@ -332,5 +342,4 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
         return new GLine(startX, startY, endX, endY);
     }
-
 }

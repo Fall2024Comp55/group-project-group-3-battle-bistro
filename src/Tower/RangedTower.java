@@ -1,5 +1,6 @@
 package Tower;
 
+import Character.Character; 
 import Screen.GardenScreen;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
@@ -7,8 +8,8 @@ import acm.graphics.GObject;
 import acm.graphics.GPoint;
 
 public class RangedTower extends Tower implements TickListener {
-    // TODO: look into reworking cooldown and other code
     private static final int ATTACK_COOLDOWN = 20;
+    private static final int[] UPGRADE_COSTS = {50, 100}; // Costs for upgrading to level 2 and 3
 
     private boolean onCooldown;
     private UpgradeTree state;
@@ -60,13 +61,20 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void upgrade() {
-        if (level == 1) {
+        if (level == 1 && Character.getInstance().subtractBalance(UPGRADE_COSTS[0])) {
             level = 2;
             state = UpgradeTree.UPGRADE1;
-        } else if (level == 2) {
+        } else if (level == 2 && Character.getInstance().subtractBalance(UPGRADE_COSTS[1])) {
+            level = 3;
             state = UpgradeTree.UPGRADE2;
         }
-        System.out.println("RangedTower upgraded to level " + level);
+        
+    }
+
+    public int getUpgradeCost() {
+        if (level == 1) return UPGRADE_COSTS[0];
+        if (level == 2) return UPGRADE_COSTS[1];
+        return 0; // No further upgrades
     }
 
     @Override
@@ -75,7 +83,6 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void move() {
-
     }
 
     @Override
@@ -91,26 +98,25 @@ public class RangedTower extends Tower implements TickListener {
 
     @Override
     public void onCollision() {
-
     }
 
     private enum UpgradeTree {
         BASE {
             @Override
             int getDamage() {
-                return 30;
+                return 5; // Initial damage
             }
         },
         UPGRADE1 {
             @Override
             int getDamage() {
-                return 50;
+                return 10; // Upgraded damage
             }
         },
         UPGRADE2 {
             @Override
             int getDamage() {
-                return 70;
+                return 15; // Further upgraded damage
             }
         };
 
