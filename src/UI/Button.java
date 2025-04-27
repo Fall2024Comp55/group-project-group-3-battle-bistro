@@ -19,7 +19,7 @@ public class Button extends GCompound implements MouseInteract {
     protected GImage gImage;
     protected boolean hovering;
 
-    Button() {
+    public Button() {
 
     }
 

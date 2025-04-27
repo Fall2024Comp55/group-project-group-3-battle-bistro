@@ -71,6 +71,18 @@ public class OrderTicketUI extends UI {
         add(ticket);
     }
 
+    public void rearrangeTickets() {
+        for (OrderTicket ticket : tickets) {
+            ticket.setLocation(HORIZONTAL_OFFSET, (VERTICAL_OFFSET * tickets.size() + (tickets.size() - 1) * 80) + 40);
+        }
+    }
+
+    public void removeTicket(OrderTicket ticket) {
+        tickets.remove(ticket);
+        remove(ticket);
+        rearrangeTickets();
+    }
+
     public void clearTickets() {
         tickets.clear();
     }
