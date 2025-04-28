@@ -1,5 +1,6 @@
 package Character;
 
+import Customer.OrderTicket;
 import Food.Food;
 import Food.IngredientsType;
 import Screen.ProgramWindow;
@@ -8,13 +9,10 @@ import UI.GardenUI;
 import UI.RestaurantUI;
 import Utils.*;
 import acm.graphics.*;
-import com.google.common.collect.Maps;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,7 +58,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      */
     private Character() {
         gImage = new GImage(Utils.getImage(PATH));
-        ingredients = Maps.newHashMap();
+        ingredients = Collections.synchronizedMap(new HashMap<>());
         keysHeld = new HashSet<>();
         actions = new HashSet<>();
         food_image = new GCompound();
@@ -89,7 +87,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
      * @param amount The amount of the ingredient to add.
      * @throws IllegalArgumentException if the amount is negative.
      */
-    public void addIngredient(IngredientsType type, int amount) {
+    public synchronized void addIngredient(IngredientsType type, int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
@@ -333,15 +331,10 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
 
     public void interact() {
-        if (actions.contains(KeyEvent.VK_E)) {
-            interactHeld = true;
-            GPoint p = linetrace(50).getEndPoint();
-            GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
-            if (interactable instanceof Interact i && interactable != this) {
-                i.interact();
-            }
-        } else {
-            interactHeld = false;
+        GPoint p = linetrace(50).getEndPoint();
+        GObject interactable = RestaurantScreen.getInstance().getElementAt(p);
+        if (interactable instanceof Interact i && interactable != this) {
+            i.interact();
         }
     }
 
@@ -351,14 +344,18 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_E && !interactHeld) {
+            interactHeld = true;
+            interact();
+        }
         keysHeld.add(e.getKeyCode());
         actions.add(e.getKeyCode());
-        if (!moving && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) && ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT)) {
+        if (!moving && !OrderTicket.isGrabbing() && !(keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) && ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT)) {
             moving = true;
             movementExecutor = Executors.newSingleThreadScheduledExecutor();
             movementExecutor.scheduleAtFixedRate(this::move, 0, 16, java.util.concurrent.TimeUnit.MILLISECONDS);
         }
-        if (!ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT) && movementExecutor != null && !movementExecutor.isShutdown()) {
+        if ((!ProgramWindow.getCurrentScreen().equals(ProgramWindow.CurrentScreen.RESTAURANT) || OrderTicket.isGrabbing()) && movementExecutor != null && !movementExecutor.isShutdown()) {
             movementExecutor.shutdown();
             moving = false;
         }
@@ -366,7 +363,9 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {
-        interact();
+        if (e.getKeyCode() == KeyEvent.VK_E) {
+            interactHeld = false;
+        }
         keysHeld.remove(e.getKeyCode());
         actions.remove(e.getKeyCode());
         if (moving && ((keysHeld.size() == 1 && keysHeld.contains(KeyEvent.VK_E)) || keysHeld.isEmpty())) {

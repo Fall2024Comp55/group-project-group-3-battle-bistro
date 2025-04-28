@@ -5,6 +5,7 @@ import Customer.Customer;
 import Customer.CustomerPath;
 import Food.IngredientsType;
 import Restaurant.*;
+import Utils.Border;
 import Utils.GameTick;
 import Utils.TickListener;
 import Utils.Utils;
@@ -20,12 +21,13 @@ public class RestaurantScreen extends Screen {
     public static final String PREP_TABLE_PATH = "/resources/restaurant/prep_table.png";
     public static final String WALL_PATH = "/resources/restaurant/wall.png";
     private static final String FLOOR_PATH = "/resources/restaurant/floor.jpg";
-    private static final int dayLength = 1200000; // in ticks
+    private static final int dayLength = 1200; // in ticks
 
     private static CustomerPath customerPath;
 
     private static long dayTick;
     private static boolean dayStarted;
+    private static int day;
 
     static {
         try {
@@ -37,12 +39,38 @@ public class RestaurantScreen extends Screen {
 
     private RestaurantScreen() {
         restaurantTickListeners = Collections.synchronizedSet(new HashSet<>());
+        day = 0;
         add(Character.getInstance());
         initializeComponents();
     }
 
+    public static int getDay() {
+        return day;
+    }
+
+    public static void setDay(int day) {
+        RestaurantScreen.day = day;
+    }
+
+    public static void resetDay() {
+        dayStarted = true;
+        dayTick = 0;
+        day++;
+    }
+
     public static RestaurantScreen getInstance() {
         return RESTAURANT_SCREEN;
+    }
+
+    public void reset() {
+        restaurantTickListeners.clear();
+        day = 0;
+        dayTick = 0;
+        dayStarted = false;
+        Customer.setPath(null);
+        removeAll();
+        add(Character.getInstance());
+        initializeComponents();
     }
 
     @Override
@@ -75,7 +103,7 @@ public class RestaurantScreen extends Screen {
         add(trashCan);
 
         // Order window for taking orders
-        OrderWindow orderWindow = new OrderWindow();
+        OrderTable orderWindow = new OrderTable();
         orderWindow.setLocation(490, 100);
         add(orderWindow);
 
@@ -85,7 +113,7 @@ public class RestaurantScreen extends Screen {
 //        order_image.rotate(270);
 //        add(order_image);
 
-        Serving_Window mat = new Serving_Window();
+        ServingWindow mat = new ServingWindow();
         mat.setLocation(445, 150);
         add(mat);
 
@@ -171,11 +199,19 @@ public class RestaurantScreen extends Screen {
             Customer test2Customer = new Customer();
             add(test2Customer);
         });
-    }
 
-    public static void resetDay() {
-        dayStarted = true;
-        dayTick = 0;
+        Border borderTOP = new Border(0, 0, 800, 20, this);
+        add(borderTOP);
+        borderTOP.setLocation(0, wall_image.getY() + wall_image.getHeight() - borderTOP.getHeight());
+        borderTOP.hide();
+        Border borderLEFT = new Border(0, 0, 20, 600, this);
+        add(borderLEFT);
+        borderLEFT.setLocation(-borderLEFT.getWidth(), 0);
+        borderLEFT.hide();
+        Border borderBOTTOM = new Border(0, 0, 800, 20, this);
+        add(borderBOTTOM);
+        borderBOTTOM.setLocation(0, ProgramWindow.BASE_HEIGHT);
+        borderBOTTOM.hide();
     }
 
     public static void incrementDayTick() {

@@ -11,7 +11,6 @@ import acm.graphics.GRect;
 import acm.graphics.GRectangle;
 
 public class Door extends GCompound implements Solid, Interact {
-    // TODO find needed variables and methods
     private static final String PATH = "/resources/restaurant/door.png";
 
     private final GImage gImage;

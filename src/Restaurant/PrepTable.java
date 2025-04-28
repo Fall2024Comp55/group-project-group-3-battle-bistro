@@ -15,7 +15,6 @@ import java.awt.*;
 import java.net.URL;
 
 public class PrepTable extends GCompound implements Interact, Solid {
-    // TODO find needed variables and methods
     private static final String PATH = "/resources/restaurant/prep_table.png";
 
     private final GImage gImage;
@@ -53,21 +52,21 @@ public class PrepTable extends GCompound implements Interact, Solid {
     }
 
     @Override
-    public void onCollision() {
-
-    }
-
-    @Override
-    public GRectangle getHitbox() {
-        return this.getBounds();
-    }
-
-    @Override
     public GRectangle getInteractHitbox() {
         return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 
     public GImage getgImage() {
         return gImage;
+    }
+
+    @Override
+    public void onCollision() {
+
+    }
+
+    @Override
+    public GRectangle getHitbox() {
+        return Utils.getHitboxOffset(this.getBounds(), RestaurantScreen.getInstance().getBounds());
     }
 }

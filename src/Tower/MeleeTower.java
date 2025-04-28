@@ -71,7 +71,7 @@ public class MeleeTower extends Tower implements TickListener {
         BASE {
             @Override
             void attack(Enemy target) {
-                target.takeDamage(50);
+                target.takeDamage(3);
             }
         },
         UPGRADE1 {

@@ -12,7 +12,6 @@ import acm.graphics.GImage;
 import acm.graphics.GRectangle;
 
 public class IngredientStation extends GCompound implements Interact, Solid {
-    // TODO find needed variables and methods
     private static final String BASE_PATH = "/resources/restaurant/";
     private static final String EXTENSION = ".png";
 
@@ -30,22 +29,16 @@ public class IngredientStation extends GCompound implements Interact, Solid {
 
     @Override
     public void interact() {
-        /*
-        TODO: Upon pressing "e", the player will add one ingredient to the pizza. Decrement amount
-         of this ingredient by one. If not holding a pizza, do nothing.
-         */
-        if (ingredient == IngredientsType.DOUGH && Character.getInstance().getHolding() == null) {
+        Food holding = Character.getInstance().getHolding();
+        if (ingredient == IngredientsType.DOUGH && holding == null &&
+                Character.getInstance().removeIngredient(ingredient, 1)) {
             Food pizza = new Food();
             Character.getInstance().setHolding(pizza);
-        } else if (Character.getInstance().getHolding() != null) {
-            if (!Character.getInstance().getHolding().isBoxed()) {
-                Character.getInstance().getHolding().addIngredient(ingredient);
-            }
+        } else if (holding != null && !holding.getIngredients().contains(ingredient) &&
+                !holding.isBoxed() && !holding.isCooked() &&
+                Character.getInstance().removeIngredient(ingredient, 1)) {
+            holding.addIngredient(ingredient);
         }
-//        if (Character.getInstance().removeIngredient(ingredient, 1)) {
-//            Character.getInstance().getHolding().addIngredient(ingredient);
-//        }
-        //REMEMBER TO REMOVE RESOURCE/INGREDIENT FROM TOTLA
     }
 
     public String toPath() {

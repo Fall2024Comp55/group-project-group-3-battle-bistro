@@ -4,8 +4,6 @@ import Character.Character;
 import Enemy.Enemy;
 import Enemy.EnemyPath;
 import Screen.GardenScreen;
-import Screen.ProgramWindow;
-import UI.TowerUI;
 import Utils.GameTick.ActionManager;
 import Utils.*;
 import acm.graphics.*;
@@ -89,7 +87,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
                 }
             }
             for (GPoint p : attackZones.getLast().getSidePoints()) {
-                Object enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
+                GObject enemy = GardenScreen.getEnemyLayer().getElementAt(p);
                 if (enemy instanceof Enemy e) {
                     if (e.isAlive()) {
                         return true;
@@ -105,7 +103,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         attackTarget = null;
         for (Zone zone : attackZones) {
             for (GPoint p : zone.getSidePoints()) {
-                GObject enemy = Utils.getObjectInCompound(GardenScreen.getInstance(), p);
+                GObject enemy = GardenScreen.getEnemyLayer().getElementAt(p);
                 if (enemy instanceof Enemy e) {
                     if (e.isAlive()) {
                         enemyFound = true;
@@ -180,8 +178,8 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         for (int i = 0; i < attackZones.size(); i++) {
             if (i == 0 || i == attackZones.size() / 2 || i == attackZones.size() - 1 || i % 10 == 0) {
                 filteredZones.add(attackZones.get(i));
-                attackZones.get(i).addZone();
-                attackZones.get(i).addPoints();
+//                attackZones.get(i).addZone();
+//                attackZones.get(i).addPoints();
             }
         }
         attackZones = filteredZones;
@@ -265,13 +263,13 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
     public void onPress(MouseEvent e) {
         if (placed) {
             setSelectedTower(this); // Set this tower as selected
-            if (visible_ui) {
-                ProgramWindow.getInstance().remove(TowerUI.getInstance());
-            } else {
-                TowerUI.getInstance().setLocation(e.getX(), e.getY()); // Position UI near click
-                ProgramWindow.getInstance().add(TowerUI.getInstance());
-            }
-            visible_ui = !visible_ui;
+//            if (visible_ui) {
+//                ProgramWindow.getInstance().remove(TowerUI.getInstance());
+//            } else {
+//                TowerUI.getInstance().setLocation(e.getX(), e.getY()); // Position UI near click
+//                ProgramWindow.getInstance().add(TowerUI.getInstance());
+//            }
+//            visible_ui = !visible_ui;
         }
 
         if (!range.isVisible()) {
@@ -302,7 +300,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
 
     @Override
     public void onRelease(MouseEvent e) {
-        if (!checkCollision()) {
+        if (!range.isFilled()) {
             placed = true;
             initAttackLines();
             placedLocation = this.getLocation();

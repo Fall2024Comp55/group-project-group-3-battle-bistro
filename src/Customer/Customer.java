@@ -45,9 +45,26 @@ public class Customer extends GCompound implements TickListener {
         targetPoint = path.getPoint(1);
         gImage = new GImage(Utils.getImage(CUSTOMER_PATH));
         gImage.setSize(SIZE, SIZE);
+        this.rotate(90);
         gImage.setLocation(Utils.getCenter(gImage.getBounds()));
         add(gImage);
         setLocation(path.getStart());
+    }
+
+    public static Customer peekRegister() {
+        return path.peekQueue(0);
+    }
+
+    public static boolean checkWaitingCustomer(Customer customer) {
+        if (customer != null) {
+            for (Customer c : path.getCustomersFromLine(1)) {
+                System.out.println(c + " " + customer);
+                if (c == customer) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static CustomerPath getPath() {
@@ -119,6 +136,10 @@ public class Customer extends GCompound implements TickListener {
         return path.dequeueCustomer(0);
     }
 
+    public void startMoving() {
+        isMoving = true;
+    }
+
     public static Customer getCustomerFromTicket(OrderTicket ticket) {
         if (ticket != null) {
             for (Customer customer : path.getCustomersFromLine(2)) {
@@ -128,6 +149,10 @@ public class Customer extends GCompound implements TickListener {
             }
         }
         return null;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
     }
 
   
@@ -151,6 +176,10 @@ public class Customer extends GCompound implements TickListener {
     public void takeOrder() {
         hasOrdered = true;
         isMoving = true;
+        if (path.getQueueSize(0) > 0) {
+            System.out.println("Customer is waiting in line.");
+            path.peekQueue(0).startMoving();
+        }
         OrderTicketUI.getInstance().addTicket(orderTicket);
     }
 
@@ -224,7 +253,7 @@ public class Customer extends GCompound implements TickListener {
         double targetX = targetPoint.getX();
         double targetY = targetPoint.getY();
         GPoint currentPos = this.getLocation();
-        if (!line.isEmpty()) {
+        if (!line.isEmpty() && line.peekQueue() != this) {
             if (targetX == currentPos.getX()) {
                 targetY += line.getCustomerOffset();
             } else {
@@ -240,13 +269,11 @@ public class Customer extends GCompound implements TickListener {
             if (targetPoint.equals(path.getEnd())) {
                 leave();
             } else {
-                System.out.println(line);
                 line.queueCustomer(this);
-                for (CustomerPath.PathLine pline : path.getPath()) {
-                    System.out.println(pline);
-                    System.out.println(pline.getQueueSize());
+                System.out.println(path.peekQueue(0) == this);
+                if (line.peekQueue() == this) {
+                    targetPoint = path.getNext(targetPoint);
                 }
-                targetPoint = path.getNext(targetPoint);
             }
         } else {
 

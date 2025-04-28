@@ -23,10 +23,15 @@ public class BoxingTable extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-        System.out.println("Boxing");
         Food pizza = Character.getInstance().getHolding();
-        if (pizza != null) {
-            pizza.box();
+        if (Character.getInstance().getHolding() != null) {
+            if (pizza != null) {
+                if (!pizza.isBoxed()) {
+                    pizza.box();
+                } else {
+                    pizza.unbox();
+                }
+            }
         }
     }
 

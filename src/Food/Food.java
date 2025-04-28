@@ -8,7 +8,7 @@ import acm.graphics.GImage;
 import java.util.EnumSet;
 
 public class Food extends GCompound {
-    public static final String PIZZA_BOX_PATH = "/resources/restaurant/Pizza_Box1.png";
+    public static final String PIZZA_BOX_PATH = "/resources/restaurant/pizza_box_down.png";
     private final EnumSet<IngredientsType> ingredients;
     private OrderTicket orderTicket;
     private boolean cooked;
@@ -27,8 +27,10 @@ public class Food extends GCompound {
     }
 
     public void addIngredient(IngredientsType ingredient) {
-        ingredients.add(ingredient);
-        updateFoodImage();
+        if (!isCooked() && !isBoxed()) {
+            ingredients.add(ingredient);
+            updateFoodImage();
+        }
     }
 
     public void updateFoodImage() {
@@ -70,5 +72,11 @@ public class Food extends GCompound {
         boxedImage.setSize(40, 40);
         add(boxedImage);
         this.boxed = true;
+    }
+
+    public void unbox() {
+        removeAll();
+        updateFoodImage();
+        this.boxed = false;
     }
 }

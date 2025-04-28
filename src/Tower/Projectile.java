@@ -84,7 +84,6 @@ public abstract class Projectile extends GCompound implements TickListener {
     protected void hitTarget() {
         if (targetEnemy != null && targetEnemy.isAlive()) {
             targetEnemy.takeDamage(damage);
-            System.out.println("Projectile hit enemy, dealt " + damage + " damage!");
         }
         active = false;
     }
@@ -100,12 +99,6 @@ public abstract class Projectile extends GCompound implements TickListener {
     @Override
     public void onTick() {
         if (active) {
-//        // TODO: check if this code is needed and if so, rework it
-//        if (targetEnemy == null || !targetEnemy.isAlive()) {
-//            active = false;
-//            return;
-//        }
-
             targetPoint = targetEnemy.getLocation();
             move();
         } else {

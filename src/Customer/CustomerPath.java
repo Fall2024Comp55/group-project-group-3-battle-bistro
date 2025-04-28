@@ -11,6 +11,7 @@ import java.util.Queue;
 
 public class CustomerPath {
     private static final int SEGMENT_WIDTH = 20;
+    public static Customer refreshCustomer;
 
     private final List<PathLine> path;
     private final LinkedList<GPoint> points;
@@ -52,6 +53,10 @@ public class CustomerPath {
 
     public int getOffset(GPoint point) {
         return getLineFromPoint(point).getCustomerOffset();
+    }
+
+    public int getQueueSize(int index) {
+        return path.get(index).getQueueSize();
     }
 
     public Customer dequeueCustomer(int index) {
@@ -156,7 +161,10 @@ public class CustomerPath {
         }
 
         public int getCustomerOffset() {
-            return (int) (new Customer().getHeight() + 20) * getQueueSize();
+            if (refreshCustomer == null) {
+                CustomerPath.refreshCustomer = new Customer();
+            }
+            return (int) (refreshCustomer.getHeight() + 20) * getQueueSize();
         }
     }
 

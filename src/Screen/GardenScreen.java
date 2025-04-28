@@ -13,6 +13,7 @@ import acm.graphics.GObject;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
@@ -49,6 +50,14 @@ public class GardenScreen extends Screen {
         initializeComponents();
     }
 
+    public void reset() {
+        enemyTickListeners.clear();
+        towerTickListeners.clear();
+        projectileTickListeners.clear();
+        removeAll();
+        initializeComponents();
+    }
+
     public static GardenScreen getInstance() {
         return GARDEN_SCREEN;
     }
@@ -75,30 +84,42 @@ public class GardenScreen extends Screen {
                 300, 350,   
                 500, 350,   
                 500, 200,   
-                400, 200,   
-                400, 50,    
-                600, 50,    
-                600, 150,   
-                800, 150,   
-                800, 100    
+                400, 200,
+                400, 80,
+                600, 80,
+                600, 150,
+                800, 150,
+                800, 100
         );
+
         Enemy.setPath(enemyPath);
-        enemyPath.showPath();
         enemyPath.addPathHitbox(this);
         enemyPath.showPathHitbox();
         enemyPath.addPath(this);
 
+        add(projectileLayer);
         add(towerLayer);
         add(enemyLayer);
-        add(projectileLayer);
     }
 
     public void addEnemy() {
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            var enemies = EnemyType.getUnlockedEnemies();
+            for (int i = 0; i < RandomGenerator.getDefault().nextInt(0, 3); i++) {
+                EnemyType enemyType = enemies.get(random.nextInt(0, enemies.size()));
+                Enemy enemy = new Enemy(enemyType);
+                enemy.sendToBack();
+                enemyLayer.add(enemy);
+            }
+        }
+
         for (int i = 0; i < RandomGenerator.getDefault().nextInt(0, 3); i++) {
             Enemy enemy = new Enemy(EnemyType.DOUGH);
             enemy.sendToBack();
             enemyLayer.add(enemy);
         }
+
     }
 
     public Set<TickListener> getEnemyTickListeners() {

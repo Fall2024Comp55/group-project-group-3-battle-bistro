@@ -24,6 +24,7 @@ public class MainMenuScreen extends Screen implements TickListener {
     private Button startButton;
     private Button optionsButton;
     private Button exitButton;
+    private Button continueButton;
 
 
     static {
@@ -60,17 +61,28 @@ public class MainMenuScreen extends Screen implements TickListener {
         // start Game button
         startButton = new ActionButton("Start Game", () -> {
             // Start the game
+            ProgramWindow.getInstance().newGame();
             ProgramWindow.getInstance().startGame();
         });
         startButton.setLocation(Utils.getCenterPoint(this.getBounds()));
         startButton.move(0, -50);
         add(startButton);
 
+        // Continue Game button
+        continueButton = new ActionButton("Continue Game", () -> {
+            // Continue the game
+            ProgramWindow.getInstance().startGame();
+        });
+        continueButton.setLocation(Utils.getCenterPoint(this.getBounds()));
+        continueButton.move(0, 0);
+        add(continueButton);
+
         // Options button
         optionsButton = new ActionButton("Options", () -> {
             System.out.println("Options button clicked - functionality not implemented yet.");
         });
         optionsButton.setLocation(Utils.getCenterPoint(this.getBounds()));
+        optionsButton.move(0, 50);
         add(optionsButton);
 
         // exit button
@@ -79,7 +91,7 @@ public class MainMenuScreen extends Screen implements TickListener {
             System.exit(0);
         });
         exitButton.setLocation(Utils.getCenterPoint(this.getBounds()));
-        exitButton.move(0, 50);
+        exitButton.move(0, 100);
         add(exitButton);
     }
 

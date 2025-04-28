@@ -1,6 +1,6 @@
 package Tower;
 
-import Character.Character; 
+import Character.Character;
 import Screen.GardenScreen;
 import Utils.GameTick.ActionManager;
 import Utils.TickListener;
@@ -15,7 +15,7 @@ public class RangedTower extends Tower implements TickListener {
     private UpgradeTree state;
 
     public RangedTower() {
-        super("chefkirby", 2, 1, 1, 150);
+        super("chefkirby", 2, 1, 5, 150);
         state = UpgradeTree.BASE;
         onCooldown = false;
     }

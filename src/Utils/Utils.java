@@ -13,7 +13,6 @@ import java.net.URL;
 
 public class Utils {
     public static final URL MISSING_TEXTURE = Utils.class.getResource("/resources/missingtexture.png");
-    //TODO work on getCenter and getCenterOffset methods
     public static GPoint getCenter(double width, double height) {
         return new GPoint(-width / 2, -height / 2);
     }

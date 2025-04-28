@@ -13,7 +13,7 @@ import acm.graphics.GRectangle;
 
 public class Enemy extends GCompound implements TickListener {
     public static final int SIZE = 20;
-    public static final double MOVE_RATE = .1;
+    public static final double MOVE_RATE = .8;
 
     private static EnemyPath enemyPath;
 
@@ -105,9 +105,14 @@ public class Enemy extends GCompound implements TickListener {
         health -= damage;
         scale(1.05);
         if (health <= 0) {
-            remove();
-            alive = false;
+            death();
         }
+    }
+
+    public void death() {
+        Character.getInstance().addIngredient(type.getIngredientsType(), 1);
+        alive = false;
+        remove();
     }
 
     public boolean isAlive() {
@@ -133,9 +138,9 @@ public class Enemy extends GCompound implements TickListener {
     @Override
     public void onTick() {
         move();
-        sendToBack();
-        sendForward();
-        sendForward();
+//        sendToBack();
+//        sendForward();
+//        sendForward();
         if (!alive) {
             GardenScreen.getInstance().remove(this);
         }

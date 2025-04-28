@@ -80,6 +80,11 @@ public class ProgramWindow extends GraphicsProgram {
         currentScreen = newScreen;
     }
 
+    public void newGame() {
+        GardenScreen.getInstance().reset();
+        RestaurantScreen.getInstance().reset();
+    }
+
     public void startGame() {
         // remove the main menu screen from the window
         remove(MainMenuScreen.getInstance());
@@ -103,6 +108,8 @@ public class ProgramWindow extends GraphicsProgram {
         GardenScreen.getInstance().sendToBack();
         RestaurantScreen.getInstance().sendToBack();
         OrderTicketUI.getInstance().sendToFront();
+        RestaurantScreen.setDay(1);
+        RestaurantUI.getInstance().update();
     }
 
     public void endDay() {

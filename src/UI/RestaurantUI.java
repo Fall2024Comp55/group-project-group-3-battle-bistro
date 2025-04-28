@@ -1,6 +1,9 @@
 package UI;
 
 import Character.Character;
+import Food.IngredientsType;
+import Screen.ProgramWindow;
+import Screen.RestaurantScreen;
 import Utils.Solid;
 import acm.graphics.GCompound;
 import acm.graphics.GLabel;
@@ -20,6 +23,7 @@ public class RestaurantUI extends UI implements Solid {
 
     private final GLabel moneyLabel;
     private final GLabel healthLabel;
+    private final GLabel dayLabel;
     private int starRating;
     private GCompound starDisplay;
     private GCompound notificationArea;
@@ -38,6 +42,7 @@ public class RestaurantUI extends UI implements Solid {
     private RestaurantUI() {
         moneyLabel = new GLabel("Money: " + Character.getInstance().getBalance());
         healthLabel = new GLabel("Health: " + Character.getInstance().getHealth());
+        dayLabel = new GLabel("Day: " + RestaurantScreen.getDay());
         initializeComponents();
     }
 
@@ -57,6 +62,32 @@ public class RestaurantUI extends UI implements Solid {
         healthLabel.setColor(GLOBAL_COLOR);
         healthLabel.setLocation(20, 15);
         add(healthLabel);
+
+        dayLabel.setFont(GLOBAL_FONT);
+        dayLabel.setColor(GLOBAL_COLOR);
+        dayLabel.setLocation(BASE_WIDTH - dayLabel.getWidth() - 20, 35);
+        add(dayLabel);
+
+        ActionButton exitButton = new ActionButton("Exit", () -> {
+            ProgramWindow.getInstance().exitToMainMenu();
+        });
+
+        exitButton.setLocation(dayLabel.getLocation());
+        exitButton.move(-exitButton.getWidth(), 10);
+        add(exitButton);
+
+        ActionButton unlockIngredients = new ActionButton("Unlock Ingredients", () -> {
+            for (IngredientsType ingredient : IngredientsType.values()) {
+                if (!ingredient.isUnlocked()) {
+                    ingredient.setUnlocked(true);
+                }
+            }
+        });
+
+        unlockIngredients.setLocation(exitButton.getLocation());
+        unlockIngredients.move(-unlockIngredients.getWidth(), 0);
+        add(unlockIngredients);
+
 
         initStarRating();
 
@@ -136,6 +167,11 @@ public class RestaurantUI extends UI implements Solid {
     public void update() {
         updateMoneyLabel();
         updateHealthLabel();
+        updateDayLabel();
+    }
+
+    public void updateDayLabel() {
+        dayLabel.setLabel("Day: " + RestaurantScreen.getDay());
     }
 
     private void updateMoneyLabel() {

@@ -13,7 +13,6 @@ public class OrderTicketUI extends UI {
     public static final int HORIZONTAL_OFFSET = 30; //50
     public static final int VERTICAL_OFFSET = 10; //150
     private boolean hidden = true;
-    private boolean selection_mode = false;
 
     private static final ArrayList<OrderTicket> tickets;
 
@@ -42,6 +41,10 @@ public class OrderTicketUI extends UI {
             hidden = true;
             ProgramWindow.getInstance().animateObject(this, this.getX() + 64, this.getY(), 500);
         }
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 
     @Override
@@ -90,18 +93,6 @@ public class OrderTicketUI extends UI {
 
     public ArrayList<OrderTicket> getTickets() {
         return tickets;
-    }
-
-    public void setSelectionMode(boolean selection_mode) {
-        this.selection_mode = selection_mode;
-    }
-
-    public boolean getSelectionMode() {
-        return this.selection_mode;
-    }
-
-    public boolean getHidden() {
-        return this.selection_mode;
     }
 
     public void setHidden(boolean hide) {

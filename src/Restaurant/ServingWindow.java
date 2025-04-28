@@ -1,8 +1,8 @@
 package Restaurant;
 
 import Character.Character;
+import Customer.OrderTicket;
 import Food.Food;
-import UI.OrderTicketUI;
 import Utils.Interact;
 import Utils.Solid;
 import Utils.Utils;
@@ -10,14 +10,14 @@ import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GRectangle;
 
-public class Serving_Window extends GCompound implements Solid, Interact {
+public class ServingWindow extends GCompound implements Solid, Interact {
     // TODO find needed variables and methods
     private static final String PATH = "/resources/restaurant/serve.png";
 
     private final GImage gImage;
     protected Food item;
 
-    public Serving_Window() {
+    public ServingWindow() {
         GImage gImage = new GImage(Utils.getImage(PATH));
         this.gImage = gImage;
 //        gImage.setSize(32, 425);
@@ -28,13 +28,22 @@ public class Serving_Window extends GCompound implements Solid, Interact {
         add(gImage);
     }
 
+    public void deliverFood(Food food) {
+        System.out.println(food);
+        if (food != null) {
+            food.getOrderTicket().getCustomer().deliverFood(food);
+            Character.getInstance().setHolding(null);
+        }
+    }
+
     @Override
     public void interact() {
-        if (Character.getInstance().getHolding() != null) {
-            if (OrderTicketUI.getInstance().getHidden()) {
-                OrderTicketUI.getInstance().shiftUI();
+        if (Character.getInstance().getHolding() != null && Character.getInstance().getHolding().isBoxed()) {
+            if (!OrderTicket.isGrabbing()) {
+                OrderTicket.setOrderTicketGrabber(this);
+            } else {
+                OrderTicket.setOrderTicketGrabber(null);
             }
-            OrderTicketUI.getInstance().setSelectionMode(true);
         }
 //        Food food = Character.getInstance().getHolding();
 //        if (food != null) {

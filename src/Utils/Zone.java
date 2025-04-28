@@ -24,6 +24,15 @@ public class Zone {
         return points;
     }
 
+    public GPoint[] getSidePoints(int offsetX, int offsetY) {
+        GPoint[] points = new GPoint[4];
+        points[0] = new GPoint(zone.getX() + offsetX, zone.getY() + zone.getHeight() / 2 + offsetY);
+        points[1] = new GPoint(zone.getX() + zone.getWidth() + offsetX, zone.getY() + zone.getHeight() / 2 + offsetY);
+        points[2] = new GPoint(zone.getX() + zone.getWidth() / 2 + offsetX, zone.getY() + offsetY);
+        points[3] = new GPoint(zone.getX() + zone.getWidth() / 2 + offsetX, zone.getY() + zone.getHeight() + offsetY);
+        return points;
+    }
+
     public int getPathIndex() {
         return pathIndex;
     }

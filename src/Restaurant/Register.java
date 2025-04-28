@@ -23,13 +23,12 @@ public class Register extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-        System.out.println("Interacting with register");
-        Customer customer = Customer.dequeueRegister();
-        System.out.println(customer);
-        if (customer != null && Character.getInstance().getHolding() == null) {
+        if (Character.getInstance().getHolding() == null &&
+                Customer.peekRegister() != null && !Customer.peekRegister().isMoving()) {
+            Customer customer = Customer.dequeueRegister();
+            System.out.println(customer);
             customer.takeOrder();
         }
-        //TODO: Check if customer is present upon interaction, take order and retrieve order ticket.
     }
 
     @Override
