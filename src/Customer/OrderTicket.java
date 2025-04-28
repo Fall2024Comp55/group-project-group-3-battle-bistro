@@ -18,10 +18,12 @@ public class OrderTicket extends Button {
     private Set<GObject> elements;
     public static final int horizontalOffset = 5;
     public static final  int verticalOffset = 10;
+    private Customer customer;
 
 
-    public OrderTicket(Food pizza) {
-        super();
+    public OrderTicket(Food pizza, Customer customer) {
+//        super();
+        this.customer = customer;
         order = pizza.getIngredients();
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
