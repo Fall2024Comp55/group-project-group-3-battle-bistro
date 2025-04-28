@@ -495,7 +495,7 @@ public class Character extends GCompound implements Solid, Interact, KeyListener
 
     @Override
     public GRectangle getInteractHitbox() {
-        GPoint p = linetrace(50).getEndPoint();
+        GPoint p = linetrace(65).getEndPoint();
         GOval interactHitbox = new GOval(p.getX(), p.getY(), 20, 20);
 
         return interactHitbox.getBounds();

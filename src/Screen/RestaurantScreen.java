@@ -75,6 +75,7 @@ public class RestaurantScreen extends Screen {
 
     @Override
     public void initializeComponents() {
+
         // Background image
         GImage wall_image = new GImage(Utils.getImage(WALL_PATH));
         wall_image.setLocation(0, 0);
@@ -84,6 +85,19 @@ public class RestaurantScreen extends Screen {
         GImage background = new GImage(Utils.getImage(FLOOR_PATH));
         add(background);
         background.sendToBack();
+
+        Border borderTOP = new Border(0, 0, 800, 20, this);
+        add(borderTOP);
+        borderTOP.setLocation(0, wall_image.getY() + wall_image.getHeight() - borderTOP.getHeight());
+        borderTOP.hide();
+        Border borderLEFT = new Border(0, 0, 20, 600, this);
+        add(borderLEFT);
+        borderLEFT.setLocation(-borderLEFT.getWidth(), 0);
+        borderLEFT.hide();
+        Border borderBOTTOM = new Border(0, 0, 800, 20, this);
+        add(borderBOTTOM);
+        borderBOTTOM.setLocation(0, ProgramWindow.BASE_HEIGHT);
+        borderBOTTOM.hide();
 
         // Long prep table image
         GImage prep_table_image = new GImage(Utils.getImage(PREP_TABLE_PATH));
@@ -195,23 +209,14 @@ public class RestaurantScreen extends Screen {
         Customer testCustomer = new Customer();
         add(testCustomer);
 
-        GameTick.ActionManager.addAction(100, () -> {
+        GameTick.ActionManager.addAction(200, () -> {
             Customer test2Customer = new Customer();
             add(test2Customer);
         });
+    }
 
-        Border borderTOP = new Border(0, 0, 800, 20, this);
-        add(borderTOP);
-        borderTOP.setLocation(0, wall_image.getY() + wall_image.getHeight() - borderTOP.getHeight());
-        borderTOP.hide();
-        Border borderLEFT = new Border(0, 0, 20, 600, this);
-        add(borderLEFT);
-        borderLEFT.setLocation(-borderLEFT.getWidth(), 0);
-        borderLEFT.hide();
-        Border borderBOTTOM = new Border(0, 0, 800, 20, this);
-        add(borderBOTTOM);
-        borderBOTTOM.setLocation(0, ProgramWindow.BASE_HEIGHT);
-        borderBOTTOM.hide();
+    public void addCustomer() {
+//        Random
     }
 
     public static void incrementDayTick() {
