@@ -1,5 +1,6 @@
 package Customer;
 
+import Character.Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.Button;
@@ -45,6 +46,12 @@ public class OrderTicket extends Button {
     @Override
     public void onPress(MouseEvent e) {
 //        super.onPress(e);
-        OrderTicketUI.getInstance().removeTicket(this);
+        if (OrderTicketUI.getInstance().getSelectionMode()) {
+            Food pizza = Character.getInstance().getHolding();
+            customer.deliverFood(pizza);
+            OrderTicketUI.getInstance().removeTicket(this);
+            OrderTicketUI.getInstance().setSelectionMode(false);
+            OrderTicketUI.getInstance().shiftUI();
+        }
     }
 }

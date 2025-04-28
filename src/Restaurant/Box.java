@@ -2,6 +2,7 @@ package Restaurant;
 
 import Character.Character;
 import Food.Food;
+import UI.OrderTicketUI;
 import Utils.Interact;
 import Utils.Solid;
 import Utils.Utils;
@@ -27,6 +28,10 @@ public class Box extends GCompound implements Solid, Interact {
         Food pizza = Character.getInstance().getHolding();
         if (pizza != null) {
             pizza.box();
+            if (OrderTicketUI.getInstance().getHidden()) {
+                OrderTicketUI.getInstance().shiftUI();
+            }
+            OrderTicketUI.getInstance().setSelectionMode(true);
         }
     }
 
