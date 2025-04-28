@@ -70,6 +70,10 @@ public class GardenScreen extends Screen {
         return enemyLayer;
     }
 
+    public static LayerCompound getTowerLayer() {
+        return towerLayer;
+    }
+
     @Override
     public void initializeComponents() {
         background = new GImage(Utils.getImage(FLOOR_PATH));

@@ -30,6 +30,7 @@ public class RestaurantUI extends UI implements Solid {
     private GLabel notificationLabel;
     private ScheduledExecutorService notificationExecutor;
     private OrderTicketUI orderTicketMenu;
+    private Button unlockIngredients;
 
     static {
         try {
@@ -76,11 +77,12 @@ public class RestaurantUI extends UI implements Solid {
         exitButton.move(-exitButton.getWidth(), 10);
         add(exitButton);
 
-        ActionButton unlockIngredients = new ActionButton("Unlock Ingredients", () -> {
+        unlockIngredients = new ActionButton("Unlock Ingredients", () -> {
             for (IngredientsType ingredient : IngredientsType.values()) {
                 if (!ingredient.isUnlocked()) {
                     ingredient.setUnlocked(true);
                 }
+                removeUnlockButton();
             }
         });
 
@@ -92,6 +94,10 @@ public class RestaurantUI extends UI implements Solid {
         initStarRating();
 
         initNotificationArea();
+    }
+
+    public void removeUnlockButton() {
+        remove(unlockIngredients);
     }
 
     public static RestaurantUI getInstance() {
@@ -181,8 +187,7 @@ public class RestaurantUI extends UI implements Solid {
     private void updateHealthLabel() {
         double health = Character.getInstance().getHealth();
         healthLabel.setLabel("Health: " + (int)health);
-        
-        
+
         if (health > 50) {
             healthLabel.setColor(Color.GREEN);
         } else if (health > 25) {
@@ -194,6 +199,7 @@ public class RestaurantUI extends UI implements Solid {
 
     @Override
     public void onCollision() {
+
     }
 
     @Override

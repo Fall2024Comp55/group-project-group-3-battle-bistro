@@ -310,7 +310,7 @@ public abstract class Tower extends GCompound implements TickListener, MouseInte
         } else {
             if (placedLocation.getX() == 0 && placedLocation.getY() == 0) {
                 Character.getInstance().addMoney(cost);
-                GardenScreen.getInstance().remove(this);
+                GardenScreen.getTowerLayer().remove(this);
             } else {
                 placed = true;
                 this.setLocation(placedLocation);
