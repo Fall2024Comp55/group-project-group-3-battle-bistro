@@ -1,5 +1,6 @@
 package Customer;
 
+import Character.Character;
 import Food.Food;
 import Food.IngredientsType;
 import UI.Button;
@@ -18,10 +19,12 @@ public class OrderTicket extends Button {
     private Set<GObject> elements;
     public static final int horizontalOffset = 5;
     public static final  int verticalOffset = 10;
+    private Customer customer;
 
 
-    public OrderTicket(Food pizza) {
-        super();
+    public OrderTicket(Food pizza, Customer customer) {
+//        super();
+        this.customer = customer;
         order = pizza.getIngredients();
         GRect background = new GRect(0, 0, 50, 80);
         add(background);
@@ -43,6 +46,13 @@ public class OrderTicket extends Button {
     @Override
     public void onPress(MouseEvent e) {
 //        super.onPress(e);
-        OrderTicketUI.getInstance().removeTicket(this);
+        if (OrderTicketUI.getInstance().getSelectionMode()) {
+            Food pizza = Character.getInstance().getHolding();
+            customer.deliverFood(pizza);
+            OrderTicketUI.getInstance().removeTicket(this);
+            OrderTicketUI.getInstance().setSelectionMode(false);
+            OrderTicketUI.getInstance().shiftUI();
+            Character.getInstance().setHolding(null);
+        }
     }
 }

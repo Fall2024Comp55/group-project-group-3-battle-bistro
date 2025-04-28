@@ -35,7 +35,7 @@ public class Customer extends GCompound implements TickListener {
     private boolean isMoving;
 
     public Customer() {
-        orderTicket = new OrderTicket(generateOrder());
+        orderTicket = new OrderTicket(generateOrder(), this);
         maxWaitTick = 1200; // 60 seconds
         isSatisfied = false;
         hasOrdered = false;
