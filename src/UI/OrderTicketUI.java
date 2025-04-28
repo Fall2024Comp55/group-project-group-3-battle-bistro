@@ -101,7 +101,7 @@ public class OrderTicketUI extends UI {
     }
 
     public boolean getHidden() {
-        return this.selection_mode;
+        return this.hidden;
     }
 
     public void setHidden(boolean hide) {
