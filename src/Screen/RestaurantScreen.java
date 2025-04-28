@@ -85,6 +85,10 @@ public class RestaurantScreen extends Screen {
 //        order_image.rotate(270);
 //        add(order_image);
 
+        Serving_Window mat = new Serving_Window();
+        mat.setLocation(445, 150);
+        add(mat);
+
         Register register = new Register();
         register.setLocation(445, 265);
         add(register);

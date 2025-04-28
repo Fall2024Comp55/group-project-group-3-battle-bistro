@@ -52,6 +52,7 @@ public class OrderTicket extends Button {
             OrderTicketUI.getInstance().removeTicket(this);
             OrderTicketUI.getInstance().setSelectionMode(false);
             OrderTicketUI.getInstance().shiftUI();
+            Character.getInstance().setHolding(null);
         }
     }
 }
