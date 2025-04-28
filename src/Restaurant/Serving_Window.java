@@ -1,5 +1,6 @@
 package Restaurant;
 
+import Character.Character;
 import Food.Food;
 import UI.OrderTicketUI;
 import Utils.Interact;
@@ -29,10 +30,12 @@ public class Serving_Window extends GCompound implements Solid, Interact {
 
     @Override
     public void interact() {
-        if (OrderTicketUI.getInstance().getHidden()) {
-            OrderTicketUI.getInstance().shiftUI();
+        if (Character.getInstance().getHolding() != null) {
+            if (OrderTicketUI.getInstance().getHidden()) {
+                OrderTicketUI.getInstance().shiftUI();
+            }
+            OrderTicketUI.getInstance().setSelectionMode(true);
         }
-        OrderTicketUI.getInstance().setSelectionMode(true);
 //        Food food = Character.getInstance().getHolding();
 //        if (food != null) {
 //            Customer customer = Customer.getCustomerFromTicket(food.getOrderTicket());
